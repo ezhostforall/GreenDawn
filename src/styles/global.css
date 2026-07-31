@@ -55,6 +55,7 @@
 
 html {
   width: 100%;
+  overflow-x: hidden;
   background: var(--navy-950);
   color: var(--navy-900);
   scroll-behavior: smooth;
@@ -75,6 +76,15 @@ body {
   line-height: 1.6;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
+}
+
+main,
+.utility-bar,
+.site-header,
+.hero,
+.footer {
+  width: 100%;
+  max-width: 100%;
 }
 
 body.menu-open {
