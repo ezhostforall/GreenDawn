@@ -1590,7 +1590,7 @@ h3 {
   border-radius: var(--radius-lg);
   background:
     linear-gradient(0deg, rgba(7, 23, 33, 0.92), rgba(7, 23, 33, 0.06)),
-    url("/images/new-connection.png") center / cover;
+    var(--capability-image) center / cover;
   padding: clamp(2rem, 5vw, 4.5rem);
 }
 

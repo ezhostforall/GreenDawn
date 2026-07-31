@@ -7,6 +7,8 @@ interface Props {
 }
 
 const { title, description } = Astro.props;
+const base = import.meta.env.BASE_URL.endsWith("/") ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+const asset = (path: string) => `${base}${path.replace(/^\//, "")}`;
 ---
 
 <!doctype html>
@@ -17,7 +19,7 @@ const { title, description } = Astro.props;
     <meta name="description" content={description} />
     <meta name="theme-color" content="#0b1d2a" />
     <meta name="color-scheme" content="light dark" />
-    <link rel="icon" type="image/png" href="/brand/greendawn-mark.png" />
+    <link rel="icon" type="image/png" href={asset("/brand/greendawn-mark.png")} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -26,7 +28,7 @@ const { title, description } = Astro.props;
     />
     <title>{title}</title>
   </head>
-  <body>
+  <body style={`--capability-image: url('${asset("/images/new-connection.png")}')`}>
     <slot />
   </body>
 </html>
