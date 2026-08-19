@@ -1,0 +1,46 @@
+---
+import ResponsiveImage from "../media/ResponsiveImage.astro";
+import ArrowIcon from "../media/ArrowIcon.astro";
+import { homeMedia } from "../../content/media";
+import { liveSitePath } from "../../lib/urls";
+---
+
+<section class="technology section section--paper" data-technology>
+  <div class="page-shell technology__layout">
+    <div class="technology__copy" data-reveal>
+      <p class="eyebrow">Requirements-led EV charging hardware</p>
+      <h2>Start with what the system needs to do.</h2>
+      <p>
+        GreenDawn works with a vetted range of commercial AC and DC charging equipment selected for technical quality, compatibility and support. Other equipment can be accommodated where an existing estate, manufacturer requirement or project need makes it the right decision.
+      </p>
+      <a class="text-link" href={liveSitePath("/guides/ac-vs-dc-ev-charging/")}>Understand AC and DC charging <ArrowIcon /></a>
+    </div>
+
+    <div class="technology__visual" data-reveal>
+      <div class="technology__image technology__image--one">
+        <ResponsiveImage
+          image={homeMedia.chargerHardware}
+          alt="Commercial EV charging hardware installed at a business site"
+          sizes="(max-width: 42rem) calc(100vw - 1.5rem), 42vw"
+          loading="lazy"
+        />
+      </div>
+      <div class="technology__image technology__image--two">
+        <ResponsiveImage
+          image={homeMedia.johnsonsCars}
+          alt="EV charging equipment installed at a motor dealership"
+          sizes="(max-width: 42rem) calc(100vw - 1.5rem), 32vw"
+          loading="lazy"
+        />
+      </div>
+      <div class="technology__criteria">
+        <span>Charging speed</span>
+        <span>Available power</span>
+        <span>Dwell time</span>
+        <span>Interoperability</span>
+        <span>Support route</span>
+        <span>Whole-life cost</span>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,58 @@
+---
+import ResponsiveImage from "../media/ResponsiveImage.astro";
+import ArrowIcon from "../media/ArrowIcon.astro";
+import { solutions } from "../../content/home";
+import { liveSitePath } from "../../lib/urls";
+---
+
+<section class="solutions section section--cream" id="solutions" data-solutions>
+  <div class="page-shell">
+    <div class="section-title-row" data-reveal>
+      <div>
+        <p class="eyebrow">Commercial EV charging solutions</p>
+        <h2>Different sites need different charging strategies.</h2>
+      </div>
+      <p>The right specification depends on who is charging, how long vehicles remain on site, the power available and what the system needs to do.</p>
+    </div>
+
+    <div class="solutions__layout">
+      <div class="solutions__media" aria-hidden="true">
+        {solutions.map((solution, index) => (
+          <figure class:list={["solution-image", { "is-active": index === 0 }]} data-solution-image={index}>
+            <ResponsiveImage
+              image={solution.image}
+              alt=""
+              sizes="(min-width: 62rem) 45vw, 1px"
+              loading="lazy"
+            />
+            <figcaption><span>{solution.number}</span>{solution.title}</figcaption>
+          </figure>
+        ))}
+        <div class="solutions__media-mark" aria-hidden="true">GREEN<span>DAWN</span></div>
+      </div>
+
+      <div class="solutions__list">
+        {solutions.map((solution, index) => (
+          <a class:list={["solution-row", { "is-active": index === 0 }]} href={liveSitePath(solution.href)} data-solution-row={index}>
+            <span class="solution-row__number">{solution.number}</span>
+            <div class="solution-row__body">
+              <div class="solution-row__media">
+                <ResponsiveImage
+                  image={solution.image}
+                  alt={solution.alt}
+                  sizes="(max-width: 61rem) calc(100vw - 4rem), 1px"
+                  loading="lazy"
+                />
+              </div>
+              <div class="solution-row__copy">
+                <h3>{solution.title}</h3>
+                <p>{solution.copy}</p>
+              </div>
+            </div>
+            <span class="solution-row__arrow"><ArrowIcon direction="up-right" /></span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>

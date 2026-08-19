@@ -1,0 +1,25 @@
+---
+import { siteConfig } from "../../config/site";
+import { liveSitePath } from "../../lib/urls";
+import ArrowIcon from "../media/ArrowIcon.astro";
+---
+
+<section class="final-cta section" data-final-cta>
+  <svg viewBox="0 0 1000 550" fill="none" aria-hidden="true">
+    <path data-final-arc d="M23 526C216 90 740 -71 974 233" />
+  </svg>
+  <div class="page-shell final-cta__inner" data-reveal>
+    <p class="eyebrow">Start with the requirement</p>
+    <h2>Planning a commercial EV charging project?</h2>
+    <p>Tell us what you're trying to achieve, whether it involves one site or an estate. We'll start with a no-cost discovery conversation and explain the appropriate next step before you commit.</p>
+    <div class="final-cta__actions">
+      <a class="button button--navy" href={liveSitePath("/enquire/")}>Discuss your project <ArrowIcon direction="up-right" /></a>
+      <p>Prefer to speak first? <a href={siteConfig.phone.href}>{siteConfig.phone.display}</a></p>
+    </div>
+    <ol>
+      <li><span>01</span>Initial conversation</li>
+      <li><span>02</span>Site and requirements review</li>
+      <li><span>03</span>Clear recommended next step</li>
+    </ol>
+  </div>
+</section>

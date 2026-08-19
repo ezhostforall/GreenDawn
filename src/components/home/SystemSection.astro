@@ -1,0 +1,30 @@
+---
+import { systemLayers } from "../../content/home";
+---
+
+<section class="system section" id="system" data-system>
+  <div class="system__header page-shell" data-reveal>
+    <p class="eyebrow eyebrow--light">Fix the foundations first</p>
+    <h2>The charger is only one part of the system.</h2>
+    <p>We start with the operation and the site, then bring the infrastructure, charging equipment and management layer together.</p>
+  </div>
+
+  <div class="system__stage page-shell">
+    <svg class="system__arc" viewBox="0 0 1200 490" fill="none" aria-hidden="true">
+      <path data-system-path d="M21 432C190 75 762 -91 1171 241" />
+    </svg>
+    <div class="system__cards">
+      {systemLayers.map((layer) => (
+        <article class="system-card" data-system-card>
+          <div class="system-card__top">
+            <span>{layer.number}</span>
+            <span>{layer.detail}</span>
+          </div>
+          <h3>{layer.title}</h3>
+          <p>{layer.copy}</p>
+        </article>
+      ))}
+    </div>
+    <p class="system__statement" data-reveal>Understand what the site needs and can support before the hardware becomes the answer.</p>
+  </div>
+</section>

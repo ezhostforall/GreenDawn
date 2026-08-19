@@ -40,9 +40,11 @@ jobs:
           if [[ "$REPO_NAME" == *.github.io ]]; then
             export SITE_URL="https://${GITHUB_REPOSITORY_OWNER}.github.io"
             export BASE_URL="/"
+            export PUBLIC_PREVIEW="true"
           else
             export SITE_URL="https://${GITHUB_REPOSITORY_OWNER}.github.io/${REPO_NAME}"
             export BASE_URL="/${REPO_NAME}"
+            export PUBLIC_PREVIEW="true"
           fi
 
           pnpm run build

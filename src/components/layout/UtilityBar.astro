@@ -1,0 +1,13 @@
+---
+import { siteConfig } from "../../config/site";
+import { liveSitePath } from "../../lib/urls";
+---
+
+<div class="utility-bar">
+  <p>Commercial EV infrastructure across England, Scotland & Wales</p>
+  <div>
+    <a href={siteConfig.phone.href}>{siteConfig.phone.display}</a>
+    <span aria-hidden="true">·</span>
+    <a href={liveSitePath("/customer-care/")}>Customer support</a>
+  </div>
+</div>

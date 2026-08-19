@@ -1,0 +1,26 @@
+---
+import { processSteps } from "../../content/home";
+---
+
+<section class="process section section--paper" id="process">
+  <div class="page-shell">
+    <div class="section-title-row" data-reveal>
+      <div>
+        <p class="eyebrow">From first conversation to ongoing operation</p>
+        <h2>Make the important decisions before they become expensive ones.</h2>
+      </div>
+      <p>Each stage resolves a different kind of risk while GreenDawn remains responsible for coordinating the overall delivery.</p>
+    </div>
+
+    <div class="process__steps" data-process>
+      <div class="process__line" aria-hidden="true"><span data-process-line></span></div>
+      {processSteps.map((step) => (
+        <article class="process-step" data-process-step>
+          <span class="process-step__number">{step.number}</span>
+          <h3>{step.title}</h3>
+          <p>{step.copy}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

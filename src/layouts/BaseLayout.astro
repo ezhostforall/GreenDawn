@@ -1,34 +1,76 @@
 ---
 import "../styles/global.css";
+import { siteConfig } from "../config/site";
+import { assetPath } from "../lib/urls";
 
 interface Props {
   title: string;
   description: string;
+  image?: string;
 }
 
-const { title, description } = Astro.props;
-const base = import.meta.env.BASE_URL.endsWith("/") ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
-const asset = (path: string) => `${base}${path.replace(/^\//, "")}`;
+const {
+  title,
+  description,
+  image = "/images/optimized/commercial-ev-charging-installation-1440.webp",
+} = Astro.props;
+
+const isPreview = import.meta.env.PUBLIC_PREVIEW === "true";
+const canonicalUrl = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefined;
+const socialImage = Astro.site ? new URL(assetPath(image), Astro.site) : undefined;
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: siteConfig.name,
+  legalName: siteConfig.legalName,
+  url: siteConfig.liveUrl,
+  email: siteConfig.email.display,
+  telephone: siteConfig.phone.display,
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "Office 2.026, Innovation Centre, 7 University Avenue",
+    addressLocality: "Keele",
+    addressRegion: "Staffordshire",
+    postalCode: "ST5 5NU",
+    addressCountry: "GB",
+  },
+  sameAs: [siteConfig.linkedinUrl],
+};
 ---
 
 <!doctype html>
 <html lang="en-GB">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="description" content={description} />
+    <meta name="robots" content={isPreview ? "noindex, nofollow" : "index, follow"} />
     <meta name="theme-color" content="#0b1d2a" />
-    <meta name="color-scheme" content="light dark" />
-    <link rel="icon" type="image/png" href={asset("/brand/greendawn-mark.png")} />
+    <meta name="color-scheme" content="light" />
+    {canonicalUrl && !isPreview && <link rel="canonical" href={canonicalUrl} />}
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={siteConfig.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+    {socialImage && <meta property="og:image" content={socialImage} />}
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {socialImage && <meta name="twitter:image" content={socialImage} />}
+
+    <link rel="icon" type="image/png" href={assetPath("/brand/greendawn-mark.png")} />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100,400;100,500;100,600;100,700&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,100,400;12..96,100,500;12..96,100,600;12..96,100,700&family=JetBrains+Mono:wght@500;600&display=swap"
       rel="stylesheet"
     />
+    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)}></script>
     <title>{title}</title>
   </head>
-  <body style={`--capability-image: url('${asset("/images/new-connection.png")}')`}>
+  <body>
     <slot />
   </body>
 </html>

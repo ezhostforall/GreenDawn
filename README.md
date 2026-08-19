@@ -1,57 +1,101 @@
-# Greendawn homepage concept
+# Greendawn website rebuild
 
-An Astro homepage rebuild for Greendawn, using the emerging June 2026 brand direction and genuine project imagery from the current Greendawn website.
+Astro-based rebuild of the Greendawn website. The current branch remains a static GitHub Pages-compatible build so progress can be reviewed continuously while the wider site architecture is developed.
 
-## Run locally
+## Package manager
+
+Use **pnpm only**.
 
 ```bash
 pnpm install
-pnpm run dev
+pnpm dev
 ```
 
-Create a production build with:
+Production validation:
 
 ```bash
-pnpm run build
+pnpm check
+pnpm build
+pnpm test
 ```
 
-## Project structure
+The repository intentionally contains `pnpm-lock.yaml` only. Do not add `package-lock.json`.
 
-- `src/pages/index.astro` — homepage content and semantic structure
-- `src/styles/global.css` — design tokens, layout, components and responsive states
-- `src/scripts/home.ts` — GSAP and ScrollTrigger motion, menu behaviour and reduced-motion handling
-- `src/layouts/BaseLayout.astro` — metadata and Google Fonts
-- `public/brand` — raster logo assets recovered from the supplied pitch deck
-- `public/images` — selected Greendawn project and editorial images
-- `public/credentials` — accreditation marks used on the current website
+## Runtime
+
+CI uses Node 24. `.node-version` is provided for local version managers. Astro 7 requires Node 22.12 or newer.
+
+## Current architecture
+
+```text
+src/
+├── components/
+│   ├── home/          # Homepage sections; presentation only
+│   └── layout/        # Header, footer and global navigation UI
+├── config/
+│   └── site.ts        # Site-wide contact/company configuration
+├── content/
+│   └── home.ts        # Structured homepage list/card content
+├── layouts/
+│   └── BaseLayout.astro
+├── lib/
+│   └── urls.ts        # GitHub Pages-safe asset URLs and live-site URLs
+├── pages/
+│   └── index.astro    # Page composition only
+├── scripts/
+│   ├── animations/    # Section-specific GSAP behaviour
+│   ├── navigation.ts  # Menu/header behaviour
+│   └── home.ts        # Homepage client-script orchestrator
+├── styles/
+│   ├── tokens.css      # Brand/design tokens
+│   ├── foundations.css # Reset, typography and shared primitives
+│   ├── navigation.css  # Utility bar/header/navigation
+│   ├── home.css        # Homepage section styles
+│   ├── footer.css      # Footer styles
+│   ├── responsive.css  # Responsive/reduced-motion overrides
+│   └── global.css      # Ordered stylesheet entry point
+└── types/
+    └── home.ts        # Shared homepage content types
+```
+
+## Refactor principles
+
+- Astro renders all core content statically.
+- TypeScript is used for configuration, content models, utilities and client behaviour.
+- Homepage sections are isolated Astro components rather than one monolithic page file.
+- Structured repeated content is separated from markup.
+- Client-side behaviour is split by responsibility; GSAP is retained without introducing a UI framework.
+- Existing CSS class names and visual output are preserved during this structural refactor.
+- GitHub Pages `BASE_URL` support remains centralised in `src/lib/urls.ts`.
 
 ## Design system
 
-The implementation uses the pitch-deck colours as a controlled role-based system:
+The existing visual rules are preserved but separated by responsibility. `src/styles/global.css` is now only the ordered entry point; design tokens, foundations, navigation, homepage sections, footer and responsive rules live in focused files. This keeps later brand-token updates isolated from structural page styles.
 
-- Navy `#0B1D2A` — primary dark surface and text
-- Secondary navy `#13293B` — layered dark surfaces
-- Warm off-white `#FAF9F6` — primary light surface
-- Electric lime `#E9F227` — primary accent and action colour
-- Violet `#3A22D8` — secondary emphasis
-- Coral `#FF5E33` — small graphic accent only
-
-Typography is loaded from Google Fonts:
-
-- Bricolage Grotesque for display type
-- Archivo for body copy and interface text
-- JetBrains Mono for labels, metadata and numbered markers
-
-Spacing, type and colour are defined as reusable CSS variables. The layout follows the supplied Refactoring UI guidance: deliberate hierarchy, a constrained spacing scale, readable line lengths, fewer borders, controlled colour roles and imagery with reliable text contrast.
+Current role-based tokens include dark navy surfaces, warm off-white, electric lime, violet and coral, with Bricolage Grotesque, Archivo and JetBrains Mono.
 
 ## Motion
 
-GSAP and ScrollTrigger provide the hero reveal, SVG arc drawing, image parallax, section reveals, system assembly, process progress, solution-image transitions, metric counters and supporting scroll choreography. The site honours `prefers-reduced-motion` and leaves all content visible and usable without animation.
+GSAP and ScrollTrigger remain progressively enhanced. The orchestration now lives in `src/scripts/home.ts`, with individual behaviours separated into `src/scripts/animations/`.
+
+`prefers-reduced-motion` continues to bypass animation and keeps reveal content visible.
+
+## Deployment
+
+`.github/workflows/deploy.yml` builds with pnpm and publishes `dist/` to the `gh-pages` branch. It sets Astro `SITE_URL` and `BASE_URL` dynamically so the same build works for a project Pages URL or a user/organisation Pages site.
+
+## Deferred architecture decisions
+
+The following are intentionally **not** part of this refactor:
+
+- visual/admin content editing;
+- Supabase database/authentication;
+- contact-form backend and email delivery;
+- a headless CMS;
+- moving from static GitHub Pages preview hosting to a server-capable production target.
+
+Those should be designed after the static public-site boundaries and content model are established. An admin interface will require authentication, authorisation and a persistent content/media store, while a server-handled contact form will require a runtime that GitHub Pages cannot provide directly.
 
 ## Content and launch notes
 
-The June 2026 pitch deck is a draft. The four scale metrics displayed in the homepage concept are reproduced from that deck and are explicitly marked for verification. Absolute commercial claims, unfinished future services and the pitch deck's regulatory wording have not been carried into the page.
-
-The Johnsons Cars, Salvation Army, Elite Hotels and Honda project facts are based on the current Greendawn project page at the time of the rebuild. Reconfirm all figures, client permissions, testimonials, contact details and service commitments before production launch.
-
-The included project photography and credentials were sourced from Greendawn's current public website for this Greendawn redesign. Confirm the organisation's rights and any client/manufacturer permissions before redistributing the assets outside this project.
+The current homepage copy is still the pre-content-rewrite concept. Business claims, customer permissions, legal details, survey/aftercare wording, accreditation treatment and project figures are being governed separately and will be updated in the next content stage.

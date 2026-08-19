@@ -1,0 +1,46 @@
+---
+import { assetPath } from "../../lib/urls";
+import type { ResponsiveImageAsset } from "../../types/media";
+
+interface Props {
+  image: ResponsiveImageAsset;
+  alt: string;
+  class?: string;
+  sizes?: string;
+  loading?: "eager" | "lazy";
+  decoding?: "async" | "auto" | "sync";
+  fetchpriority?: "high" | "low" | "auto";
+}
+
+const {
+  image,
+  alt,
+  class: className,
+  sizes = "100vw",
+  loading = "lazy",
+  decoding = "async",
+  fetchpriority = "auto",
+} = Astro.props;
+
+const sources = [...image.sources].sort((a, b) => a.width - b.width);
+const fallback = sources.at(-1);
+
+if (!fallback) {
+  throw new Error("ResponsiveImage requires at least one image source.");
+}
+
+const srcset = sources.map(({ src, width }) => `${assetPath(src)} ${width}w`).join(", ");
+---
+
+<img
+  class={className}
+  src={assetPath(fallback.src)}
+  srcset={srcset}
+  sizes={sizes}
+  width={image.width}
+  height={image.height}
+  alt={alt}
+  loading={loading}
+  decoding={decoding}
+  fetchpriority={fetchpriority}
+/>

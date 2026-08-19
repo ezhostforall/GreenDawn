@@ -1,0 +1,36 @@
+---
+import ResponsiveImage from "../media/ResponsiveImage.astro";
+import ArrowIcon from "../media/ArrowIcon.astro";
+import { insights } from "../../content/home";
+import { liveSitePath } from "../../lib/urls";
+---
+
+<section class="insights section section--cream" id="insights">
+  <div class="page-shell">
+    <div class="section-title-row section-title-row--compact" data-reveal>
+      <div>
+        <p class="eyebrow">Commercial EV charging guidance</p>
+        <h2>Make better-informed charging decisions.</h2>
+      </div>
+      <a class="text-link" href={liveSitePath("/blog/")}>Visit the insight centre <ArrowIcon /></a>
+    </div>
+
+    <div class="insights__grid">
+      {insights.map((insight) => (
+        <a class="insight-card" href={liveSitePath(insight.href)} data-reveal>
+          <figure>
+            <ResponsiveImage
+              image={insight.image}
+              alt={insight.alt}
+              sizes="(max-width: 42rem) calc(100vw - 1.5rem), (max-width: 61rem) calc(50vw - 2rem), 30vw"
+              loading="lazy"
+            />
+            <ArrowIcon direction="up-right" />
+          </figure>
+          <p>{insight.label}</p>
+          <h3>{insight.title}</h3>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

@@ -1,0 +1,36 @@
+---
+import { surveyTiers } from "../../content/home";
+import { liveSitePath } from "../../lib/urls";
+import ArrowIcon from "../media/ArrowIcon.astro";
+---
+
+<section class="surveys section section--lime" id="surveys" aria-labelledby="surveys-title" data-surveys>
+  <div class="page-shell">
+    <div class="surveys__intro" data-reveal>
+      <p class="eyebrow">Technical site surveys</p>
+      <div>
+        <h2 id="surveys-title">Replace assumptions with a buildable plan.</h2>
+        <p>
+          Where an on-site survey is required, GreenDawn assesses the proposed locations, electrical routes, infrastructure and practical constraints needed to produce a detailed scope and formal quotation.
+        </p>
+      </div>
+    </div>
+
+    <div class="surveys__grid">
+      {surveyTiers.map((tier) => (
+        <article class="survey-tier">
+          <strong data-counter data-value={tier.price} data-prefix="£">£{tier.price.toLocaleString("en-GB")}</strong>
+          <div>
+            <span>{tier.label}</span>
+            <small>{tier.credit}</small>
+          </div>
+        </article>
+      ))}
+    </div>
+
+    <div class="surveys__footer" data-reveal>
+      <p>Prices exclude VAT. Third-party DNO, IDNO and local-authority costs are additional where applicable. Survey turnaround is expected within 14 days.</p>
+      <a class="text-link" href={liveSitePath("/guides/greendawn-ev-charging-survey-pre-installation-guide/")}>What a technical survey should establish <ArrowIcon /></a>
+    </div>
+  </div>
+</section>
