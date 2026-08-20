@@ -67,7 +67,11 @@ const organizationSchema = {
       href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100,400;100,500;100,600;100,700&family=Bricolage+Grotesque:opsz,wdth,wght@12..96,100,400;12..96,100,500;12..96,100,600;12..96,100,700&family=JetBrains+Mono:wght@500;600&display=swap"
       rel="stylesheet"
     />
-    <script type="application/ld+json" set:html={JSON.stringify(organizationSchema)}></script>
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(organizationSchema)}
+    ></script>
     <title>{title}</title>
   </head>
   <body>

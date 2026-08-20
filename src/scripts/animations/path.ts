@@ -1,5 +1,4 @@
 import gsap from "gsap";
-import type ScrollTrigger from "gsap/ScrollTrigger";
 
 export function animatePath(selector: string, scrollTrigger: ScrollTrigger.Vars): void {
   const path = document.querySelector<SVGPathElement>(selector);
