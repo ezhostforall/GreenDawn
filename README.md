@@ -7,7 +7,8 @@ Astro-based rebuild of the Greendawn website. The current branch remains a stati
 Use **pnpm only**.
 
 ```bash
-pnpm install
+pnpm install --frozen-lockfile
+pnpm exec playwright install chromium
 pnpm dev
 ```
 
@@ -17,6 +18,7 @@ Production validation:
 pnpm check
 pnpm build
 pnpm test
+pnpm audit
 ```
 
 The repository intentionally contains `pnpm-lock.yaml` only. Do not add `package-lock.json`.
@@ -35,7 +37,8 @@ src/
 ├── config/
 │   └── site.ts        # Site-wide contact/company configuration
 ├── content/
-│   └── home.ts        # Structured homepage list/card content
+│   ├── claims.ts      # Approved/held public claims and evidence status
+│   └── home.ts        # Structured homepage and survey content
 ├── layouts/
 │   └── BaseLayout.astro
 ├── lib/
@@ -72,13 +75,19 @@ src/
 
 The existing visual rules are preserved but separated by responsibility. `src/styles/global.css` is now only the ordered entry point; design tokens, foundations, navigation, homepage sections, footer and responsive rules live in focused files. This keeps later brand-token updates isolated from structural page styles.
 
-Current role-based tokens include dark navy surfaces, warm off-white, electric lime, violet and coral, with Bricolage Grotesque, Archivo and JetBrains Mono.
+Current role-based tokens include dark navy surfaces, warm off-white, electric lime, violet and coral, with Bricolage Grotesque, Archivo and JetBrains Mono. The exact Latin font weights used by the page are bundled locally through Fontsource, avoiding render-blocking third-party font requests.
 
 ## Motion
 
 GSAP and ScrollTrigger remain progressively enhanced. The orchestration now lives in `src/scripts/home.ts`, with individual behaviours separated into `src/scripts/animations/`.
 
 `prefers-reduced-motion` continues to bypass animation and keeps reveal content visible.
+
+Readable content is never faded through low-opacity states. Motion uses transforms, path drawing and image treatment so animated text and cards retain their designed contrast throughout the sequence. Horizontal movement is restricted to locally clipped decorative media; narrow layouts use vertical movement only.
+
+Pinned and parallax sequences are restricted to fine-pointer desktop layouts with enough viewport height. Mobile, tablet and short-height layouts retain the complete narrative without scroll pinning. Image focal points are defined per asset for desktop and mobile crops.
+
+The navigation closes and restores page scrolling when the layout crosses the desktop breakpoint.
 
 ## Deployment
 
@@ -98,4 +107,6 @@ Those should be designed after the static public-site boundaries and content mod
 
 ## Content and launch notes
 
-The current homepage copy is still the pre-content-rewrite concept. Business claims, customer permissions, legal details, survey/aftercare wording, accreditation treatment and project figures are being governed separately and will be updated in the next content stage.
+The homepage uses the approved Greendawn spelling throughout, separates the initial conversation from paid site surveys and publishes only claims marked as approved in `src/content/claims.ts`. Survey prices, VAT wording, scope and credit terms remain subject to final commercial and legal sign-off before production publication. The social-preview asset is a dedicated 1200 × 630 image rather than a reused 4:3 content image.
+
+`pnpm test` verifies the production HTML structure, fragment targets, intrinsic image dimensions, local assets, reduced-motion output, navigation behaviour, responsive overflow and serious automated accessibility findings. `pnpm test:visual:update` creates explicit desktop, tablet, mobile and short-viewport baselines after an approved visual review. The naming gate fails if the incorrect company-name capitalisation appears in human-readable source files.

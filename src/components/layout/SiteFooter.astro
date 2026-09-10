@@ -15,7 +15,7 @@ import ArrowIcon from "../media/ArrowIcon.astro";
 
     <div class="footer__grid">
       <div>
-        <span>Solutions</span>
+        <span>Who we help</span>
         <a href={liveSitePath("/fleet-charging-solutions/")}>Fleet & depot</a>
         <a href={liveSitePath("/workplace-charging/")}>Workplace</a>
         <a href={liveSitePath("/public-charging/")}>Destination & public</a>
@@ -25,12 +25,12 @@ import ArrowIcon from "../media/ArrowIcon.astro";
         <span>How we work</span>
         <a href="#system">Foundations first</a>
         <a href="#process">Delivery process</a>
-        <a href="#power">Grid & power</a>
+        <a href="#system">Site power planning</a>
         <a href="#surveys">Technical surveys</a>
       </div>
       <div>
         <span>Company</span>
-        <a href={liveSitePath("/about-us/")}>About GreenDawn</a>
+        <a href={liveSitePath("/about-us/")}>About Greendawn</a>
         <a href={liveSitePath("/gallery/")}>Projects</a>
         <a href={liveSitePath("/blog/")}>Insights</a>
         <a href={liveSitePath("/customer-care/")}>Customer support</a>
@@ -46,6 +46,7 @@ import ArrowIcon from "../media/ArrowIcon.astro";
     <div class="footer__base">
       <span>© {siteConfig.legalName} · Company {siteConfig.companyNumber} · VAT {siteConfig.vatNumber}</span>
       <a href={liveSitePath("/privacy-policy/")}>Privacy</a>
+      <a href={assetPath("/legal/terms-and-conditions.pdf")}>Terms</a>
       <a href={liveSitePath("/modern-slavery-statements/")}>Modern Slavery</a>
       <a href={siteConfig.linkedinUrl}>LinkedIn <ArrowIcon direction="up-right" /></a>
     </div>

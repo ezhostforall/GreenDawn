@@ -5,28 +5,31 @@ import { liveSitePath } from "../../lib/urls";
 import ArrowIcon from "../media/ArrowIcon.astro";
 ---
 
-<section class="proof-grid section section--cream" aria-labelledby="proof-grid-title">
+<section class="proof-grid section section--cream" aria-labelledby="proof-grid-title" data-proof>
   <div class="page-shell">
     <div class="section-title-row section-title-row--compact" data-reveal>
       <div>
-        <p class="eyebrow">Built for real-world commercial sites</p>
-        <h2 id="proof-grid-title">Different operations. One managed approach.</h2>
+        <p class="eyebrow">Delivery evidence</p>
+        <h2 id="proof-grid-title">Project scale, coverage and capability.</h2>
       </div>
       <a class="text-link" href={liveSitePath("/gallery/")}>View project experience <ArrowIcon /></a>
     </div>
 
     <div class="proof-grid__items">
       {supportingProof.map((item) => (
-        <article class="proof-card" data-reveal>
-          <figure>
-            <ResponsiveImage
-              image={item.image}
-              alt={item.alt}
-              sizes="(max-width: 42rem) calc(100vw - 1.5rem), (max-width: 61rem) calc(50vw - 2rem), 30vw"
-              loading="lazy"
-            />
-            <figcaption>{item.eyebrow}</figcaption>
-          </figure>
+        <article class:list={["proof-card", `proof-card--${item.kind}`]}>
+          {item.image && item.alt && (
+            <figure>
+              <ResponsiveImage
+                image={item.image}
+                alt={item.alt}
+                sizes="(max-width: 42rem) calc(100vw - 1.5rem), (max-width: 61rem) calc(50vw - 2rem), 44vw"
+                loading="lazy"
+              />
+              <figcaption>{item.eyebrow}</figcaption>
+            </figure>
+          )}
+          {!item.image && <span class="proof-card__label">{item.eyebrow}</span>}
           <h3>{item.title}</h3>
           <strong>{item.result}</strong>
           <p>{item.copy}</p>

@@ -1,77 +1,28 @@
 import type { ResponsiveImageAsset } from "../types/media";
 
-// Source photography is drawn from the GreenDawn Drive imagery supplied for the
-// rebuild unless noted otherwise. Keeping the asset map separate means imagery
-// can be swapped later without coupling file paths to presentation components.
+const asset = (name: string, widths: readonly number[], width: number, height: number, objectPosition = "50% 50%", mobileObjectPosition = objectPosition): ResponsiveImageAsset => ({
+  sources: widths.map((sourceWidth) => ({
+    src: `/images/optimized/${name}-${sourceWidth}.webp`,
+    width: sourceWidth,
+  })),
+  width,
+  height,
+  objectPosition,
+  mobileObjectPosition,
+});
+
+// Purpose-led references to the curated Greendawn homepage photography. Source
+// and publication records are maintained in docs/image-sources.md.
 export const homeMedia = {
-  heroCharging: {
-    sources: [
-      { src: "/images/optimized/commercial-ev-charging-installation-480.webp", width: 480 },
-      { src: "/images/optimized/commercial-ev-charging-installation-640.webp", width: 640 },
-      { src: "/images/optimized/commercial-ev-charging-installation-960.webp", width: 960 },
-      { src: "/images/optimized/commercial-ev-charging-installation-1440.webp", width: 1440 },
-    ],
-    width: 1440,
-    height: 891,
-  },
-  wallChargers: {
-    sources: [
-      { src: "/images/optimized/commercial-ev-wall-chargers-480.webp", width: 480 },
-      { src: "/images/optimized/commercial-ev-wall-chargers-800.webp", width: 800 },
-      { src: "/images/optimized/commercial-ev-wall-chargers-1200.webp", width: 1200 },
-    ],
-    width: 1200,
-    height: 900,
-  },
-  syncCharger: {
-    sources: [
-      { src: "/images/optimized/sync-commercial-ev-charger-480.webp", width: 480 },
-      { src: "/images/optimized/sync-commercial-ev-charger-800.webp", width: 800 },
-      { src: "/images/optimized/sync-commercial-ev-charger-1200.webp", width: 1200 },
-    ],
-    width: 1200,
-    height: 1200,
-  },
-  chargerHardware: {
-    sources: [
-      { src: "/images/optimized/commercial-ev-charger-hardware-480.webp", width: 480 },
-      { src: "/images/optimized/commercial-ev-charger-hardware-800.webp", width: 800 },
-      { src: "/images/optimized/commercial-ev-charger-hardware-1200.webp", width: 1200 },
-    ],
-    width: 1200,
-    height: 900,
-  },
-  electricalCapacity: {
-    sources: [
-      { src: "/images/optimized/commercial-ev-electrical-capacity-480.webp", width: 480 },
-      { src: "/images/optimized/commercial-ev-electrical-capacity-720.webp", width: 720 },
-      { src: "/images/optimized/commercial-ev-electrical-capacity-900.webp", width: 900 },
-    ],
-    width: 900,
-    height: 900,
-  },
-  surveyDucting: {
-    sources: [
-      { src: "/images/optimized/ev-charging-ducting-survey-480.webp", width: 480 },
-      { src: "/images/optimized/ev-charging-ducting-survey-768.webp", width: 768 },
-    ],
-    width: 768,
-    height: 1024,
-  },
-  johnsonsCars: {
-    sources: [
-      { src: "/images/optimized/johnsons-cars-ev-charging-480.webp", width: 480 },
-      { src: "/images/optimized/johnsons-cars-ev-charging-666.webp", width: 666 },
-    ],
-    width: 666,
-    height: 466,
-  },
-  salvationArmy: {
-    sources: [
-      { src: "/images/optimized/salvation-army-ev-charging-480.webp", width: 480 },
-      { src: "/images/optimized/salvation-army-ev-charging-666.webp", width: 666 },
-    ],
-    width: 666,
-    height: 466,
-  },
+  heroEngineers: asset("greendawn-engineers-electrical-distribution", [480, 800, 1200, 1600], 1600, 1200, "61% 50%", "67% 50%"),
+  electricalConnection: asset("commercial-ev-electrical-connection", [480, 800, 1200], 1200, 900, "66% 50%", "62% 50%"),
+  processInstallation: asset("commercial-ev-installation-work", [480, 768], 768, 1024, "50% 57%", "50% 54%"),
+  fleetChargingBays: asset("commercial-ev-fleet-charging-bays", [480, 800, 1200], 1200, 900, "50% 56%"),
+  workplaceCharging: asset("commercial-ev-workplace-charging", [480, 800, 1200], 1200, 2797, "50% 57%", "50% 60%"),
+  dealershipCharging: asset("commercial-ev-dealership-charging", [480, 768, 1200], 1200, 1600, "50% 48%", "50% 44%"),
+  destinationHospitality: asset("commercial-ev-destination-hospitality", [480, 800, 1200], 1200, 900, "50% 52%"),
+  multiSiteCharging: asset("commercial-ev-multi-site-charging", [480, 768], 768, 1024, "50% 57%", "50% 54%"),
+  featuredDealership: asset("johnsons-dealership-ev-charging", [480, 800, 1200], 1200, 960, "50% 52%", "58% 50%"),
+  siteSurvey: asset("commercial-ev-site-survey", [480, 768, 1024], 1024, 768, "50% 57%"),
+  salvationArmy: asset("salvation-army-ev-charging", [480, 666], 666, 466, "50% 54%"),
 } satisfies Record<string, ResponsiveImageAsset>;

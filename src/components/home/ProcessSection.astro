@@ -1,15 +1,17 @@
 ---
 import { processSteps } from "../../content/home";
+import { homeMedia } from "../../content/media";
+import ResponsiveImage from "../media/ResponsiveImage.astro";
 ---
 
 <section class="process section section--paper" id="process">
   <div class="page-shell">
     <div class="section-title-row" data-reveal>
       <div>
-        <p class="eyebrow">From first conversation to ongoing operation</p>
-        <h2>Make the important decisions before they become expensive ones.</h2>
+        <p class="eyebrow">Advise · Install · Support</p>
+        <h2>From uncertainty to a fully managed charging estate.</h2>
       </div>
-      <p>Each stage resolves a different kind of risk while GreenDawn remains responsible for coordinating the overall delivery.</p>
+      <p>Each stage resolves a different risk while Greendawn coordinates delivery.</p>
     </div>
 
     <div class="process__steps" data-process>
@@ -22,5 +24,14 @@ import { processSteps } from "../../content/home";
         </article>
       ))}
     </div>
+    <figure class="process__evidence" data-reveal>
+      <ResponsiveImage
+        image={homeMedia.processInstallation}
+        alt="Engineers carrying out EV charging installation work in a car park"
+        sizes="(max-width: 61rem) calc(100vw - 2rem), 72vw"
+        loading="lazy"
+      />
+      <figcaption>Installation delivery on an operational commercial site</figcaption>
+    </figure>
   </div>
 </section>

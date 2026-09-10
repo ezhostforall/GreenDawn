@@ -1,21 +1,27 @@
+---
+import { approvedClaim, claims } from "../../content/claims";
+
+const deliveryFootprint = approvedClaim(claims.deliveryFootprint);
+---
+
 <section class="trust page-shell" aria-label="Commercial EV charging delivery">
   <div class="trust__intro">
     <p class="eyebrow">Commercial delivery</p>
     <p>Planned, installed and supported across complex commercial estates.</p>
   </div>
 
-  <div class="trust__credentials" aria-label="Selected GreenDawn credentials and coverage">
-    <span>
-      <strong>OZEV</strong>
-      <small>Authorised installer</small>
-    </span>
+  <div class="trust__credentials" aria-label="Greendawn delivery footprint">
     <span>
       <strong>GB</strong>
-      <small>England, Scotland & Wales</small>
+      <small>{deliveryFootprint}</small>
+    </span>
+    <span>
+      <strong>AC–DC</strong>
+      <small>Commercial charging infrastructure</small>
     </span>
   </div>
 
-  <div class="trust__clients" aria-label="Selected GreenDawn project experience">
+  <div class="trust__clients" aria-label="Selected Greendawn project experience">
     <span>Johnsons Cars</span>
     <span>The Salvation Army</span>
   </div>

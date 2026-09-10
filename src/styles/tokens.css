@@ -31,6 +31,11 @@
   --step-3: clamp(2.2rem, 1.65rem + 2.2vw, 4rem);
   --step-4: clamp(3rem, 2rem + 4vw, 6.4rem);
   --step-5: clamp(4.5rem, 2.8rem + 7vw, 10rem);
+  --type-display: var(--step-5);
+  --type-statement: clamp(3.25rem, 2.2rem + 4.2vw, 7.25rem);
+  --type-section: clamp(2.6rem, 2.05rem + 2vw, 4.25rem);
+  --type-feature: clamp(1.9rem, 1.6rem + 1vw, 2.8rem);
+  --type-card: clamp(1.35rem, 1.15rem + 0.7vw, 2rem);
   --space-1: 0.5rem;
   --space-2: 0.75rem;
   --space-3: 1rem;
@@ -45,4 +50,5 @@
   --radius-sm: 0.35rem;
   --radius-md: 0.85rem;
   --radius-lg: 1.35rem;
+  --focus-ring: var(--violet);
 }

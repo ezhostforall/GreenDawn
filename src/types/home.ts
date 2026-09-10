@@ -17,9 +17,14 @@ export interface Solution extends NumberedContent {
 }
 
 export interface SurveyTier {
+  id: string;
+  name: string;
   price: number;
-  label: string;
-  credit: string;
+  suitableFor: string;
+  scope: readonly string[];
+  deliverable: string;
+  benefitLabel: "Included support" | "Installation credit";
+  benefit: string;
 }
 
 export interface SupportingProof {
@@ -27,8 +32,9 @@ export interface SupportingProof {
   title: string;
   result: string;
   copy: string;
-  image: ResponsiveImageAsset;
-  alt: string;
+  image?: ResponsiveImageAsset;
+  alt?: string;
+  kind: "project" | "coverage" | "capability";
 }
 
 export interface InsightSummary {

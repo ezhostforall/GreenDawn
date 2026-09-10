@@ -1,6 +1,6 @@
 export const siteConfig = {
-  name: "GreenDawn",
-  legalName: "GreenDawn Power Limited",
+  name: "Greendawn",
+  legalName: "Greendawn Power Limited",
   companyNumber: "12758202",
   vatNumber: "GB359248367",
   liveUrl: "https://greendawn.co.uk",

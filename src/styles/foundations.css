@@ -6,11 +6,11 @@
 
 html {
   width: 100%;
-  overflow-x: clip;
   background: var(--navy-950);
   color: var(--navy-900);
   scroll-behavior: smooth;
   scroll-padding-top: 6rem;
+  scrollbar-gutter: stable;
 }
 
 body {
@@ -18,7 +18,6 @@ body {
   max-width: 100%;
   margin: 0;
   min-width: 0;
-  overflow-x: clip;
   background: var(--cream);
   color: var(--navy-900);
   font-family: var(--font-body);
@@ -80,27 +79,44 @@ ol {
   margin-top: 0;
 }
 
-h1,
-h2,
-h3 {
+h1 {
   font-family: var(--font-display);
   font-weight: 600;
   letter-spacing: -0.045em;
 }
 
+h2,
+h3 {
+  font-family: var(--font-body);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+}
+
 h2 {
-  font-size: var(--step-4);
-  line-height: 0.98;
+  font-size: var(--type-section);
+  line-height: 1;
 }
 
 h3 {
-  font-size: var(--step-2);
-  line-height: 1.06;
+  font-size: var(--type-card);
+  line-height: 1.08;
 }
 
 :focus-visible {
-  outline: 3px solid var(--lime);
+  outline: 3px solid var(--focus-ring);
   outline-offset: 4px;
+}
+
+.hero,
+.section--navy,
+.footer,
+.site-header,
+.mobile-nav {
+  --focus-ring: var(--lime);
+}
+
+.section--lime {
+  --focus-ring: var(--navy-900);
 }
 
 .sr-only {
@@ -142,7 +158,7 @@ h3 {
 
 .section {
   position: relative;
-  padding-block: clamp(6.5rem, 11vw, 11rem);
+  padding-block: clamp(var(--space-7), 7vw, var(--space-8));
 }
 
 .section--cream {
@@ -170,9 +186,9 @@ h3 {
   margin-bottom: var(--space-5);
   color: var(--slate-500);
   font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 600;
-  letter-spacing: 0.13em;
+  font-size: 0.75rem;
+  font-weight: 400;
+  letter-spacing: 0.1em;
   line-height: 1.2;
   text-transform: uppercase;
 }
@@ -212,7 +228,7 @@ h3 {
   grid-template-columns: minmax(0, 2fr) minmax(16rem, 0.85fr);
   align-items: end;
   gap: clamp(2rem, 8vw, 8rem);
-  margin-bottom: clamp(4rem, 8vw, 7rem);
+  margin-bottom: clamp(3rem, 5vw, 4.75rem);
 }
 
 .section-title-row > p {
@@ -221,7 +237,7 @@ h3 {
 
 .section-title-row--compact {
   grid-template-columns: minmax(0, 2fr) auto;
-  margin-bottom: clamp(3rem, 6vw, 5.5rem);
+  margin-bottom: clamp(2.5rem, 4vw, 4rem);
 }
 
 .section-title-row--compact h2 {
@@ -242,7 +258,7 @@ h3 {
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
   font-family: var(--font-mono);
-  font-size: 0.73rem;
+  font-size: 0.78rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   line-height: 1.2;
@@ -279,7 +295,7 @@ h3 {
   gap: 1rem;
   border-bottom: 1px solid currentColor;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.77rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   line-height: 1.3;
@@ -295,4 +311,3 @@ h3 {
 .text-link--light:hover {
   color: var(--lime);
 }
-

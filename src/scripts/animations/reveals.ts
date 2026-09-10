@@ -4,11 +4,9 @@ export function animateReveals(): void {
   const revealItems = gsap.utils.toArray<HTMLElement>("[data-reveal]");
 
   revealItems.forEach((item) => {
-    gsap.set(item, { visibility: "visible" });
     gsap.from(item, {
-      y: 52,
-      opacity: 0,
-      duration: 0.9,
+      y: 28,
+      duration: 0.62,
       ease: "power3.out",
       scrollTrigger: {
         trigger: item,
@@ -21,6 +19,6 @@ export function animateReveals(): void {
 
 export function revealWithoutMotion(): void {
   document.querySelectorAll<HTMLElement>("[data-reveal]").forEach((item) => {
-    item.style.visibility = "visible";
+    gsap.set(item, { clearProps: "all" });
   });
 }

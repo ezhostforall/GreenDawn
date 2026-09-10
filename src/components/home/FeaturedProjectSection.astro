@@ -3,14 +3,18 @@ import ResponsiveImage from "../media/ResponsiveImage.astro";
 import ArrowIcon from "../media/ArrowIcon.astro";
 import { homeMedia } from "../../content/media";
 import { liveSitePath } from "../../lib/urls";
+import { approvedClaim, claims } from "../../content/claims";
+
+const programmeClaim = approvedClaim(claims.johnsonsProgramme);
+const programmeReviewed = new Intl.DateTimeFormat("en-GB", { month: "long", year: "numeric" }).format(new Date(claims.johnsonsProgramme.reviewedOn));
 ---
 
 <section class="case-study section section--paper" id="projects" data-case-study>
   <div class="page-shell case-study__layout">
     <figure class="case-study__media" data-case-image>
       <ResponsiveImage
-        image={homeMedia.johnsonsCars}
-        alt="EV charging equipment installed at a Johnsons Cars dealership"
+        image={homeMedia.featuredDealership}
+        alt="Vehicle connected to EV charging equipment at a Johnsons Cars dealership"
         sizes="(max-width: 61rem) calc(100vw - 2rem), 52vw"
         loading="lazy"
       />
@@ -19,19 +23,19 @@ import { liveSitePath } from "../../lib/urls";
 
     <div class="case-study__story">
       <p class="eyebrow">Featured commercial EV charging programme</p>
-      <h2>Six years. 136 sites. 11 automotive brands.</h2>
+      <h2>A dealership programme coordinated site by site.</h2>
       <p class="case-study__lead">
-        Johnsons Cars needs EV infrastructure across a large dealership estate, with each site bringing its own electrical constraints, layout and operating requirements — alongside the differing requirements of 11 automotive brands.
+        Johnsons Cars needs EV infrastructure across a large estate, with different electrical constraints, layouts and manufacturer requirements at each site.
       </p>
-      <div class="case-study__facts">
+      <div class="case-study__facts" aria-label={programmeClaim}>
         <div><strong>136</strong><span>sites in the programme</span></div>
         <div><strong>454</strong><span>chargepoints</span></div>
         <div><strong>11</strong><span>automotive brands</span></div>
       </div>
+      <p class="case-study__note">Programme figures reviewed {programmeReviewed}.</p>
       <p>
-        GreenDawn's role is to turn those differences into one manageable programme: coordinating survey, design, infrastructure, hardware, installation and the ongoing charging estate rather than treating every site as an isolated equipment sale.
+        Greendawn coordinates survey, design, infrastructure, hardware, installation and ongoing operation as one programme—not isolated equipment sales.
       </p>
-      <blockquote>“Working with GreenDawn has taken the headache out of our EV charging rollout.”</blockquote>
       <a class="text-link" href={liveSitePath("/gallery/")}>Explore our project experience <ArrowIcon /></a>
     </div>
   </div>

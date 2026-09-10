@@ -13,8 +13,8 @@ export function animateProcess(): void {
   });
 
   gsap.from("[data-process-step]", {
-    y: 40,
-    stagger: 0.14,
+    y: 24,
+    stagger: 0.1,
     ease: "none",
     scrollTrigger: {
       trigger: "[data-process]",

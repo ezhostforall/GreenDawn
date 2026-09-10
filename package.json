@@ -11,16 +11,27 @@
     "build": "astro check && astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "test": "pnpm run check && pnpm run build"
+    "validate:brand": "node scripts/validate-brand-name.mjs",
+    "validate:build": "node scripts/validate-build.mjs",
+    "test:static": "pnpm run validate:brand && pnpm run build && pnpm run validate:build",
+    "test:e2e": "playwright test tests/home.spec.ts",
+    "test:visual": "playwright test tests/home.visual.spec.ts",
+    "test:visual:update": "playwright test tests/home.visual.spec.ts --update-snapshots",
+    "test": "pnpm run test:static && pnpm run test:e2e"
   },
   "dependencies": {
-    "astro": "^7.1.6",
+    "@fontsource/archivo": "5.2.8",
+    "@fontsource/bricolage-grotesque": "5.2.8",
+    "@fontsource/jetbrains-mono": "5.2.8",
+    "astro": "^7.3.1",
     "gsap": "^3.15.0"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.10",
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.63.0",
     "@types/node": "24",
     "typescript": "^6.0.3"
   },
-  "packageManager": "pnpm@10.0.0"
+  "packageManager": "pnpm@11.19.0"
 }

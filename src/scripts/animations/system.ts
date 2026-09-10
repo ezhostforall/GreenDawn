@@ -10,11 +10,9 @@ export function animateSystem(): void {
   });
 
   gsap.from("[data-system-card]", {
-    y: 110,
-    opacity: 0,
-    rotate: (index: number) => index - 1,
-    duration: 1,
-    stagger: 0.18,
+    y: 58,
+    duration: 0.72,
+    stagger: 0.1,
     ease: "power4.out",
     scrollTrigger: {
       trigger: ".system__cards",

@@ -17,7 +17,7 @@ import { liveSitePath } from "../../lib/urls";
 
     <div class="insights__grid">
       {insights.map((insight) => (
-        <a class="insight-card" href={liveSitePath(insight.href)} data-reveal>
+        <a class="insight-card" href={liveSitePath(insight.href)}>
           <figure>
             <ResponsiveImage
               image={insight.image}

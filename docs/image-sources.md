@@ -1,23 +1,31 @@
 # Homepage image provenance
 
-The homepage uses locally stored, optimised derivatives rather than loading imagery directly from Google Drive. This keeps rendering deterministic, removes a third-party runtime dependency and allows each image to be resized for its actual display context.
+The homepage uses locally stored, responsive WebP derivatives made from the curated Greendawn homepage folder. The original photographs remain separate from the deployed responsive set, keeping the rendered site deterministic and avoiding a Google Drive runtime dependency.
 
-| Optimised asset | Source folder | Drive file ID | Intended use | Permission / content note |
-|---|---|---|---|---|
-| `commercial-ev-charging-installation-*` | GreenDawn Drive → Romford | `11brU6cLea15UXttQ2DO8YmYFgps5l00H` | Homepage hero / workplace imagery | Generic installation photograph; no client claim is made from the image. |
-| `commercial-ev-wall-chargers-*` | GreenDawn Drive → Romford | `11brU6cLea15UXttQ2DO8YmYFgps5l00H` | Destination/public solution imagery | Alternate crop from the same generic installation image. |
-| `sync-commercial-ev-charger-*` | GreenDawn Drive → Sync | `1wM7dn1b9x63B4liNNjJECqfBLt8ODTk0` | Fleet / technical hardware imagery | Sync is listed by GreenDawn as an approved supplier and explicit permission is recorded. |
-| `commercial-ev-charger-hardware-*` | GreenDawn Drive → Seat Preston | `1axqAkfp4qRqMwDDM1D7ck_-w7aMcMF_B` | Hardware selection / supporting proof | Generic charging hardware photograph; no dealership/customer identity is asserted. |
-| `commercial-ev-electrical-capacity-*` | GreenDawn Drive → Site Imagery | `1TeyQ_wH2Xo5F0SC76HSDIoHN1z9M-r33` | Grid, power and load-management content | Crop deliberately excludes legacy GreenDawn clothing/logos. |
-| `ev-charging-ducting-survey-*` | GreenDawn Drive → Site Imagery | `1uvK8Xa8RfXsotF8wA1dR7iPI1qEz2Ro1` | Survey / project-planning content | Generic infrastructure detail. |
-| `johnsons-cars-ev-charging-*` | Existing approved GreenDawn project asset | existing repo asset | Featured Johnsons case study | Johnsons public-use/testimonial approval is recorded in the evidence responses. |
-| `salvation-army-ev-charging-*` | Existing approved GreenDawn project asset | existing repo asset | Salvation Army proof / multi-site imagery | GreenDawn has recorded permission to use The Salvation Army. |
+Greendawn confirmed on 8 September 2026 that the Project EV and hotel imagery in the curated collection are approved for homepage use. That confirmation supersedes the earlier restrictions recorded in this project.
 
-## Excluded imagery
+| Responsive asset | Curated source filename | Homepage use | Content note |
+|---|---|---|---|
+| `greendawn-engineers-electrical-distribution-*` | `Copy of WhatsApp Image 2024-01-12 at 13.53.15_fdea26f9.jpg` | Hero | Greendawn engineers working on electrical distribution equipment. |
+| `commercial-ev-electrical-connection-*` | `Copy of WhatsApp Image 2024-11-08 at 14.29.21_317226c1.jpg` | Power and capacity insight | New electrical connection; demonstrates infrastructure beyond the charger. |
+| `commercial-ev-installation-work-*` | `Copy of Copy of WhatsApp Image 2023-11-20 at 11.58.31_c2fd5647.jpg` | How Greendawn works | Live car-park installation work. |
+| `johnsons-dealership-ev-charging-*` | `Copy of image 13.jpg` | Featured Johnsons Cars programme | Used with the existing approved Johnsons project record. |
+| `commercial-ev-fleet-charging-bays-*` | `Copy of Copy of WhatsApp Image 2023-11-24 at 18.44.42_78482ceb.jpg` | Fleet and depot audience | Completed marked charging bays. |
+| `commercial-ev-workplace-charging-*` | `20260220_112840.jpg` | Workplace audience | Wall-mounted charger beside a vehicle. EXIF orientation is normalised in derivatives. |
+| `commercial-ev-dealership-charging-*` | `Copy of WhatsApp Image 2023-11-06 at 17.10.31_e208bfb4.jpg` | Dealership audience | Ford dealership charging context. |
+| `commercial-ev-destination-hospitality-*` | `Copy of Copy of WhatsApp Image 2022-09-29 at 18.24.19.jpg` | Destination and public charging audience | Hotel charging; publication permission reconfirmed by Greendawn. |
+| `commercial-ev-multi-site-charging-*` | `Copy of IMG-20240112-WA0019.jpg` | Multi-site audience | Completed multi-bay commercial installation; no client identity inferred from the image. |
+| `commercial-ev-site-survey-*` | `Copy of Copy of WhatsApp Image 2024-01-09 at 16.50.03_b4990bae.jpg` | Survey insight | Completed paving and ducting area. |
+| `salvation-army-ev-charging-*` | Existing project asset from the supplied current build | The Salvation Army delivery proof | Project EV imagery is approved; use remains tied to the existing Salvation Army project record. |
 
-Project EV imagery is not used because GreenDawn explicitly marked Project EV as **DO NOT USE** pending clarification. Brayleys/Mazda imagery is not used because public-use permission is still pending. Elite Hotels imagery is not used because permission was explicitly declined. Joint Operations imagery has also been left out of the homepage because some frames appear to contain Project EV hardware and the project provenance is not sufficiently clear for publication.
+## Usage rules
 
+- The hero is the only eager-loaded/high-priority photograph; all later images are lazy-loaded.
+- Alt text describes visible content and names a client only where the image is used within an approved project record.
+- Major sections avoid repeating the same photograph. Repeated and unused project-planning derivatives have been removed from the deployed set.
+- Desktop and mobile crops use CSS focal positions; original aspect ratios and intrinsic dimensions are retained in the responsive asset records.
+- Inclusion in the curated folder does not require every photograph to appear on the homepage. Near-duplicates and low-resolution source images remain unused.
 
-## Stage 4 performance treatment
+## Brand assets
 
-The hero set now includes a 480px derivative and the 640/960/1440 WebP files have been re-encoded with a lower payload while retaining the same responsive-image contract. The oversized 1920px wordmark is no longer used by the header/footer; a 480px transparent PNG derivative is used until the final vector brand assets arrive.
+The header and footer continue to use the optimised raster Greendawn wordmark supplied with the current build. Replace it with the official SVG master when that file is provided.

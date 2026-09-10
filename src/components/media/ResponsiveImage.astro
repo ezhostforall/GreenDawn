@@ -43,4 +43,5 @@ const srcset = sources.map(({ src, width }) => `${assetPath(src)} ${width}w`).jo
   loading={loading}
   decoding={decoding}
   fetchpriority={fetchpriority}
+  style={`--image-position: ${image.objectPosition ?? "50% 50%"}; --image-position-mobile: ${image.mobileObjectPosition ?? image.objectPosition ?? "50% 50%"};`}
 />

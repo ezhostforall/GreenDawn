@@ -7,4 +7,6 @@ export interface ResponsiveImageAsset {
   sources: readonly ResponsiveImageSource[];
   width: number;
   height: number;
+  objectPosition?: string;
+  mobileObjectPosition?: string;
 }

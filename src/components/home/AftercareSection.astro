@@ -5,20 +5,19 @@ import ArrowIcon from "../media/ArrowIcon.astro";
 ---
 
 <section class="aftercare section" id="aftercare" data-aftercare>
-  <div class="aftercare__orb" aria-hidden="true" data-aftercare-orb></div>
   <div class="page-shell aftercare__layout">
     <div class="aftercare__copy" data-reveal>
       <p class="eyebrow eyebrow--light">Aftercare</p>
       <h2>EV infrastructure needs to keep working.</h2>
       <p>
-        A commercial charger is an electrical asset, a connected device and, in some environments, part of a customer-facing service. GreenDawn can continue to manage the estate after commissioning rather than leaving support fragmented across suppliers.
+        Charging is an electrical and connected asset. With an agreed aftercare package, Greendawn manages it after commissioning through one clear support route.
       </p>
       <a class="button button--lime" href={liveSitePath("/aftercare/")}>Explore aftercare <ArrowIcon direction="up-right" /></a>
     </div>
 
     <div class="aftercare__services">
       {aftercareServices.map((service) => (
-        <article data-reveal>
+        <article>
           <span>{service.number}</span>
           <h3>{service.title}</h3>
           <p>{service.copy}</p>
@@ -27,6 +26,6 @@ import ArrowIcon from "../media/ArrowIcon.astro";
     </div>
   </div>
   <p class="aftercare__quote page-shell" data-reveal>
-    The job isn't finished when the chargers go live.
+    If it’s not working, that’s our problem to fix.
   </p>
 </section>

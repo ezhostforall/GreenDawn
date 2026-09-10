@@ -10,8 +10,8 @@
   border-bottom: 1px solid var(--border-light);
   color: var(--slate-200);
   font-family: var(--font-mono);
-  font-size: 0.63rem;
-  letter-spacing: 0.08em;
+  font-size: 0.72rem;
+  letter-spacing: 0.055em;
   padding-inline: clamp(1.5rem, 4vw, 4.5rem);
   text-transform: uppercase;
 }
@@ -81,8 +81,8 @@
 .desktop-nav a {
   position: relative;
   font-family: var(--font-mono);
-  font-size: 0.68rem;
-  font-weight: 500;
+  font-size: 0.74rem;
+  font-weight: 400;
   letter-spacing: 0.015em;
 }
 
@@ -104,6 +104,11 @@
   transform-origin: left;
 }
 
+.desktop-nav a[aria-current="location"]::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
 .header-cta {
   display: inline-flex;
   min-height: 2.7rem;
@@ -115,7 +120,7 @@
   background: var(--cream);
   color: var(--navy-900);
   font-family: var(--font-mono);
-  font-size: 0.68rem;
+  font-size: 0.74rem;
   font-weight: 600;
   padding: 0.65rem 0.85rem;
   transition: background-color 180ms ease, transform 180ms ease;
@@ -130,4 +135,3 @@
 .mobile-nav {
   display: none;
 }
-

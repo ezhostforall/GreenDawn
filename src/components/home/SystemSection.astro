@@ -1,12 +1,14 @@
 ---
 import { systemLayers } from "../../content/home";
+import { liveSitePath } from "../../lib/urls";
+import ArrowIcon from "../media/ArrowIcon.astro";
 ---
 
 <section class="system section" id="system" data-system>
   <div class="system__header page-shell" data-reveal>
     <p class="eyebrow eyebrow--light">Fix the foundations first</p>
     <h2>The charger is only one part of the system.</h2>
-    <p>We start with the operation and the site, then bring the infrastructure, charging equipment and management layer together.</p>
+    <p>We bring site infrastructure, charging equipment and the management layer together.</p>
   </div>
 
   <div class="system__stage page-shell">
@@ -25,6 +27,22 @@ import { systemLayers } from "../../content/home";
         </article>
       ))}
     </div>
-    <p class="system__statement" data-reveal>Understand what the site needs and can support before the hardware becomes the answer.</p>
+    <div class="system__closing">
+      <p class="system__statement" data-reveal>We start with your operation, then specify the hardware.</p>
+      <div class="system__decisions">
+        <article data-reveal>
+          <span>Technology</span>
+          <h3>AC or DC follows the operational need.</h3>
+          <p>Speed, dwell time, vehicles, interoperability and support determine the equipment.</p>
+          <a class="text-link text-link--light" href={liveSitePath("/guides/ac-vs-dc-ev-charging/")}>Understand AC and DC charging <ArrowIcon /></a>
+        </article>
+        <article data-reveal>
+          <span>Site power</span>
+          <h3>Use available capacity deliberately.</h3>
+          <p>Demand, load management and future phases are assessed before an upgrade becomes the answer.</p>
+          <a class="text-link text-link--light" href={liveSitePath("/guides/can-my-building-handle-ev-charging/")}>Explore site power planning <ArrowIcon /></a>
+        </article>
+      </div>
+    </div>
   </div>
 </section>

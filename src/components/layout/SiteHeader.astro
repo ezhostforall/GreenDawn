@@ -10,15 +10,15 @@ import ArrowIcon from "../media/ArrowIcon.astro";
   </a>
 
   <nav class="desktop-nav" aria-label="Primary navigation">
-    <a href="#system">Approach</a>
-    <a href="#solutions">Solutions</a>
-    <a href="#power">Power</a>
-    <a href="#projects">Projects</a>
+    <a href="#process">How we work</a>
+    <a href="#who-we-help">Who we help</a>
     <a href="#aftercare">Aftercare</a>
+    <a href="#projects">Projects</a>
+    <a href="#insights">Insights</a>
   </nav>
 
   <a class="header-cta" href={liveSitePath("/enquire/")}>
-    Discuss your project
+    Discuss your site
     <ArrowIcon direction="up-right" />
   </a>
 
@@ -30,13 +30,13 @@ import ArrowIcon from "../media/ArrowIcon.astro";
 
   <div class="mobile-nav" id="mobile-navigation" aria-hidden="true" inert>
     <nav aria-label="Mobile navigation">
-      <a href="#system"><span>01</span>Approach</a>
-      <a href="#solutions"><span>02</span>Solutions</a>
-      <a href="#power"><span>03</span>Power</a>
+      <a href="#process"><span>01</span>How we work</a>
+      <a href="#who-we-help"><span>02</span>Who we help</a>
+      <a href="#aftercare"><span>03</span>Aftercare</a>
       <a href="#projects"><span>04</span>Projects</a>
-      <a href="#aftercare"><span>05</span>Aftercare</a>
+      <a href="#insights"><span>05</span>Insights</a>
     </nav>
-    <a class="button button--lime" href={liveSitePath("/enquire/")}>Discuss your project <ArrowIcon direction="up-right" /></a>
+    <a class="button button--lime" href={liveSitePath("/enquire/")}>Discuss your site <ArrowIcon direction="up-right" /></a>
     <p><a href={siteConfig.phone.href}>{siteConfig.phone.display}</a> · <a href={liveSitePath("/customer-care/")}>Support</a></p>
   </div>
 </header>
