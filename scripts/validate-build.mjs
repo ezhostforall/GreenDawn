@@ -37,12 +37,35 @@ for (const match of matches(/\ssrcset=["']([^"']+)["']/gi)) {
   }
 }
 
-for (const asset of localAssets) {
-  try {
-    await access(join(distDirectory, asset.replace(/^\//, "")));
-  } catch {
-    failures.push(`Missing generated asset: ${asset}.`);
+const configuredBase = (process.env.BASE_URL ?? "/").replace(/^\/+|\/+$/g, "");
+
+async function resolveGeneratedAsset(asset) {
+  const relativeAsset = asset.replace(/^\//, "");
+  const candidates = [relativeAsset];
+
+  if (configuredBase && relativeAsset.startsWith(`${configuredBase}/`)) {
+    candidates.unshift(relativeAsset.slice(configuredBase.length + 1));
+  } else if (relativeAsset.includes("/")) {
+    // A validation step may run after an Astro project-site build without the
+    // original BASE_URL in its environment. Try the physical dist path after
+    // a single URL base segment as a compatibility fallback.
+    candidates.push(relativeAsset.slice(relativeAsset.indexOf("/") + 1));
   }
+
+  for (const candidate of [...new Set(candidates)]) {
+    try {
+      await access(join(distDirectory, candidate));
+      return;
+    } catch {
+      // Try the next candidate.
+    }
+  }
+
+  failures.push(`Missing generated asset: ${asset}.`);
+}
+
+for (const asset of localAssets) {
+  await resolveGeneratedAsset(asset);
 }
 
 const assetDirectory = join(distDirectory, "_astro");
