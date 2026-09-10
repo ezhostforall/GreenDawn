@@ -31,11 +31,14 @@ test("clears active navigation in sections without a matching navigation item", 
 
 test("mobile navigation closes cleanly and returns focus", async ({ page, isMobile }) => {
   test.skip(!isMobile, "Mobile interaction only");
-  const toggle = page.getByRole("button", { name: /open navigation/i });
+  const toggle = page.locator(".menu-toggle");
+  await expect(toggle).toHaveAccessibleName("Open navigation");
   await toggle.click();
   await expect(toggle).toHaveAttribute("aria-expanded", "true");
+  await expect(toggle).toHaveAccessibleName("Close navigation");
   await page.keyboard.press("Escape");
   await expect(toggle).toBeFocused();
+  await expect(toggle).toHaveAccessibleName("Open navigation");
   await expect(page.locator("body")).not.toHaveClass(/menu-open/);
 });
 
