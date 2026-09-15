@@ -3,6 +3,11 @@ import { defineConfig, devices } from "@playwright/test";
 const configuredBase = process.env.BASE_URL ?? "/";
 const basePath = configuredBase === "/" ? "/" : `/${configuredBase.replace(/^\/+|\/+$/g, "")}/`;
 const testServerUrl = `http://127.0.0.1:4321${basePath}`;
+const narrowChromium = {
+  ...devices["Pixel 5"],
+  viewport: { width: 320, height: 568 },
+  screen: { width: 320, height: 568 },
+};
 
 export default defineConfig({
   testDir: "./tests",
@@ -20,8 +25,17 @@ export default defineConfig({
   },
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"], browserName: "chromium", viewport: { width: 1440, height: 900 } } },
-    { name: "mobile", use: { ...devices["Pixel 5"], browserName: "chromium" } },
+    {
+      name: "narrow",
+      use: {
+        ...narrowChromium,
+        browserName: "chromium",
+      },
+    },
+    { name: "mobile", use: { ...devices["Pixel 5"], browserName: "chromium", viewport: { width: 390, height: 844 } } },
     { name: "tablet", use: { ...devices["iPad Pro 11"], browserName: "chromium" } },
     { name: "short", use: { ...devices["Desktop Chrome"], browserName: "chromium", viewport: { width: 1280, height: 640 } } },
+    { name: "wide", use: { ...devices["Desktop Chrome"], browserName: "chromium", viewport: { width: 1920, height: 1080 } } },
+    { name: "ultrawide", use: { ...devices["Desktop Chrome"], browserName: "chromium", viewport: { width: 2560, height: 1440 } } },
   ],
 });

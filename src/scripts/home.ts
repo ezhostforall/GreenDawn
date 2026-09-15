@@ -27,7 +27,7 @@ if (reduceMotion) {
 
     cleanupMotion.push(animateHero());
     animateReveals();
-    animateProblem();
+    cleanupMotion.push(animateProblem());
     animateSystem();
     animateProcess();
     cleanupMotion.push(initialiseSolutionStory());

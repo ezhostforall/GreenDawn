@@ -18,11 +18,11 @@ export const homeMedia = {
   electricalConnection: asset("commercial-ev-electrical-connection", [480, 800, 1200], 1200, 900, "66% 50%", "62% 50%"),
   processInstallation: asset("commercial-ev-installation-work", [480, 768], 768, 1024, "50% 57%", "50% 54%"),
   fleetChargingBays: asset("commercial-ev-fleet-charging-bays", [480, 800, 1200], 1200, 900, "50% 56%"),
-  workplaceCharging: asset("commercial-ev-workplace-charging", [480, 800, 1200], 1200, 2797, "50% 57%", "50% 60%"),
+  workplaceCharging: asset("commercial-ev-workplace-charging", [480, 800, 1200], 1200, 2797, "50% 52%", "50% 52%"),
   dealershipCharging: asset("commercial-ev-dealership-charging", [480, 768, 1200], 1200, 1600, "50% 48%", "50% 44%"),
   destinationHospitality: asset("commercial-ev-destination-hospitality", [480, 800, 1200], 1200, 900, "50% 52%"),
   multiSiteCharging: asset("commercial-ev-multi-site-charging", [480, 768], 768, 1024, "50% 57%", "50% 54%"),
-  featuredDealership: asset("johnsons-dealership-ev-charging", [480, 800, 1200], 1200, 960, "50% 52%", "58% 50%"),
+  featuredDealership: asset("johnsons-dealership-ev-charging", [480, 800, 1200], 1200, 960, "50% 50%", "48% 45%"),
   siteSurvey: asset("commercial-ev-site-survey", [480, 768, 1024], 1024, 768, "50% 57%"),
   salvationArmy: asset("salvation-army-ev-charging", [480, 666], 666, 466, "50% 54%"),
 } satisfies Record<string, ResponsiveImageAsset>;

@@ -4,10 +4,12 @@ import { liveSitePath } from "../../lib/urls";
 ---
 
 <div class="utility-bar">
-  <p>Commercial EV infrastructure across England, Scotland & Wales</p>
-  <div>
-    <a href={siteConfig.phone.href}>{siteConfig.phone.display}</a>
-    <span aria-hidden="true">·</span>
-    <a href={liveSitePath("/customer-care/")}>Customer support</a>
+  <div class="utility-bar__inner page-shell">
+    <p>Commercial EV infrastructure across England, Scotland & Wales</p>
+    <div class="utility-bar__links">
+      <a href={siteConfig.phone.href}>{siteConfig.phone.display}</a>
+      <span aria-hidden="true">·</span>
+      <a href={liveSitePath("/customer-care/")}>Customer support</a>
+    </div>
   </div>
 </div>

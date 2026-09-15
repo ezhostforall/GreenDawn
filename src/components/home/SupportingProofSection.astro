@@ -30,9 +30,11 @@ import ArrowIcon from "../media/ArrowIcon.astro";
             </figure>
           )}
           {!item.image && <span class="proof-card__label">{item.eyebrow}</span>}
-          <h3>{item.title}</h3>
-          <strong>{item.result}</strong>
-          <p>{item.copy}</p>
+          <div class="proof-card__body">
+            <h3>{item.title}</h3>
+            <strong>{item.result}</strong>
+            <p>{item.copy}</p>
+          </div>
         </article>
       ))}
     </div>

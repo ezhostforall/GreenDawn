@@ -35,6 +35,28 @@ import ArrowIcon from "../media/ArrowIcon.astro";
       ))}
     </div>
 
+    <div class="surveys__mobile" aria-label="Technical site survey comparison">
+      {surveyTiers.map((tier) => (
+        <details class="survey-tier-mobile">
+          <summary>
+            <span>
+              <b>{tier.name}</b>
+              <small>{tier.suitableFor}</small>
+            </span>
+            <strong>£{tier.price.toLocaleString("en-GB")}</strong>
+            <span class="survey-tier-mobile__toggle" aria-hidden="true"></span>
+          </summary>
+          <div class="survey-tier-mobile__details">
+            <p class="survey-tier__label">The survey considers</p>
+            <ul>{tier.scope.map((item) => <li>{item}</li>)}</ul>
+            <p><b>What you receive</b>{tier.deliverable}</p>
+            <p><b>{tier.benefitLabel}</b>{tier.benefit}</p>
+            <a class="survey-tier__cta" href={liveSitePath(`/enquire/?survey=${tier.id}`)}>Enquire about this survey <ArrowIcon direction="up-right" /></a>
+          </div>
+        </details>
+      ))}
+    </div>
+
     <div class="surveys__footer" data-reveal>
       <p>Prices exclude VAT. Third-party DNO, IDNO and local-authority costs are additional where applicable. Final scope, payment and any installation credit are confirmed before the survey is booked.</p>
       <a class="text-link" href={liveSitePath("/guides/greendawn-ev-charging-survey-pre-installation-guide/")}>What a technical survey should establish <ArrowIcon /></a>
