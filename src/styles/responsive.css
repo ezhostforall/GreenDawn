@@ -162,7 +162,8 @@
 
   .trust__clients {
     grid-column: 1 / -1;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    justify-self: start;
     border-top: 1px solid var(--border-dark);
     padding-top: 2rem;
   }
@@ -576,6 +577,7 @@
 
   .trust__clients {
     grid-column: auto;
+    justify-self: stretch;
     border-top: 0;
     padding-top: 0;
   }

@@ -1,4 +1,7 @@
 ---
+import { Image } from "astro:assets";
+import johnsonsLogo from "../../assets/client-logos/johnsons-cars.png";
+import salvationArmyLogo from "../../assets/client-logos/salvation-army.svg";
 import { approvedClaim, claims } from "../../content/claims";
 
 const deliveryFootprint = approvedClaim(claims.deliveryFootprint);
@@ -21,8 +24,25 @@ const deliveryFootprint = approvedClaim(claims.deliveryFootprint);
     </span>
   </div>
 
-  <div class="trust__clients" aria-label="Selected Greendawn project experience">
-    <span>Johnsons Cars</span>
-    <span>The Salvation Army</span>
-  </div>
+  <ul class="trust__clients" aria-label="Selected Greendawn project experience">
+    <li class="trust-client trust-client--johnsons">
+      <Image
+        src={johnsonsLogo}
+        alt="Johnsons Cars"
+        class="trust-client__logo trust-client__logo--johnsons"
+        loading="lazy"
+        decoding="async"
+        format="png"
+      />
+    </li>
+    <li class="trust-client trust-client--salvation-army">
+      <Image
+        src={salvationArmyLogo}
+        alt="The Salvation Army"
+        class="trust-client__logo trust-client__logo--salvation-army"
+        loading="lazy"
+        decoding="async"
+      />
+    </li>
+  </ul>
 </section>

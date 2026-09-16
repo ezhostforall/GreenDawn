@@ -105,6 +105,35 @@ test("has one visible heading, working local navigation and no horizontal overfl
   await expect(page.locator("#surveys")).toBeInViewport();
 });
 
+test("renders the approved client logos accessibly and keeps them inside equal tiles", async ({ page }) => {
+  const clients = page.locator(".trust__clients");
+  await expect(clients).toBeVisible();
+  await expect(clients.getByRole("img", { name: "Johnsons Cars" })).toBeVisible();
+  await expect(clients.getByRole("img", { name: "The Salvation Army" })).toBeVisible();
+
+  const tiles = await page.locator(".trust-client").evaluateAll((items) =>
+    items.map((item) => {
+      const tile = item.getBoundingClientRect();
+      const logo = item.querySelector<HTMLElement>(".trust-client__logo")?.getBoundingClientRect();
+      return logo
+        ? {
+            tileHeight: tile.height,
+            contained:
+              logo.left >= tile.left - 1
+              && logo.right <= tile.right + 1
+              && logo.top >= tile.top - 1
+              && logo.bottom <= tile.bottom + 1,
+          }
+        : { tileHeight: tile.height, contained: false };
+    }),
+  );
+
+  expect(tiles).toHaveLength(2);
+  expect(tiles.every(({ contained }) => contained)).toBe(true);
+  expect(Math.abs(tiles[0].tileHeight - tiles[1].tileHeight)).toBeLessThanOrEqual(1);
+  expect(tiles.every(({ tileHeight }) => tileHeight <= 65)).toBe(true);
+});
+
 test("keeps animated sections within their local viewport bounds", async ({ page }) => {
   for (const selector of [".problem", ".system", ".solutions"]) {
     await page.locator(selector).scrollIntoViewIfNeeded();

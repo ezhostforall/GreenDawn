@@ -29,3 +29,14 @@ Greendawn confirmed on 8 September 2026 that the Project EV and hotel imagery in
 ## Brand assets
 
 The header and footer continue to use the optimised raster Greendawn wordmark supplied with the current build. Replace it with the official SVG master when that file is provided.
+
+### Approved client marks
+
+Greendawn confirmed permission to display the following client marks on 15 September 2026. They are used only as evidence of the existing approved project relationships in the homepage Trust section.
+
+| Deployed asset | Source | Status and usage |
+|---|---|---|
+| `src/assets/client-logos/johnsons-cars.png` | Current Johnsons Cars website wordmark | Approved for the Johnsons Cars project reference. This small raster is an interim asset and should be replaced like-for-like when the higher-quality approved master arrives. |
+| `src/assets/client-logos/salvation-army.svg` | Approved Salvation Army shield supplied for this project | Approved for the existing Salvation Army project reference. The supplied watermarked JPG preview is deliberately excluded. |
+
+Both marks retain their original proportions, receive meaningful alternative text and are displayed without recolouring or decorative alteration.
