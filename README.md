@@ -71,6 +71,8 @@ src/
 - Existing CSS class names and visual output are preserved during this structural refactor.
 - GitHub Pages `BASE_URL` support remains centralised in `src/lib/urls.ts`.
 
+The next component/CSS extraction is governed by the locked [refactor baseline](docs/refactor-baseline.md) and [style ownership register](docs/style-ownership-register.md). Those records define the regression gates, component boundaries, selector ownership and composition rules that must be preserved while styles move beside their components.
+
 ## Design system
 
 The existing visual rules are preserved but separated by responsibility. `src/styles/global.css` is now only the ordered entry point; design tokens, foundations, navigation, homepage sections, footer and responsive rules live in focused files. This keeps later brand-token updates isolated from structural page styles.
@@ -109,4 +111,4 @@ Those should be designed after the static public-site boundaries and content mod
 
 The homepage uses the approved Greendawn spelling throughout, separates the initial conversation from paid site surveys and publishes only claims marked as approved in `src/content/claims.ts`. Survey prices, VAT wording, scope and credit terms remain subject to final commercial and legal sign-off before production publication. The social-preview asset is a dedicated 1200 × 630 image rather than a reused 4:3 content image.
 
-`pnpm test` verifies the production HTML structure, fragment targets, intrinsic image dimensions, local assets, reduced-motion output, navigation behaviour, responsive overflow and serious automated accessibility findings. `pnpm test:visual:update` creates explicit desktop, tablet, mobile and short-viewport baselines after an approved visual review. The naming gate fails if the incorrect company-name capitalisation appears in human-readable source files.
+`pnpm test` verifies the production HTML structure, fragment targets, intrinsic image dimensions, local assets, reduced-motion output, navigation behaviour, responsive overflow and serious automated accessibility findings. `pnpm test:visual:update` creates baselines for all seven configured Playwright projects after an approved visual review. The current archive does not yet contain committed screenshot baselines; generate and approve them from the untouched Phase 0 source before component extraction begins. The naming gate fails if the incorrect company-name capitalisation appears in human-readable source files.

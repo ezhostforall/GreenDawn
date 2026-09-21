@@ -36,7 +36,7 @@
 - Callback/lead-capture implementation.
 - GTM, GA4, Clarity, CookieYes or conversion-event changes.
 - PHP, Zapier, Trello or any live submission.
-- Client-logo integration or external asset sourcing.
+- Further client-logo sourcing beyond the subsequently approved Johnsons Cars and Salvation Army assets now present in `TrustSection.astro`.
 - Replacement photography not yet supplied and approved.
 - Changes to prices, claims, metrics, methodology wording or commercial terms.
 
