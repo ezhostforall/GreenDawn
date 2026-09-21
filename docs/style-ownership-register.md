@@ -1,13 +1,17 @@
 # Style and component ownership register
 
-This is the Phase 1 source-of-truth for extracting reusable primitives, child components and sections while moving their CSS beside them. It accounts for all 486 current CSS rule blocks by file and selector family. It does not authorise visual redesign.
+This is the Phase 1 source-of-truth for extracting reusable primitives, child components and sections while moving their CSS beside them. It accounts for all 486 CSS rule blocks in the frozen Phase 1 baseline by file and selector family. It does not authorise visual redesign.
+
+## Phase 2 status
+
+The global CSS foundation is complete. Shared visual rules now live in `src/styles/primitives.css`; rendered markup and component APIs are unchanged. Phase 3 proceeds vertically by section in the agreed order. Shared classes do not require wrapper components merely to own their CSS.
 
 ## Ownership classes
 
 | Code | Ownership | Destination rule |
 | --- | --- | --- |
 | `G1` | Global foundation | Remains in `src/styles/`: tokens, reset, document defaults, accessibility helpers, shell and surface utilities. |
-| `G2` | Global visual primitive | Extract to a reusable Astro primitive with its own scoped styles after its API is fixed. |
+| `G2` | Global visual primitive | Remains globally reusable in `src/styles/primitives.css`; do not create a wrapper component solely to own the class. |
 | `S1` | Section root/layout | Move into the section component that renders the root and layout wrapper. |
 | `C1` | Child component internal | Move with the smallest component that renders the complete DOM contract. |
 | `P1` | Page composition relationship | Remains with the page/composition layer; never hide adjacency or ordering dependencies inside a child. |
@@ -25,15 +29,15 @@ This is the Phase 1 source-of-truth for extracting reusable primitives, child co
 9. Do not combine unrelated sections merely because they currently share declarations. Promote a real primitive or duplicate the small declaration set until a stable abstraction exists.
 10. Preserve selector specificity and stylesheet order during each move. A scoped-style rewrite is not complete until computed styles match at all seven projects.
 
-## Current global stylesheet inventory
+## Phase 1 global stylesheet inventory
 
-| File | Rule blocks | Current responsibility | Phase 2 destination |
+| File | Baseline rule blocks | Phase 1 responsibility | Phased destination |
 | --- | ---: | --- | --- |
 | `tokens.css` | 1 | Colour, type, spacing, radii, shadows, shell and focus tokens | `G1`; keep global |
 | `foundations.css` | 47 | Reset, document typography, accessibility, shells, surfaces and visual primitives | Split `G1` foundations from `G2` primitives |
-| `navigation.css` | 19 | Utility bar, site header, brand and desktop navigation | Move by layout component; extract shared brand |
+| `navigation.css` | 19 | Utility bar, site header, brand and desktop navigation | Phase 2 moves shared brand rules to `primitives.css`; Phase 3 moves remaining layout rules vertically |
 | `home.css` | 200 | All homepage sections and child patterns | Move by section/child ownership |
-| `footer.css` | 15 | Footer root, brand variant, grids and links | Move to footer and brand component |
+| `footer.css` | 15 | Footer root, brand variant, grids and links | Footer-specific rules remain for the Phase 3 Footer migration |
 | `responsive.css` | 204 | Every responsive, touch, short-height and reduced-motion override | Dissolve by moving each rule beside its owner |
 | `global.css` | 0 | Ordered import entry point | Retain as global entry point |
 
@@ -51,11 +55,13 @@ The sum is 486 rule blocks. `global.css` contains imports only.
 | `.page-shell` | `G1` | `foundations.css` | Shared layout utility; tested across header, hero and footer. |
 | `.section`, `.section--cream`, `.section--paper`, `.section--navy`, `.section--lime` | `G1` | `foundations.css` | Shared surface/spacing utilities. Mobile `.section` rules move with them. |
 | dark/lime surface focus-token groups | `G1` | `foundations.css` | Cross-cutting focus context, not section presentation. |
-| `.eyebrow`, `.eyebrow--light` and pseudo-elements | `G2` | `src/components/primitives/Eyebrow.astro` | Component should render the line; do not rely on parent descendant selectors for its core appearance. |
-| `.button`, `.button--lime`, `.button--navy` and hover/touch overrides | `G2` | `ButtonLink.astro` | Link semantics; retain native attribute forwarding and Arrow slot. |
-| `.text-link`, `.text-link--light` and hover/touch overrides | `G2` | `TextLink.astro` | Retain current inline-flex and underline behaviour. |
-| `.section-title-row*`, `.section-intro*` shared typography/layout | `G2` | `SectionHeading.astro` or two deliberately separate primitives | Do not force sticky problem intro and ordinary title rows into one API unless their DOM contracts align. |
-| `.brand`, `.brand img`, `.brand--footer` | `G2` | `BrandLink.astro` | Used by header and footer; expose size/context variant. |
+| `.eyebrow`, `.eyebrow--light` and pseudo-elements | `G2` | `primitives.css` | Shared class contract; contextual descendant rules remain with their sections. |
+| `.button`, `.button--lime`, `.button--navy` and hover/touch overrides | `G2` | `primitives.css` | Shared link styling; markup remains native and unchanged. |
+| `.text-link`, `.text-link--light` and hover states | `G2` | `primitives.css` | Retains current inline-flex and underline behaviour. |
+| `.section-title-row*` shared typography/layout | `G2` | `primitives.css` | Reused by Process, Solutions, Supporting Proof and Insights. |
+| `.section-intro*` | `S1` | Problem section during Phase 3 | One current owner; not a global primitive. |
+| `.brand`, `.brand img` | `G2` | `primitives.css` | Shared by header and footer. |
+| `.brand--footer` | `C1` | Footer during Phase 3 | Context-specific variant; not moved in Phase 2. |
 | `.icon-arrow` | `C1` | existing `ArrowIcon.astro` | Any future icon styling belongs in the icon component. |
 | `body.menu-open` | layout-global exception | `SiteHeader.astro` using `:global(body.menu-open)` or a very small global state file | JS-controlled document state cannot be Astro-scoped normally. |
 | `main, .utility-bar, .site-header, .hero, .footer` width guard | `G1` | `foundations.css` | Keep as a documented global overflow guard until equivalent root rules are proven. |
@@ -168,18 +174,12 @@ These rules must be resolved explicitly; copying them into whichever component i
 
 Do not clean up these selectors while simultaneously moving them unless the corresponding functional and visual test is added first. Structural extraction and selector redesign should be separate, reviewable commits.
 
-## Proposed component boundary map
+## Phase 3 component boundary candidates
 
-The existing 12 section components remain the page-level owners. Phase 2 should extract only repeated or independently testable children:
+The existing 12 section components remain the page-level owners. Phase 3 proceeds vertically in the agreed order and may extract repeated or independently testable children where they have a coherent API. Global primitive classes remain in `primitives.css` unless a component has a separate semantic or behavioural reason to exist.
 
 ```text
 components/
-├── primitives/
-│   ├── BrandLink.astro
-│   ├── ButtonLink.astro
-│   ├── Eyebrow.astro
-│   ├── SectionHeading.astro
-│   └── TextLink.astro
 ├── home/
 │   ├── HeroSection.astro
 │   ├── TrustSection.astro

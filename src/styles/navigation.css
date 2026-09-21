@@ -67,16 +67,6 @@
   backdrop-filter: blur(16px);
 }
 
-.brand {
-  display: block;
-  width: clamp(10.5rem, 14vw, 13.75rem);
-}
-
-.brand img {
-  width: 100%;
-  height: auto;
-}
-
 .desktop-nav {
   display: flex;
   align-items: center;

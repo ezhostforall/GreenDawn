@@ -51,7 +51,8 @@ src/
 │   └── home.ts        # Homepage client-script orchestrator
 ├── styles/
 │   ├── tokens.css      # Brand/design tokens
-│   ├── foundations.css # Reset, typography and shared primitives
+│   ├── foundations.css # Reset, typography and global layout foundations
+│   ├── primitives.css  # Shared visual primitives and their responsive states
 │   ├── navigation.css  # Utility bar/header/navigation
 │   ├── home.css        # Homepage section styles
 │   ├── footer.css      # Footer styles
@@ -71,11 +72,11 @@ src/
 - Existing CSS class names and visual output are preserved during this structural refactor.
 - GitHub Pages `BASE_URL` support remains centralised in `src/lib/urls.ts`.
 
-The next component/CSS extraction is governed by the locked [refactor baseline](docs/refactor-baseline.md) and [style ownership register](docs/style-ownership-register.md). Those records define the regression gates, component boundaries, selector ownership and composition rules that must be preserved while styles move beside their components.
+The next component/CSS extraction is governed by the locked [refactor baseline](docs/refactor-baseline.md), [style ownership register](docs/style-ownership-register.md) and [Phase 2 change record](docs/refactor-phase-02.md). Those records define the regression gates, component boundaries, selector ownership and composition rules that must be preserved while styles move beside their components.
 
 ## Design system
 
-The existing visual rules are preserved but separated by responsibility. `src/styles/global.css` is now only the ordered entry point; design tokens, foundations, navigation, homepage sections, footer and responsive rules live in focused files. This keeps later brand-token updates isolated from structural page styles.
+The existing visual rules are preserved but separated by responsibility. `src/styles/global.css` is now only the ordered entry point; design tokens, global foundations, genuinely shared primitives, navigation, homepage sections, footer and remaining responsive rules live in focused files. Phase 2 changes CSS ownership only: it does not introduce wrapper components or alter rendered markup.
 
 Current role-based tokens include dark navy surfaces, warm off-white, electric lime, violet and coral, with Bricolage Grotesque, Archivo and JetBrains Mono. The exact Latin font weights used by the page are bundled locally through Fontsource, avoiding render-blocking third-party font requests.
 
