@@ -1,8 +1,8 @@
 ---
-import ResponsiveImage from "../media/ResponsiveImage.astro";
 import { supportingProof } from "../../content/home";
 import { liveSitePath } from "../../lib/urls";
 import ArrowIcon from "../media/ArrowIcon.astro";
+import ProofCard from "./ProofCard.astro";
 ---
 
 <section class="proof-grid section section--cream" aria-labelledby="proof-grid-title" data-proof>
@@ -16,27 +16,39 @@ import ArrowIcon from "../media/ArrowIcon.astro";
     </div>
 
     <div class="proof-grid__items">
-      {supportingProof.map((item) => (
-        <article class:list={["proof-card", `proof-card--${item.kind}`]}>
-          {item.image && item.alt && (
-            <figure>
-              <ResponsiveImage
-                image={item.image}
-                alt={item.alt}
-                sizes="(max-width: 42rem) calc(100vw - 1.5rem), (max-width: 61rem) calc(50vw - 2rem), 44vw"
-                loading="lazy"
-              />
-              <figcaption>{item.eyebrow}</figcaption>
-            </figure>
-          )}
-          {!item.image && <span class="proof-card__label">{item.eyebrow}</span>}
-          <div class="proof-card__body">
-            <h3>{item.title}</h3>
-            <strong>{item.result}</strong>
-            <p>{item.copy}</p>
-          </div>
-        </article>
+      {supportingProof.map((item, index) => (
+        <ProofCard
+          item={item}
+          tabletWide={item.kind === "project" || index === supportingProof.length - 1}
+          mobileDefault={index === supportingProof.length - 1}
+        />
       ))}
     </div>
   </div>
 </section>
+
+<style is:global>
+.proof-grid__items {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) repeat(2, minmax(0, 0.82fr));
+  gap: clamp(1.4rem, 2.5vw, 2.4rem);
+}
+
+@media (max-width: 75rem) {
+  .proof-grid__items {
+    gap: 1.3rem;
+  }
+}
+
+@media (max-width: 61rem) {
+  .proof-grid__items {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 42rem) {
+  .proof-grid__items {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

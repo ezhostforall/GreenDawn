@@ -2,6 +2,7 @@
 import { processSteps } from "../../content/home";
 import { homeMedia } from "../../content/media";
 import ResponsiveImage from "../media/ResponsiveImage.astro";
+import ProcessStep from "./ProcessStep.astro";
 ---
 
 <section class="process section section--paper" id="process">
@@ -16,13 +17,7 @@ import ResponsiveImage from "../media/ResponsiveImage.astro";
 
     <div class="process__steps" data-process>
       <div class="process__line" aria-hidden="true"><span data-process-line></span></div>
-      {processSteps.map((step) => (
-        <article class="process-step" data-process-step>
-          <span class="process-step__number">{step.number}</span>
-          <h3>{step.title}</h3>
-          <p>{step.copy}</p>
-        </article>
-      ))}
+      {processSteps.map((step, index) => <ProcessStep step={step} index={index} />)}
     </div>
     <figure class="process__evidence" data-reveal>
       <ResponsiveImage
@@ -35,3 +30,99 @@ import ResponsiveImage from "../media/ResponsiveImage.astro";
     </figure>
   </div>
 </section>
+
+<style is:global>
+.process__evidence {
+  position: relative;
+  overflow: hidden;
+  margin: 0;
+  border-radius: var(--radius-md);
+  background: var(--navy-800);
+  box-shadow: var(--shadow-lg);
+}
+
+.process__evidence img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--image-position);
+}
+
+.process__evidence::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(7, 23, 33, 0.76), transparent 58%);
+  content: "";
+}
+
+.process__evidence figcaption {
+  position: absolute;
+  z-index: 1;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  left: 1.25rem;
+  color: var(--cream);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.process__steps {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0;
+  padding-top: 2.4rem;
+}
+
+.process__line {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 2px;
+  background: var(--slate-200);
+}
+
+.process__line span {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--violet);
+}
+
+.process__evidence {
+  width: 100%;
+  aspect-ratio: 16 / 5;
+  margin: 2.5rem 0 0;
+}
+
+@media (max-width: 75rem) {
+  .process__steps {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 42rem) {
+  .process__steps {
+    grid-template-columns: 1fr;
+    padding-top: 1rem;
+  }
+
+  .process__line {
+    display: none;
+  }
+
+  .process__evidence {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    margin-top: 2.5rem;
+  }
+
+  .process__evidence img {
+    object-position: var(--image-position-mobile);
+  }
+}
+</style>

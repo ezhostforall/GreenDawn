@@ -47,3 +47,21 @@ import TrustSection from "../components/home/TrustSection.astro";
     import "../scripts/home";
   </script>
 </BaseLayout>
+
+<style is:global>
+@media (max-width: 42rem) {
+  .trust + .problem {
+    padding-top: 2.75rem;
+  }
+
+  .proof-grid + .insights {
+    padding-top: 2.5rem;
+  }
+}
+
+@media (max-width: 30rem) {
+  .trust + .problem {
+    padding-top: 2.5rem;
+  }
+}
+</style>

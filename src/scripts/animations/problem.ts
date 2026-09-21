@@ -1,4 +1,4 @@
-import gsap from "gsap";
+import { gsap } from "../motion/runtime";
 
 type FragmentOffset = readonly [x: number, y: number, rotation: number];
 

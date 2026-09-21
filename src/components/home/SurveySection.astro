@@ -2,6 +2,8 @@
 import { surveyTiers } from "../../content/home";
 import { liveSitePath } from "../../lib/urls";
 import ArrowIcon from "../media/ArrowIcon.astro";
+import SurveyTier from "./SurveyTier.astro";
+import SurveyTierMobile from "./SurveyTierMobile.astro";
 ---
 
 <section class="surveys section section--paper" id="surveys" aria-labelledby="surveys-title" data-surveys>
@@ -17,43 +19,12 @@ import ArrowIcon from "../media/ArrowIcon.astro";
     </div>
 
     <div class="surveys__grid">
-      {surveyTiers.map((tier) => (
-        <article class="survey-tier" id={tier.id}>
-          <header>
-            <p>{tier.name}</p>
-            <strong>£{tier.price.toLocaleString("en-GB")}</strong>
-            <span>{tier.suitableFor}</span>
-          </header>
-          <div class="survey-tier__details">
-            <p class="survey-tier__label">The survey considers</p>
-            <ul>{tier.scope.map((item) => <li>{item}</li>)}</ul>
-            <p><b>What you receive</b>{tier.deliverable}</p>
-            <p><b>{tier.benefitLabel}</b>{tier.benefit}</p>
-          </div>
-          <a class="survey-tier__cta" href={liveSitePath(`/enquire/?survey=${tier.id}`)}>Enquire about this survey <ArrowIcon direction="up-right" /></a>
-        </article>
-      ))}
+      {surveyTiers.map((tier, index) => <SurveyTier tier={tier} index={index} total={surveyTiers.length} />)}
     </div>
 
     <div class="surveys__mobile" aria-label="Technical site survey comparison">
-      {surveyTiers.map((tier) => (
-        <details class="survey-tier-mobile">
-          <summary>
-            <span>
-              <b>{tier.name}</b>
-              <small>{tier.suitableFor}</small>
-            </span>
-            <strong>£{tier.price.toLocaleString("en-GB")}</strong>
-            <span class="survey-tier-mobile__toggle" aria-hidden="true"></span>
-          </summary>
-          <div class="survey-tier-mobile__details">
-            <p class="survey-tier__label">The survey considers</p>
-            <ul>{tier.scope.map((item) => <li>{item}</li>)}</ul>
-            <p><b>What you receive</b>{tier.deliverable}</p>
-            <p><b>{tier.benefitLabel}</b>{tier.benefit}</p>
-            <a class="survey-tier__cta" href={liveSitePath(`/enquire/?survey=${tier.id}`)}>Enquire about this survey <ArrowIcon direction="up-right" /></a>
-          </div>
-        </details>
+      {surveyTiers.map((tier, index) => (
+        <SurveyTierMobile tier={tier} last={index === surveyTiers.length - 1} />
       ))}
     </div>
 
@@ -63,3 +34,94 @@ import ArrowIcon from "../media/ArrowIcon.astro";
     </div>
   </div>
 </section>
+
+<style is:global>
+.surveys__intro {
+  display: grid;
+  grid-template-columns: 0.7fr 1.3fr;
+  align-items: start;
+  gap: 4rem;
+  margin-bottom: clamp(3rem, 5vw, 4.5rem);
+}
+
+.surveys__intro .eyebrow {
+  color: var(--navy-900);
+}
+
+.surveys__intro h2 {
+  max-width: 12ch;
+  margin-bottom: 0;
+}
+
+.surveys__grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 2px solid var(--navy-900);
+  border-bottom: 2px solid var(--navy-900);
+}
+
+.surveys__mobile {
+  display: none;
+}
+
+.surveys__intro > div > p {
+  max-width: 44rem;
+  margin: 1.5rem 0 0;
+  color: rgba(11, 29, 42, 0.72);
+  line-height: 1.7;
+}
+
+.surveys__footer {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-top: 1.6rem;
+}
+
+.surveys__footer p {
+  max-width: 52rem;
+  margin: 0;
+  color: rgba(11, 29, 42, 0.72);
+  font-size: 0.76rem;
+  line-height: 1.6;
+}
+
+.surveys__footer .text-link {
+  flex: 0 0 auto;
+}
+
+@media (max-width: 75rem) {
+  .surveys__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 61rem) {
+  .surveys__intro {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .surveys__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .surveys__footer {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 42rem) {
+  .surveys__grid {
+    display: none;
+  }
+
+  .surveys__mobile {
+    display: block;
+    border-top: 2px solid var(--navy-900);
+    border-bottom: 2px solid var(--navy-900);
+  }
+}
+</style>

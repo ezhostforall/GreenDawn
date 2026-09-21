@@ -1,4 +1,4 @@
-import gsap from "gsap";
+import { gsap } from "../motion/runtime";
 
 export function animatePath(selector: string, scrollTrigger: ScrollTrigger.Vars): void {
   const path = document.querySelector<SVGPathElement>(selector);

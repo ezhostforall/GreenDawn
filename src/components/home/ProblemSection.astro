@@ -1,3 +1,7 @@
+---
+import FragmentedModel from "./FragmentedModel.astro";
+---
+
 <section class="problem section section--cream" data-section="problem">
   <div class="page-shell problem__layout">
     <div class="section-intro section-intro--sticky" data-reveal>
@@ -8,22 +12,52 @@
       </p>
     </div>
 
-    <div class="problem__model" data-problem-model>
-      <p class="problem__label">The fragmented model</p>
-      <div class="problem__fragments">
-        <span data-fragment>Operations</span>
-        <span data-fragment>Available power</span>
-        <span data-fragment>Groundworks</span>
-        <span data-fragment>Charging hardware</span>
-        <span data-fragment>Software & payments</span>
-        <span data-fragment>Ongoing support</span>
-      </div>
-      <div class="problem__connector" aria-hidden="true"><span data-problem-connector></span></div>
-      <div class="problem__answer" data-answer>
-        <span>The Greendawn model</span>
-        <strong>One managed delivery relationship.</strong>
-        <p>Greendawn coordinates the work, dependencies and specialists.</p>
-      </div>
-    </div>
+    <FragmentedModel />
   </div>
 </section>
+
+<style is:global>
+.problem {
+  border-top: 1px solid var(--border-dark);
+}
+
+.problem__layout {
+  display: grid;
+  grid-template-columns: minmax(18rem, 0.8fr) minmax(30rem, 1.2fr);
+  gap: clamp(4rem, 10vw, 11rem);
+}
+
+.section-intro--sticky {
+  position: sticky;
+  top: 8rem;
+  align-self: start;
+}
+
+.section-intro > h2 {
+  max-width: 14ch;
+  margin-bottom: var(--space-5);
+}
+
+.section-intro > p:last-child {
+  max-width: 40rem;
+  color: var(--slate-500);
+  line-height: 1.75;
+}
+
+@media (max-width: 75rem) {
+  .problem__layout {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+@media (max-width: 61rem) {
+  .problem__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .section-intro--sticky {
+    position: static;
+  }
+}
+</style>

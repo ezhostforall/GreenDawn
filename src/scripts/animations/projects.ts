@@ -1,4 +1,4 @@
-import gsap from "gsap";
+import { gsap } from "../motion/runtime";
 
 export function animateProjects(): void {
   gsap.to("[data-case-image] img", {

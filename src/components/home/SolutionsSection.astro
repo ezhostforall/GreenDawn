@@ -1,8 +1,7 @@
 ---
-import ResponsiveImage from "../media/ResponsiveImage.astro";
-import ArrowIcon from "../media/ArrowIcon.astro";
 import { audiences } from "../../content/home";
-import { liveSitePath } from "../../lib/urls";
+import SolutionImage from "./SolutionImage.astro";
+import SolutionRow from "./SolutionRow.astro";
 ---
 
 <section class="solutions section section--cream" id="who-we-help" data-solutions>
@@ -18,32 +17,76 @@ import { liveSitePath } from "../../lib/urls";
     <div class="solutions__layout">
       <div class="solutions__media" aria-hidden="true">
         {audiences.map((solution, index) => (
-          <figure class:list={["solution-image", { "is-active": index === 0 }]} data-solution-image={index}>
-            <ResponsiveImage
-              image={solution.image}
-              alt=""
-              sizes="(min-width: 62rem) 45vw, 1px"
-              loading="lazy"
-            />
-            <figcaption><span>{solution.number}</span>{solution.title}</figcaption>
-          </figure>
+          <SolutionImage solution={solution} index={index} active={index === 0} />
         ))}
       </div>
 
       <div class="solutions__list">
         {audiences.map((solution, index) => (
-          <a class:list={["solution-row", { "is-active": index === 0 }]} href={liveSitePath(solution.href)} data-solution-row={index}>
-            <span class="solution-row__number">{solution.number}</span>
-            <div class="solution-row__body">
-              <div class="solution-row__copy">
-                <h3>{solution.title}</h3>
-                <p>{solution.copy}</p>
-              </div>
-            </div>
-            <span class="solution-row__arrow"><ArrowIcon direction="up-right" /></span>
-          </a>
+          <SolutionRow solution={solution} index={index} active={index === 0} />
         ))}
       </div>
     </div>
   </div>
 </section>
+
+<style is:global>
+.solutions__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(28rem, 1fr);
+  align-items: start;
+  gap: clamp(3rem, 6vw, 6rem);
+}
+
+.solutions__layout > * {
+  min-width: 0;
+}
+
+.solutions__media {
+  position: sticky;
+  top: 6.25rem;
+  width: 100%;
+  min-width: 0;
+  height: min(64svh, 38rem);
+  max-height: calc(100svh - 8rem);
+  align-self: start;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--navy-800);
+  box-shadow: var(--shadow-lg);
+}
+
+.solutions__list {
+  border-top: 1px solid var(--navy-900);
+}
+
+@media (max-width: 75rem) {
+  .solutions__layout {
+    gap: 4rem;
+  }
+}
+
+@media (max-width: 61rem) {
+  .solutions__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .solutions__media {
+    position: relative;
+    top: 0;
+    display: block;
+    height: clamp(20rem, 62vw, 32rem);
+    max-height: none;
+  }
+}
+
+@media (max-height: 44rem) and (max-width: 75rem) {
+  .solutions__media {
+    position: relative;
+    top: 0;
+    height: auto;
+    max-height: min(24rem, 62svh);
+    aspect-ratio: 4 / 3;
+  }
+}
+</style>

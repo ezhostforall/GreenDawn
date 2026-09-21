@@ -2,6 +2,7 @@
 import { systemLayers } from "../../content/home";
 import { liveSitePath } from "../../lib/urls";
 import ArrowIcon from "../media/ArrowIcon.astro";
+import SystemCard from "./SystemCard.astro";
 ---
 
 <section class="system section" id="system" data-system>
@@ -16,15 +17,8 @@ import ArrowIcon from "../media/ArrowIcon.astro";
       <path data-system-path d="M21 432C190 75 762 -91 1171 241" />
     </svg>
     <div class="system__cards">
-      {systemLayers.map((layer) => (
-        <article class="system-card" data-system-card>
-          <div class="system-card__top">
-            <span>{layer.number}</span>
-            <span>{layer.detail}</span>
-          </div>
-          <h3>{layer.title}</h3>
-          <p>{layer.copy}</p>
-        </article>
+      {systemLayers.map((layer, index) => (
+        <SystemCard layer={layer} tone={index === 1 ? "violet" : index === 2 ? "cream" : "base"} />
       ))}
     </div>
     <div class="system__closing">
@@ -46,3 +40,224 @@ import ArrowIcon from "../media/ArrowIcon.astro";
     </div>
   </div>
 </section>
+
+<style is:global>
+.system__arc path {
+  fill: none;
+  stroke: var(--lime);
+  stroke-linecap: round;
+  stroke-width: 10;
+}
+
+.system {
+  min-height: 100vh;
+  overflow: clip;
+  background: var(--navy-900);
+  color: var(--cream);
+}
+
+.system__header {
+  display: grid;
+  grid-template-columns: 0.75fr 1.5fr 0.8fr;
+  align-items: end;
+  gap: clamp(2rem, 5vw, 6rem);
+  padding-bottom: clamp(4rem, 6vw, 6rem);
+}
+
+.system__header .eyebrow {
+  align-self: start;
+  margin-top: 0.7rem;
+}
+
+.system__header h2 {
+  max-width: 9ch;
+  margin-bottom: 0;
+}
+
+.system__header > p:last-child {
+  margin-bottom: 0.3rem;
+  color: var(--slate-300);
+  font-size: var(--step--1);
+}
+
+.system__stage {
+  position: relative;
+  min-height: 36rem;
+}
+
+.system__arc {
+  position: absolute;
+  top: -6rem;
+  right: -10rem;
+  width: min(82vw, 82rem);
+  opacity: 0.84;
+}
+
+.system__arc path {
+  stroke-width: 8;
+}
+
+.system__cards {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: end;
+  gap: clamp(1rem, 2vw, 1.6rem);
+}
+
+.system__statement {
+  max-width: 32ch;
+  margin: 0 0 0 auto;
+  color: var(--lime);
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.system__closing {
+  display: grid;
+  grid-template-columns: minmax(18rem, 0.72fr) minmax(0, 1.28fr);
+  align-items: start;
+  gap: clamp(2.5rem, 6vw, 6rem);
+  margin-top: 3rem;
+  border-top: 1px solid var(--border-light);
+  padding-top: 3rem;
+}
+
+.system__decisions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 3vw, 3rem);
+}
+
+.system__decisions article {
+  min-width: 0;
+}
+
+.system__decisions article > span {
+  color: var(--lime);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.system__decisions h3 {
+  margin: 1rem 0 0.8rem;
+  font-size: var(--step-1);
+  letter-spacing: -0.03em;
+}
+
+.system__decisions p {
+  margin-bottom: 1.25rem;
+  color: var(--slate-300);
+  font-size: var(--step--1);
+  line-height: 1.65;
+}
+
+.system__decisions .text-link {
+  font-size: 0.72rem;
+}
+
+@media (max-width: 75rem) {
+  .system__header {
+    grid-template-columns: 0.7fr 1.3fr;
+  }
+
+  .system__header > p:last-child {
+    grid-column: 2;
+  }
+
+  .system__cards {
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 61rem) {
+  .system__header {
+    grid-template-columns: 1fr;
+  }
+
+  .system__header > p:last-child {
+    grid-column: 1;
+  }
+
+  .system__stage {
+    padding-top: 7rem;
+  }
+
+  .system__cards {
+    grid-template-columns: 1fr;
+  }
+
+  .system__closing {
+    grid-template-columns: 1fr;
+  }
+
+  .system__decisions {
+    max-width: 48rem;
+  }
+
+  .system__arc {
+    top: -7rem;
+    right: -4rem;
+    width: clamp(34rem, 82vw, 44rem);
+    opacity: 0.66;
+  }
+
+  .system__arc path {
+    stroke-width: 6;
+  }
+}
+
+@media (max-width: 42rem) {
+  .system__header {
+    padding-bottom: 4rem;
+  }
+
+  .system__stage {
+    padding-top: 3.5rem;
+  }
+
+  .system__arc {
+    top: -6.5rem;
+    right: -10rem;
+    width: 34rem;
+    opacity: 0.46;
+  }
+
+  .system__arc path {
+    stroke-width: 5;
+  }
+
+  .system__closing {
+    grid-template-columns: 1fr;
+  }
+
+  .system__decisions {
+    grid-template-columns: 1fr;
+  }
+
+  .system__statement {
+    margin-left: 0;
+  }
+
+}
+
+@media (max-width: 30rem) {
+  .system__stage {
+    padding-top: 3.5rem;
+  }
+
+  .system__arc {
+    top: -6rem;
+    right: -11rem;
+    width: 30rem;
+    opacity: 0.36;
+  }
+}
+</style>

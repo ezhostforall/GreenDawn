@@ -29,3 +29,110 @@ import ArrowIcon from "../media/ArrowIcon.astro";
     If it’s not working, that’s our problem to fix.
   </p>
 </section>
+
+<style is:global>
+.aftercare {
+  overflow: hidden;
+  background: var(--navy-900);
+  color: var(--cream);
+}
+
+.aftercare__layout {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 0.86fr) minmax(30rem, 1.14fr);
+  gap: clamp(4rem, 10vw, 11rem);
+}
+
+.aftercare__copy h2 {
+  max-width: 12ch;
+}
+
+.aftercare__copy > p:not(.eyebrow) {
+  max-width: 39rem;
+  color: var(--slate-300);
+  line-height: 1.75;
+}
+
+.aftercare__copy .button {
+  margin-top: 1.6rem;
+}
+
+.aftercare__services {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--border-light);
+  border-left: 1px solid var(--border-light);
+}
+
+.aftercare__services article {
+  min-height: 12.5rem;
+  border-right: 1px solid var(--border-light);
+  border-bottom: 1px solid var(--border-light);
+  padding: clamp(1.6rem, 3vw, 2.6rem);
+}
+
+.aftercare__services span {
+  color: var(--lime);
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+}
+
+.aftercare__services h3 {
+  margin: 1.75rem 0 0.8rem;
+  font-size: var(--step-1);
+  letter-spacing: -0.025em;
+}
+
+.aftercare__services p {
+  margin-bottom: 0;
+  color: var(--slate-300);
+  font-size: var(--step--1);
+  line-height: 1.65;
+}
+
+.aftercare__quote {
+  position: relative;
+  z-index: 2;
+  max-width: 19ch;
+  margin-top: clamp(3.5rem, 5vw, 4.75rem);
+  margin-bottom: 0;
+  margin-left: auto;
+  color: var(--lime);
+  font-family: var(--font-display);
+  font-size: var(--type-statement);
+  font-style: italic;
+  font-weight: 600;
+  letter-spacing: -0.055em;
+  line-height: 0.95;
+}
+
+@media (max-width: 61rem) {
+  .aftercare__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .aftercare__services {
+    margin-top: 2rem;
+  }
+
+  .aftercare__quote {
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 42rem) {
+  .aftercare__services {
+    grid-template-columns: 1fr;
+  }
+
+  .aftercare__services article {
+    min-height: 10.5rem;
+  }
+
+  .aftercare__quote {
+    font-size: clamp(2.9rem, 13vw, 4.3rem);
+  }
+}
+</style>

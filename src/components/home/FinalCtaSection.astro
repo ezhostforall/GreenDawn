@@ -23,3 +23,110 @@ import ArrowIcon from "../media/ArrowIcon.astro";
     </ol>
   </div>
 </section>
+
+<style is:global>
+.final-cta > svg path {
+  fill: none;
+  stroke: var(--lime);
+  stroke-linecap: round;
+  stroke-width: 10;
+}
+
+.final-cta {
+  overflow: hidden;
+  background: var(--lime);
+  color: var(--navy-900);
+}
+
+.final-cta > svg {
+  position: absolute;
+  top: -4rem;
+  right: -9rem;
+  width: min(70vw, 67rem);
+  opacity: 0.06;
+}
+
+.final-cta > svg path {
+  stroke: var(--navy-900);
+  stroke-width: 15;
+}
+
+.final-cta__inner {
+  position: relative;
+  z-index: 1;
+}
+
+.final-cta__inner h2 {
+  max-width: 11ch;
+  font-size: clamp(4rem, 8.5vw, 9rem);
+  letter-spacing: -0.07em;
+  line-height: 0.84;
+}
+
+.final-cta__inner > p:not(.eyebrow) {
+  max-width: 42rem;
+  margin-block: 2.5rem;
+  font-size: var(--step-1);
+  line-height: 1.55;
+}
+
+.final-cta__actions {
+  display: flex;
+  align-items: center;
+  gap: 2.2rem;
+}
+
+.final-cta__actions > p {
+  margin: 0;
+  font-size: var(--step--1);
+}
+
+.final-cta__actions > p a {
+  border-bottom: 1px solid currentColor;
+  font-weight: 700;
+}
+
+.final-cta ol {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  margin: 5rem 0 0;
+  padding: 0;
+  background: rgba(11, 29, 42, 0.28);
+  list-style: none;
+}
+
+.final-cta li {
+  display: flex;
+  min-height: 6rem;
+  align-items: center;
+  gap: 1.4rem;
+  background: var(--lime);
+  font-size: var(--step--1);
+  padding: 1.3rem;
+}
+
+.final-cta li span {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+}
+
+@media (max-width: 42rem) {
+  .final-cta__inner h2 {
+    font-size: clamp(4rem, 18vw, 6.5rem);
+  }
+
+  .final-cta__actions {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .final-cta ol {
+    grid-template-columns: 1fr;
+  }
+
+  .final-cta li {
+    min-height: 4.5rem;
+  }
+}
+</style>

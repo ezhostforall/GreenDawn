@@ -1,4 +1,4 @@
-import gsap from "gsap";
+import { gsap } from "../motion/runtime";
 
 export function animateProcess(): void {
   gsap.to("[data-process-line]", {

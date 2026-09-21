@@ -6,6 +6,14 @@ This is the Phase 1 source-of-truth for extracting reusable primitives, child co
 
 The global CSS foundation is complete. Shared visual rules now live in `src/styles/primitives.css`; rendered markup and component APIs are unchanged. Phase 3 proceeds vertically by section in the agreed order. Shared classes do not require wrapper components merely to own their CSS.
 
+## Phase 3 status
+
+All 15 vertical migrations are complete. Component-owned base, responsive, touch and short-height rules now live beside their Astro owners. Coherent repeated children were extracted with typed props and native-attribute forwarding, and former cross-boundary positional dependencies use explicit variants. Problem intro rules are no longer global; shared Survey description and CTA DOM now own their styles without parent reach-through. Animation and navigation hooks remain unchanged. The legacy global stylesheet files remain imported as Phase 5 placeholders until final ownership searches and browser verification are complete.
+
+## Phase 4 status
+
+The shared motion runtime is complete and delivered with the corrected Phase 3 archive. It is the single GSAP/ScrollTrigger import and registration boundary and owns page-level motion lifecycle, refresh and teardown. Section animation modules retain their individual selectors and values.
+
 ## Ownership classes
 
 | Code | Ownership | Destination rule |
@@ -156,7 +164,7 @@ These rules must be resolved explicitly; copying them into whichever component i
 | `data-process`, `data-process-line`, `data-process-step` | Process | `process.ts` | Preserve. |
 | `data-case-image`, `.case-study__story` | Featured project | `projects.ts` | Prefer a data hook for story in a later behaviour-only change; do not combine with CSS move. |
 | `data-solution-row`, `data-solution-image`, `is-active` | Solutions | `solutions.ts`, CSS | Child components must forward numeric values exactly. |
-| `data-aftercare` | Aftercare | `aftercare.ts` | Preserve; audit the optional orb hook before removing any dormant API. |
+| `data-aftercare` | Aftercare | section markup and future behaviour | Preserve the section hook. The unconsumed optional orb hook and dormant module were removed in Phase 4. |
 | `data-final-cta`, `data-final-arc` | Final CTA | `final-cta.ts`, path animation | Preserve. |
 
 ## Positional selector risk register
@@ -223,4 +231,4 @@ Phase 1 is complete when this register is accepted and the following remain true
 - page-composition and cross-section selectors are explicitly identified;
 - JS state/data hooks are registered;
 - positional-selector risks have a migration strategy;
-- visual baseline generation remains a Phase 0 hand-off before Phase 2.
+- the approved Phase 2 visual baselines remain committed and protected by validation.

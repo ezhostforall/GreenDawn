@@ -32,8 +32,9 @@ CI uses Node 24. `.node-version` is provided for local version managers. Astro 7
 ```text
 src/
 ├── components/
-│   ├── home/          # Homepage sections; presentation only
-│   └── layout/        # Header, footer and global navigation UI
+│   ├── home/          # Homepage sections and reusable section children
+│   ├── layout/        # Header, footer and utility navigation UI
+│   └── media/         # Responsive image and icon components
 ├── config/
 │   └── site.ts        # Site-wide contact/company configuration
 ├── content/
@@ -47,16 +48,17 @@ src/
 │   └── index.astro    # Page composition only
 ├── scripts/
 │   ├── animations/    # Section-specific GSAP behaviour
+│   ├── motion/         # Shared GSAP/ScrollTrigger lifecycle runtime
 │   ├── navigation.ts  # Menu/header behaviour
 │   └── home.ts        # Homepage client-script orchestrator
 ├── styles/
 │   ├── tokens.css      # Brand/design tokens
 │   ├── foundations.css # Reset, typography and global layout foundations
 │   ├── primitives.css  # Shared visual primitives and their responsive states
-│   ├── navigation.css  # Utility bar/header/navigation
-│   ├── home.css        # Homepage section styles
-│   ├── footer.css      # Footer styles
-│   ├── responsive.css  # Responsive/reduced-motion overrides
+│   ├── navigation.css  # Phase 5 migration placeholder
+│   ├── home.css        # Phase 5 migration placeholder
+│   ├── footer.css      # Phase 5 migration placeholder
+│   ├── responsive.css  # Remaining global responsive foundations
 │   └── global.css      # Ordered stylesheet entry point
 └── types/
     └── home.ts        # Shared homepage content types
@@ -72,17 +74,17 @@ src/
 - Existing CSS class names and visual output are preserved during this structural refactor.
 - GitHub Pages `BASE_URL` support remains centralised in `src/lib/urls.ts`.
 
-The next component/CSS extraction is governed by the locked [refactor baseline](docs/refactor-baseline.md), [style ownership register](docs/style-ownership-register.md) and [Phase 2 change record](docs/refactor-phase-02.md). Those records define the regression gates, component boundaries, selector ownership and composition rules that must be preserved while styles move beside their components.
+The refactor is governed by the locked [refactor baseline](docs/refactor-baseline.md), [style ownership register](docs/style-ownership-register.md), [Phase 2 change record](docs/refactor-phase-02.md), [Phase 3 change record](docs/refactor-phase-03.md) and [Phase 4 change record](docs/refactor-phase-04.md). Those records define the regression gates, component boundaries, selector ownership, motion lifecycle and composition rules.
 
 ## Design system
 
-The existing visual rules are preserved but separated by responsibility. `src/styles/global.css` is now only the ordered entry point; design tokens, global foundations, genuinely shared primitives, navigation, homepage sections, footer and remaining responsive rules live in focused files. Phase 2 changes CSS ownership only: it does not introduce wrapper components or alter rendered markup.
+The existing visual rules are preserved but separated by responsibility. `src/styles/global.css` remains the ordered entry point for tokens, global foundations, genuinely shared primitives and the temporary Phase 5 stylesheet placeholders. Component-specific base and responsive rules now live beside their Astro owners. Repeated child components expose typed content and explicit visual variants instead of relying on positional selectors across component boundaries.
 
 Current role-based tokens include dark navy surfaces, warm off-white, electric lime, violet and coral, with Bricolage Grotesque, Archivo and JetBrains Mono. The exact Latin font weights used by the page are bundled locally through Fontsource, avoiding render-blocking third-party font requests.
 
 ## Motion
 
-GSAP and ScrollTrigger remain progressively enhanced. The orchestration now lives in `src/scripts/home.ts`, with individual behaviours separated into `src/scripts/animations/`.
+GSAP and ScrollTrigger remain progressively enhanced. `src/scripts/motion/runtime.ts` owns their single registration point, page context, refresh and teardown lifecycle. `src/scripts/home.ts` composes the runtime with navigation and the section behaviours in `src/scripts/animations/`.
 
 `prefers-reduced-motion` continues to bypass animation and keeps reveal content visible.
 
@@ -112,4 +114,4 @@ Those should be designed after the static public-site boundaries and content mod
 
 The homepage uses the approved Greendawn spelling throughout, separates the initial conversation from paid site surveys and publishes only claims marked as approved in `src/content/claims.ts`. Survey prices, VAT wording, scope and credit terms remain subject to final commercial and legal sign-off before production publication. The social-preview asset is a dedicated 1200 × 630 image rather than a reused 4:3 content image.
 
-`pnpm test` verifies the production HTML structure, fragment targets, intrinsic image dimensions, local assets, reduced-motion output, navigation behaviour, responsive overflow and serious automated accessibility findings. `pnpm test:visual:update` creates baselines for all seven configured Playwright projects after an approved visual review. The current archive does not yet contain committed screenshot baselines; generate and approve them from the untouched Phase 0 source before component extraction begins. The naming gate fails if the incorrect company-name capitalisation appears in human-readable source files.
+`pnpm test` verifies the production HTML structure, fragment targets, intrinsic image dimensions, local assets, reduced-motion output, navigation behaviour, responsive overflow and serious automated accessibility findings. The approved Phase 2 Linux baselines for all seven Playwright projects are committed; `pnpm test:visual:update` must only be used after an intentional visual change has been reviewed. The naming gate fails if the incorrect company-name capitalisation appears in human-readable source files.

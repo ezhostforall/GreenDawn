@@ -37,10 +37,6 @@ main,
   max-width: 100%;
 }
 
-body.menu-open {
-  overflow: hidden;
-}
-
 ::selection {
   background: var(--violet);
   color: var(--cream);
@@ -177,15 +173,4 @@ h3 {
 .section--lime {
   background: var(--lime);
   color: var(--navy-900);
-}
-
-.section-intro > h2 {
-  max-width: 14ch;
-  margin-bottom: var(--space-5);
-}
-
-.section-intro > p:last-child {
-  max-width: 40rem;
-  color: var(--slate-500);
-  line-height: 1.75;
 }

@@ -1,5 +1,3 @@
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
 import { animateFinalCta } from "./animations/final-cta";
 import { animateHero } from "./animations/hero";
 import { animateProblem } from "./animations/problem";
@@ -8,29 +6,25 @@ import { animateDesktopProjectStory, animateProjects } from "./animations/projec
 import { animateReveals, revealWithoutMotion } from "./animations/reveals";
 import { initialiseSolutionStory } from "./animations/solutions";
 import { animateDesktopSystem, animateSystem } from "./animations/system";
+import { createMotionRuntime, gsap } from "./motion/runtime";
 import { initialiseNavigation } from "./navigation";
-
-gsap.registerPlugin(ScrollTrigger);
 
 document.documentElement.classList.add("js");
 
 const cleanupNavigation = initialiseNavigation();
-const cleanupMotion: Array<() => void> = [];
-const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-let pageContext: gsap.Context | undefined;
+const motion = createMotionRuntime();
 
-if (reduceMotion) {
+if (motion.reduceMotion) {
   revealWithoutMotion();
 } else {
-  pageContext = gsap.context(() => {
+  motion.run((registerCleanup) => {
     gsap.ticker.lagSmoothing(500, 33);
-
-    cleanupMotion.push(animateHero());
+    registerCleanup(animateHero());
     animateReveals();
-    cleanupMotion.push(animateProblem());
+    registerCleanup(animateProblem());
     animateSystem();
     animateProcess();
-    cleanupMotion.push(initialiseSolutionStory());
+    registerCleanup(initialiseSolutionStory());
     animateProjects();
     animateFinalCta();
 
@@ -39,39 +33,20 @@ if (reduceMotion) {
       animateDesktopSystem();
       animateDesktopProjectStory();
     });
-    cleanupMotion.push(() => desktop.revert());
-  }, document.body);
+    registerCleanup(() => desktop.revert());
+  });
 }
 
-const refresh = (): void => ScrollTrigger.refresh();
-const criticalImages = Array.from(document.querySelectorAll<HTMLImageElement>('img[loading="eager"]'));
-const imageReady = criticalImages.map((image) => image.complete
-  ? Promise.resolve()
-  : new Promise<void>((resolve) => {
-      image.addEventListener("load", () => resolve(), { once: true });
-      image.addEventListener("error", () => resolve(), { once: true });
-    }));
+motion.refreshWhenReady();
 
-Promise.all([document.fonts.ready, ...imageReady]).then(refresh);
-
-let resizeFrame = 0;
-const onResize = (): void => {
-  window.cancelAnimationFrame(resizeFrame);
-  resizeFrame = window.requestAnimationFrame(refresh);
-};
-const onPageShow = (event: PageTransitionEvent): void => {
-  if (event.persisted) window.requestAnimationFrame(refresh);
-};
 const teardown = (): void => {
-  window.removeEventListener("resize", onResize);
-  window.removeEventListener("pageshow", onPageShow);
+  window.removeEventListener("pagehide", onPageHide);
   cleanupNavigation();
-  cleanupMotion.splice(0).forEach((cleanup) => cleanup());
-  pageContext?.revert();
+  motion.destroy();
 };
 
-window.addEventListener("resize", onResize, { passive: true });
-window.addEventListener("pageshow", onPageShow);
-window.addEventListener("pagehide", (event) => {
+const onPageHide = (event: PageTransitionEvent): void => {
   if (!(event as PageTransitionEvent).persisted) teardown();
-}, { once: true });
+};
+
+window.addEventListener("pagehide", onPageHide);

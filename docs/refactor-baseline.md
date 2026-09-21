@@ -140,18 +140,9 @@ The following rules were introduced to fix real failures and must not disappear 
 
 ## Visual baseline status
 
-`tests/home.visual.spec.ts` is present and runs a full-page, reduced-motion screenshot in every configured project. However, the supplied repository has no `tests/home.visual.spec.ts-snapshots/` directory and therefore no committed reference images.
+`tests/home.visual.spec.ts` runs a full-page, reduced-motion screenshot in every configured project. The seven Linux reference images generated from the successful Phase 2 run are now committed in `tests/home.visual.spec.ts-snapshots/` at their original project widths: 320, 390, 834, 1280, 1440, 1920 and 2560 pixels.
 
-This is a Phase 0 hand-off item, not permission to update snapshots after refactoring. In the browser-enabled development environment, generate and approve baselines from this untouched Phase 0 source:
-
-```sh
-pnpm install --frozen-lockfile
-pnpm run test:e2e
-pnpm run test:visual:update
-pnpm run test:visual
-```
-
-Review all seven generated images before committing them. If a platform-specific suffix is generated, retain the files used by CI or configure a stable snapshot path before Phase 2.
+The production validator checks that every expected PNG exists and retains the correct project width. Baselines must only be updated after an intentional visual change has been reviewed; never update them to conceal a refactor mismatch.
 
 ## Phase 2 entry gate
 
@@ -160,7 +151,7 @@ Component extraction may begin only when:
 - this source checksum is retained in the change record;
 - `pnpm run test:static` passes;
 - the functional suite passes in the browser-enabled environment;
-- the seven untouched visual baselines have been generated and approved;
+- the seven untouched visual baselines have been generated, approved and retained;
 - any browser request-count and geometry measurements required for sign-off have been recorded;
 - the ownership rules in `style-ownership-register.md` are accepted.
 

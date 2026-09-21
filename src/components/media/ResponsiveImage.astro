@@ -1,25 +1,32 @@
 ---
 import { assetPath } from "../../lib/urls";
 import type { ResponsiveImageAsset } from "../../types/media";
+import type { HTMLAttributes } from "astro/types";
 
-interface Props {
+type Props = Omit<
+  HTMLAttributes<"img">,
+  "src" | "srcset" | "width" | "height" | "alt" | "class" | "style" | "sizes" | "loading" | "decoding" | "fetchpriority"
+> & {
   image: ResponsiveImageAsset;
   alt: string;
   class?: string;
+  style?: string;
   sizes?: string;
   loading?: "eager" | "lazy";
   decoding?: "async" | "auto" | "sync";
   fetchpriority?: "high" | "low" | "auto";
-}
+};
 
 const {
   image,
   alt,
   class: className,
+  style,
   sizes = "100vw",
   loading = "lazy",
   decoding = "async",
   fetchpriority = "auto",
+  ...attributes
 } = Astro.props;
 
 const sources = [...image.sources].sort((a, b) => a.width - b.width);
@@ -33,6 +40,7 @@ const srcset = sources.map(({ src, width }) => `${assetPath(src)} ${width}w`).jo
 ---
 
 <img
+  {...attributes}
   class={className}
   src={assetPath(fallback.src)}
   srcset={srcset}
@@ -43,5 +51,5 @@ const srcset = sources.map(({ src, width }) => `${assetPath(src)} ${width}w`).jo
   loading={loading}
   decoding={decoding}
   fetchpriority={fetchpriority}
-  style={`--image-position: ${image.objectPosition ?? "50% 50%"}; --image-position-mobile: ${image.mobileObjectPosition ?? image.objectPosition ?? "50% 50%"};`}
+  style={`--image-position: ${image.objectPosition ?? "50% 50%"}; --image-position-mobile: ${image.mobileObjectPosition ?? image.objectPosition ?? "50% 50%"};${style ? ` ${style}` : ""}`}
 />

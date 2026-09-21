@@ -1,4 +1,4 @@
-import gsap from "gsap";
+import { gsap } from "../motion/runtime";
 import { animatePath } from "./path";
 
 export function animateSystem(): void {

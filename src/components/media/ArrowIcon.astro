@@ -1,13 +1,17 @@
 ---
-interface Props {
-  direction?: "right" | "up-right";
-}
+import type { HTMLAttributes } from "astro/types";
 
-const { direction = "right" } = Astro.props;
+type Props = Omit<HTMLAttributes<"svg">, "class"> & {
+  direction?: "right" | "up-right";
+  class?: string;
+};
+
+const { direction = "right", class: className, ...attributes } = Astro.props;
 ---
 
 <svg
-  class="icon-arrow"
+  {...attributes}
+  class:list={["icon-arrow", className]}
   viewBox="0 0 24 24"
   fill="none"
   stroke="currentColor"

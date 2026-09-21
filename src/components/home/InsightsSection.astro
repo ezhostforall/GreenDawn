@@ -1,8 +1,8 @@
 ---
-import ResponsiveImage from "../media/ResponsiveImage.astro";
 import ArrowIcon from "../media/ArrowIcon.astro";
 import { insights } from "../../content/home";
 import { liveSitePath } from "../../lib/urls";
+import InsightCard from "./InsightCard.astro";
 ---
 
 <section class="insights section section--cream" id="insights">
@@ -16,21 +16,39 @@ import { liveSitePath } from "../../lib/urls";
     </div>
 
     <div class="insights__grid">
-      {insights.map((insight) => (
-        <a class="insight-card" href={liveSitePath(insight.href)}>
-          <figure>
-            <ResponsiveImage
-              image={insight.image}
-              alt={insight.alt}
-              sizes="(max-width: 42rem) calc(100vw - 1.5rem), (max-width: 61rem) calc(50vw - 2rem), 30vw"
-              loading="lazy"
-            />
-            <ArrowIcon direction="up-right" />
-          </figure>
-          <p>{insight.label}</p>
-          <h3>{insight.title}</h3>
-        </a>
+      {insights.map((insight, index) => (
+        <InsightCard
+          insight={insight}
+          tabletWide={index === insights.length - 1}
+          mobileDefault={index === insights.length - 1}
+        />
       ))}
     </div>
   </div>
 </section>
+
+<style is:global>
+.insights__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(1.4rem, 2.5vw, 2.4rem);
+}
+
+@media (max-width: 75rem) {
+  .insights__grid {
+    gap: 1.3rem;
+  }
+}
+
+@media (max-width: 61rem) {
+  .insights__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 42rem) {
+  .insights__grid {
+    grid-template-columns: 1fr;
+  }
+}
+</style>

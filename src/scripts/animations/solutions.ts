@@ -1,5 +1,4 @@
-import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
+import { gsap, ScrollTrigger } from "../motion/runtime";
 
 export function initialiseSolutionStory(): () => void {
   const rows = gsap.utils.toArray<HTMLElement>("[data-solution-row]");

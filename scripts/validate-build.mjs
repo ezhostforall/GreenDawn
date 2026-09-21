@@ -6,6 +6,8 @@ const html = await readFile(join(distDirectory, "index.html"), "utf8");
 const failures = [];
 
 const matches = (expression) => [...html.matchAll(expression)];
+const renderedClasses = matches(/\sclass=["']([^"']*)["']/gi).flatMap((match) => match[1].split(/\s+/).filter(Boolean));
+const classCount = (className) => renderedClasses.filter((value) => value === className).length;
 const h1Count = matches(/<h1(?:\s|>)/gi).length;
 if (h1Count !== 1) failures.push(`Expected one h1, found ${h1Count}.`);
 
@@ -95,11 +97,92 @@ if (/\.js\s+\[data-reveal\][^{]*\{[^}]*visibility\s*:\s*hidden/i.test(compiledCs
 if (!/--focus-ring\s*:/.test(compiledCss)) failures.push("The shared focus-ring token is missing.");
 if (!/(?:max-height\s*:\s*44rem|height\s*<=\s*44rem)/.test(compiledCss)) failures.push("Short-viewport responsive rules are missing.");
 
+const componentContracts = [
+  ["trust-client", 2],
+  ["trust-client--johnsons", 1],
+  ["trust-client--salvation-army", 1],
+  ["trust-client__logo--johnsons", 1],
+  ["trust-client__logo--salvation-army", 1],
+  ["system-card", 3],
+  ["system-card--violet", 1],
+  ["system-card--cream", 1],
+  ["process-step", 4],
+  ["process-step--first", 1],
+  ["process-step--fourth", 1],
+  ["process-step--odd", 2],
+  ["survey-tier", 4],
+  ["survey-tier--even", 2],
+  ["survey-tier--second", 1],
+  ["survey-tier--last", 1],
+  ["survey-tier--first-row", 2],
+  ["survey-tier--last-row", 2],
+  ["survey-tier-mobile--last", 1],
+  ["survey-tier__cta--mobile", 4],
+  ["solution-image", 5],
+  ["solution-row", 5],
+  ["proof-card", 3],
+  ["proof-card--tablet-wide", 2],
+  ["proof-card--mobile-default", 1],
+  ["insight-card", 3],
+  ["insight-card--tablet-wide", 1],
+  ["insight-card--mobile-default", 1],
+];
+for (const [className, expected] of componentContracts) {
+  const actual = classCount(className);
+  if (actual !== expected) failures.push(`Expected ${expected} .${className} elements, found ${actual}.`);
+}
+
 const animationFiles = ["reveals.ts", "problem.ts", "solutions.ts", "system.ts"];
 for (const animationFile of animationFiles) {
   const animationSource = await readFile(join(process.cwd(), "src", "scripts", "animations", animationFile), "utf8");
   if (/\bopacity\s*:|\bautoAlpha\s*:/.test(animationSource)) {
     failures.push(`${animationFile} must not animate readable content opacity.`);
+  }
+}
+
+const sourceContracts = [
+  ["src/styles/foundations.css", /\.section-intro\b/, "Problem intro selectors must remain with ProblemSection.astro."],
+  ["src/components/home/SurveySection.astro", /\.survey-tier__(?:label|cta)\b/, "Survey child selectors must remain with their child components."],
+  ["src/components/home/SurveyTier.astro", /\.survey-tier__details\b/, "Survey descriptions must own their desktop detail selectors."],
+  ["src/components/home/SurveyTierMobile.astro", /\.survey-tier-mobile__details\b|\.survey-tier__cta\b/, "Survey children must own their mobile detail and CTA selectors."],
+  ["src/components/home/SystemSection.astro", /\.system__evidence\b/, "Dormant System evidence selectors must not return without matching markup."],
+  ["src/components/home/SolutionRow.astro", /\.solution-row__media\b/, "Dormant solution-row media selectors must not return without matching markup."],
+];
+for (const [sourcePath, forbiddenPattern, message] of sourceContracts) {
+  const source = await readFile(join(process.cwd(), sourcePath), "utf8");
+  if (forbiddenPattern.test(source)) failures.push(message);
+}
+
+const motionRuntime = await readFile(join(process.cwd(), "src", "scripts", "motion", "runtime.ts"), "utf8");
+if (!/registerPlugin\(ScrollTrigger\)/.test(motionRuntime)) failures.push("The shared motion runtime must register ScrollTrigger.");
+const allAnimationFiles = (await readdir(join(process.cwd(), "src", "scripts", "animations"))).filter((file) => file.endsWith(".ts"));
+for (const animationFile of allAnimationFiles) {
+  const animationSource = await readFile(join(process.cwd(), "src", "scripts", "animations", animationFile), "utf8");
+  if (/from\s+["']gsap(?:\/ScrollTrigger)?["']/.test(animationSource)) {
+    failures.push(`${animationFile} must consume GSAP through the shared motion runtime.`);
+  }
+}
+
+const snapshotDirectory = join(process.cwd(), "tests", "home.visual.spec.ts-snapshots");
+const snapshotWidths = new Map([
+  ["homepage-desktop-linux.png", 1440],
+  ["homepage-narrow-linux.png", 320],
+  ["homepage-mobile-linux.png", 390],
+  ["homepage-tablet-linux.png", 834],
+  ["homepage-short-linux.png", 1280],
+  ["homepage-wide-linux.png", 1920],
+  ["homepage-ultrawide-linux.png", 2560],
+]);
+for (const [snapshotName, expectedWidth] of snapshotWidths) {
+  try {
+    const snapshot = await readFile(join(snapshotDirectory, snapshotName));
+    const isPng = snapshot.subarray(0, 8).equals(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]));
+    const actualWidth = isPng && snapshot.length >= 24 ? snapshot.readUInt32BE(16) : 0;
+    if (!isPng || actualWidth !== expectedWidth) {
+      failures.push(`Visual baseline ${snapshotName} must be a ${expectedWidth}px-wide PNG; found ${actualWidth || "an invalid file"}.`);
+    }
+  } catch {
+    failures.push(`Visual baseline is missing: ${snapshotName}.`);
   }
 }
 

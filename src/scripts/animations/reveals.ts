@@ -1,4 +1,4 @@
-import gsap from "gsap";
+import { gsap } from "../motion/runtime";
 
 export function animateReveals(): void {
   const revealItems = gsap.utils.toArray<HTMLElement>("[data-reveal]");
