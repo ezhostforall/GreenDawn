@@ -2,6 +2,7 @@ export type LeadSource = "homepage" | "ev-charging" | "power" | "aftercare";
 
 export type LeadEntryPoint =
   | "floating-launcher"
+  | "header"
   | "hero"
   | "services"
   | "pricing"

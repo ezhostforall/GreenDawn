@@ -18,7 +18,12 @@ import ArrowIcon from "../media/ArrowIcon.astro";
       <a href="#insights">Insights</a>
     </nav>
 
-    <a class="header-cta" href={liveSitePath("/enquire/")}>
+    <a
+      class="header-cta"
+      href={liveSitePath("/enquire/")}
+      data-lead-capture-open
+      data-lead-entry-point="header"
+    >
       Discuss your site
       <ArrowIcon direction="up-right" />
     </a>
@@ -38,7 +43,12 @@ import ArrowIcon from "../media/ArrowIcon.astro";
       <a href="#projects"><span>04</span>Projects</a>
       <a href="#insights"><span>05</span>Insights</a>
     </nav>
-    <a class="button button--lime" href={liveSitePath("/enquire/")}>Discuss your site <ArrowIcon direction="up-right" /></a>
+    <a
+      class="button button--lime"
+      href={liveSitePath("/enquire/")}
+      data-lead-capture-open
+      data-lead-entry-point="header"
+    >Discuss your site <ArrowIcon direction="up-right" /></a>
     <p><a href={siteConfig.phone.href}>{siteConfig.phone.display}</a> · <a href={liveSitePath("/customer-care/")}>Support</a></p>
   </div>
 
@@ -51,6 +61,7 @@ import ArrowIcon from "../media/ArrowIcon.astro";
         <a href="#aftercare">Aftercare</a>
         <a href="#projects">Projects</a>
         <a href="#insights">Insights</a>
+        <a href={liveSitePath("/enquire/")}>Discuss your site</a>
       </nav>
     </details>
   </noscript>

@@ -20,11 +20,12 @@ The later WordPress handoff should change only `submitLead()` to call a same-ori
 
 ## User experience
 
-One component is opened from three controlled entry points:
+One component is opened from four controlled entry-point categories. The header category has separate desktop and mobile triggers, so the page renders five triggers in total:
 
 | Entry point | Controlled value | No-JavaScript behaviour |
 | --- | --- | --- |
 | Floating launcher | `floating-launcher` | Hidden |
+| Header CTA | `header` | Links to the live enquiry page; the no-JavaScript mobile navigation includes the same fallback |
 | Hero CTA | `hero` | Links to the live enquiry page |
 | Final CTA | `final-cta` | Links to the live enquiry page |
 
@@ -108,7 +109,7 @@ Event detail is restricted to `source`, `entryPoint`, `intent` and `projectStage
 
 ## Testing
 
-Static validation checks the single dialog, three entry points, missing form action, mock submission boundary, absence of live network/webhook code, no-JavaScript rule and PII-safe event boundary.
+Static validation checks the single dialog, five rendered triggers, missing form action, mock submission boundary, absence of live network/webhook code, no-JavaScript rule and PII-safe event boundary.
 
 Playwright coverage in `tests/home.spec.ts` verifies:
 

@@ -28,7 +28,7 @@ function isLeadIntent(value: string): value is LeadIntent {
 }
 
 function isLeadEntryPoint(value: string): value is LeadEntryPoint {
-  return ["floating-launcher", "hero", "services", "pricing", "final-cta", "footer-cta"].includes(value);
+  return ["floating-launcher", "header", "hero", "services", "pricing", "final-cta", "footer-cta"].includes(value);
 }
 
 function isLeadSource(value: string): value is LeadSource {
@@ -362,7 +362,9 @@ export function initialiseLeadCapture(root: ParentNode = document): () => void {
 
   const open = (trigger: HTMLElement): void => {
     if (submitted) reset();
-    opener = trigger;
+    opener = trigger.closest(".mobile-nav")
+      ? root.querySelector<HTMLElement>(".menu-toggle") ?? trigger
+      : trigger;
     const requestedEntryPoint = trigger.dataset.leadEntryPoint ?? "floating-launcher";
     entryPoint = isLeadEntryPoint(requestedEntryPoint) ? requestedEntryPoint : "floating-launcher";
     if (typeof dialog.showModal === "function") dialog.showModal();

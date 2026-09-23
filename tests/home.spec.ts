@@ -162,6 +162,29 @@ test("mobile navigation closes cleanly and returns focus", async ({ page, isMobi
   await expect(page.locator("body")).not.toHaveClass(/menu-open/);
 });
 
+test("header CTAs open the shared lead capture and return focus safely", async ({ page }, testInfo) => {
+  test.skip(!["desktop", "narrow"].includes(testInfo.project.name), "Check one desktop and one mobile header route");
+  const dialog = page.getByRole("dialog", { name: "Request a callback" });
+  const menuToggle = page.locator(".menu-toggle");
+  const trigger = testInfo.project.name === "narrow"
+    ? page.locator(".mobile-nav").getByRole("link", { name: "Discuss your site" })
+    : page.locator(".header-cta");
+
+  if (testInfo.project.name === "narrow") {
+    await menuToggle.click();
+    await expect(page.locator("body")).toHaveClass(/menu-open/);
+  }
+
+  await expect(trigger).toHaveAttribute("href", "https://greendawn.co.uk/enquire/");
+  await expect(trigger).toHaveAttribute("data-lead-entry-point", "header");
+  await trigger.click();
+  await expect(dialog).toBeVisible();
+  await expect(page.locator("body")).not.toHaveClass(/menu-open/);
+  await dialog.getByRole("button", { name: "Close callback form" }).click();
+  await expect(dialog).not.toBeVisible();
+  await expect(testInfo.project.name === "narrow" ? menuToggle : trigger).toBeFocused();
+});
+
 test("lead capture completes the contextual callback flow without a network submission", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop", "Run the complete lead flow once");
   const postRequests: string[] = [];
@@ -486,13 +509,14 @@ test.describe("without JavaScript", () => {
     await expect(page.locator("[data-reveal]").first()).toBeVisible();
     await expect(page.locator(".lead-capture__launcher")).toBeHidden();
     const enquiryLinks = page.locator('[data-lead-capture-open][href="https://greendawn.co.uk/enquire/"]');
-    await expect(enquiryLinks).toHaveCount(2);
+    await expect(enquiryLinks).toHaveCount(4);
 
     if ((page.viewportSize()?.width ?? 0) <= 1200) {
       const fallback = page.locator(".no-js-nav");
       await expect(page.locator(".menu-toggle")).toBeHidden();
       await expect(fallback).toBeVisible();
       await fallback.locator("summary").click();
+      await expect(fallback.getByRole("link", { name: "Discuss your site" })).toHaveAttribute("href", "https://greendawn.co.uk/enquire/");
       await fallback.getByRole("link", { name: "Aftercare" }).click();
     } else {
       await page.locator(".desktop-nav").getByRole("link", { name: "Aftercare" }).click();

@@ -122,7 +122,9 @@ if (!/html\.no-js\s+\.lead-capture\s*\{[^}]*display\s*:\s*none/i.test(compiledCs
 const leadDialogCount = matches(/<dialog\b[^>]*\bdata-lead-dialog(?:\s|=|>)/gi).length;
 if (leadDialogCount !== 1) failures.push(`Expected one shared lead-capture dialog, found ${leadDialogCount}.`);
 const leadTriggerCount = matches(/\bdata-lead-capture-open(?:\s|=|>)/gi).length;
-if (leadTriggerCount !== 3) failures.push(`Expected three lead-capture entry points, found ${leadTriggerCount}.`);
+if (leadTriggerCount !== 5) failures.push(`Expected five rendered lead-capture triggers, found ${leadTriggerCount}.`);
+const headerLeadTriggerCount = matches(/\bdata-lead-entry-point=["']header["']/gi).length;
+if (headerLeadTriggerCount !== 2) failures.push(`Expected desktop and mobile header lead triggers, found ${headerLeadTriggerCount}.`);
 const leadFormTag = html.match(/<form\b[^>]*\bdata-lead-form(?:\s|=|>)[^>]*>/i)?.[0] ?? "";
 if (!leadFormTag) failures.push("The lead-capture form is missing from the static output.");
 if (/\saction\s*=/.test(leadFormTag)) failures.push("The prototype lead form must not declare a live submission action.");
