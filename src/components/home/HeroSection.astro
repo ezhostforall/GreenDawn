@@ -34,7 +34,12 @@ import { liveSitePath } from "../../lib/urls";
         One Greendawn team brings site planning, power, charging equipment and ongoing support into one accountable delivery relationship.
       </p>
       <div class="hero__actions" data-hero-item>
-        <a class="button button--lime" href={liveSitePath("/enquire/")}>
+        <a
+          class="button button--lime"
+          href={liveSitePath("/enquire/")}
+          data-lead-capture-open
+          data-lead-entry-point="hero"
+        >
           Discuss your site <ArrowIcon direction="up-right" />
         </a>
         <a class="text-link text-link--light" href="#projects">

@@ -5,6 +5,20 @@ const distDirectory = join(process.cwd(), "dist");
 const html = await readFile(join(distDirectory, "index.html"), "utf8");
 const failures = [];
 
+const sourceStylesDirectory = join(process.cwd(), "src", "styles");
+const sourceStyleFiles = await readdir(sourceStylesDirectory);
+const legacyStyles = ["home.css", "responsive.css", "navigation.css", "footer.css"];
+for (const legacyStyle of legacyStyles) {
+  if (sourceStyleFiles.includes(legacyStyle)) failures.push(`Legacy stylesheet must be removed: src/styles/${legacyStyle}.`);
+}
+
+const globalCss = await readFile(join(sourceStylesDirectory, "global.css"), "utf8");
+const globalImports = [...globalCss.matchAll(/@import\s+["']\.\/([^"']+)["']\s*;/g)].map((match) => match[1]);
+const expectedGlobalImports = ["tokens.css", "foundations.css", "primitives.css"];
+if (JSON.stringify(globalImports) !== JSON.stringify(expectedGlobalImports)) {
+  failures.push(`global.css imports must be exactly ${expectedGlobalImports.join(", ")}; found ${globalImports.join(", ") || "none"}.`);
+}
+
 const matches = (expression) => [...html.matchAll(expression)];
 const renderedClasses = matches(/\sclass=["']([^"']*)["']/gi).flatMap((match) => match[1].split(/\s+/).filter(Boolean));
 const classCount = (className) => renderedClasses.filter((value) => value === className).length;
@@ -94,8 +108,28 @@ if (!html.includes("£200") || !html.includes("£1,500")) failures.push("Expecte
 if (/\.js\s+\[data-reveal\][^{]*\{[^}]*visibility\s*:\s*hidden/i.test(compiledCss)) {
   failures.push("Reveal content is hidden by CSS before JavaScript runs.");
 }
+if (!/<html\b[^>]*class=["'][^"']*\bno-js\b/i.test(html)) failures.push("The document must advertise its no-JavaScript baseline state.");
+if (!/classList\.replace\(["']no-js["'],\s*["']js["']\)/.test(html)) failures.push("The early JavaScript capability switch is missing.");
+if (!/<noscript>[\s\S]*aria-label=["']Primary navigation without JavaScript["']/i.test(html)) {
+  failures.push("The responsive no-JavaScript navigation fallback is missing.");
+}
 if (!/--focus-ring\s*:/.test(compiledCss)) failures.push("The shared focus-ring token is missing.");
 if (!/(?:max-height\s*:\s*44rem|height\s*<=\s*44rem)/.test(compiledCss)) failures.push("Short-viewport responsive rules are missing.");
+if (!/html\.no-js\s+\.lead-capture\s*\{[^}]*display\s*:\s*none/i.test(compiledCss)) {
+  failures.push("The lead-capture enhancement must stay hidden in the no-JavaScript baseline.");
+}
+
+const leadDialogCount = matches(/<dialog\b[^>]*\bdata-lead-dialog(?:\s|=|>)/gi).length;
+if (leadDialogCount !== 1) failures.push(`Expected one shared lead-capture dialog, found ${leadDialogCount}.`);
+const leadTriggerCount = matches(/\bdata-lead-capture-open(?:\s|=|>)/gi).length;
+if (leadTriggerCount !== 3) failures.push(`Expected three lead-capture entry points, found ${leadTriggerCount}.`);
+const leadFormTag = html.match(/<form\b[^>]*\bdata-lead-form(?:\s|=|>)[^>]*>/i)?.[0] ?? "";
+if (!leadFormTag) failures.push("The lead-capture form is missing from the static output.");
+if (/\saction\s*=/.test(leadFormTag)) failures.push("The prototype lead form must not declare a live submission action.");
+const companyInputTag = html.match(/<input\b(?=[^>]*\bname=["']company["'])[^>]*>/i)?.[0] ?? "";
+if (!companyInputTag || !/\srequired(?:\s|=|>)/i.test(companyInputTag)) {
+  failures.push("The lead-capture company field must be present and required.");
+}
 
 const componentContracts = [
   ["trust-client", 2],
@@ -151,6 +185,29 @@ const sourceContracts = [
 for (const [sourcePath, forbiddenPattern, message] of sourceContracts) {
   const source = await readFile(join(process.cwd(), sourcePath), "utf8");
   if (forbiddenPattern.test(source)) failures.push(message);
+}
+
+const leadSubmitSource = await readFile(join(process.cwd(), "src", "scripts", "lead-capture", "submit.ts"), "utf8");
+if (!/export\s+async\s+function\s+submitLead\b/.test(leadSubmitSource)) {
+  failures.push("Lead submission must remain isolated behind the typed submitLead boundary.");
+}
+if (!/console\.(?:log|info)\s*\(/.test(leadSubmitSource)) failures.push("The Stage 3 mock submission must log its payload locally.");
+if (/\bfetch\s*\(|XMLHttpRequest|sendBeacon|hooks\.zapier\.com|webhook/i.test(leadSubmitSource.replace(/\/\*[\s\S]*?\*\//g, ""))) {
+  failures.push("The Stage 3 prototype must not contain a live network or webhook submission.");
+}
+
+const leadEventSource = await readFile(join(process.cwd(), "src", "scripts", "lead-capture", "events.ts"), "utf8");
+if (!/greendawn:lead-funnel/.test(leadEventSource)) failures.push("The PII-safe lead analytics boundary is missing.");
+if (/detail\s*:\s*\{[^}]*(?:name|phone|email|company|notes)/s.test(leadEventSource)) {
+  failures.push("Lead funnel events must not include personally identifiable or free-text fields.");
+}
+
+const leadTypesSource = await readFile(join(process.cwd(), "src", "types", "lead.ts"), "utf8");
+if (!/interface\s+LeadSubmission\s*\{[\s\S]*?\bcompany\s*:\s*string\s*;/m.test(leadTypesSource)) {
+  failures.push("LeadSubmission must require a company name for commercial-enquiry qualification.");
+}
+if (/interface\s+LeadSubmission\s*\{[\s\S]*?\bcompany\s*\?\s*:/m.test(leadTypesSource)) {
+  failures.push("LeadSubmission company must not be optional.");
 }
 
 const motionRuntime = await readFile(join(process.cwd(), "src", "scripts", "motion", "runtime.ts"), "utf8");

@@ -41,6 +41,19 @@ import ArrowIcon from "../media/ArrowIcon.astro";
     <a class="button button--lime" href={liveSitePath("/enquire/")}>Discuss your site <ArrowIcon direction="up-right" /></a>
     <p><a href={siteConfig.phone.href}>{siteConfig.phone.display}</a> · <a href={liveSitePath("/customer-care/")}>Support</a></p>
   </div>
+
+  <noscript>
+    <details class="no-js-nav">
+      <summary>Navigation</summary>
+      <nav aria-label="Primary navigation without JavaScript">
+        <a href="#process">How we work</a>
+        <a href="#who-we-help">Who we help</a>
+        <a href="#aftercare">Aftercare</a>
+        <a href="#projects">Projects</a>
+        <a href="#insights">Insights</a>
+      </nav>
+    </details>
+  </noscript>
 </header>
 
 <style is:global>
@@ -139,7 +152,8 @@ body.menu-open {
 }
 
 .menu-toggle,
-.mobile-nav {
+.mobile-nav,
+.no-js-nav {
   display: none;
 }
 
@@ -180,6 +194,55 @@ body.menu-open {
     border-radius: var(--radius-sm);
     background: transparent;
     cursor: pointer;
+  }
+
+  html.no-js .menu-toggle {
+    display: none;
+  }
+
+  .no-js-nav {
+    position: absolute;
+    z-index: 102;
+    top: 50%;
+    right: max(1.25rem, calc((100% - var(--shell)) / 2));
+    display: block;
+    transform: translateY(-50%);
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+  }
+
+  .no-js-nav summary {
+    min-width: 7.5rem;
+    min-height: 2.8rem;
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    background: var(--navy-950);
+    cursor: pointer;
+    list-style-position: inside;
+    padding: 0.72rem 0.85rem;
+  }
+
+  .no-js-nav nav {
+    position: absolute;
+    top: calc(100% + 0.5rem);
+    right: 0;
+    display: grid;
+    width: min(20rem, calc(100vw - 2rem));
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-sm);
+    background: var(--navy-950);
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+  }
+
+  .no-js-nav nav a {
+    min-height: 3rem;
+    border-bottom: 1px solid var(--border-light);
+    padding: 0.85rem 1rem;
+  }
+
+  .no-js-nav nav a:last-child {
+    border-bottom: 0;
   }
 
   .menu-toggle > span:not(.sr-only) {

@@ -3,6 +3,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteFooter from "../components/layout/SiteFooter.astro";
 import SiteHeader from "../components/layout/SiteHeader.astro";
 import UtilityBar from "../components/layout/UtilityBar.astro";
+import LeadCapture from "../components/lead/LeadCapture.astro";
 import AftercareSection from "../components/home/AftercareSection.astro";
 import FeaturedProjectSection from "../components/home/FeaturedProjectSection.astro";
 import FinalCtaSection from "../components/home/FinalCtaSection.astro";
@@ -42,6 +43,7 @@ import TrustSection from "../components/home/TrustSection.astro";
   </main>
 
   <SiteFooter />
+  <LeadCapture source="homepage" />
 
   <script>
     import "../scripts/home";

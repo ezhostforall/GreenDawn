@@ -33,13 +33,15 @@ CI uses Node 24. `.node-version` is provided for local version managers. Astro 7
 src/
 ├── components/
 │   ├── home/          # Homepage sections and reusable section children
+│   ├── lead/          # Reusable callback lead-capture UI
 │   ├── layout/        # Header, footer and utility navigation UI
 │   └── media/         # Responsive image and icon components
 ├── config/
 │   └── site.ts        # Site-wide contact/company configuration
 ├── content/
 │   ├── claims.ts      # Approved/held public claims and evidence status
-│   └── home.ts        # Structured homepage and survey content
+│   ├── home.ts        # Structured homepage and survey content
+│   └── lead-capture.ts # Typed lead questions and controlled choices
 ├── layouts/
 │   └── BaseLayout.astro
 ├── lib/
@@ -48,6 +50,7 @@ src/
 │   └── index.astro    # Page composition only
 ├── scripts/
 │   ├── animations/    # Section-specific GSAP behaviour
+│   ├── lead-capture/  # Lead controller, events and submission boundary
 │   ├── motion/         # Shared GSAP/ScrollTrigger lifecycle runtime
 │   ├── navigation.ts  # Menu/header behaviour
 │   └── home.ts        # Homepage client-script orchestrator
@@ -55,13 +58,10 @@ src/
 │   ├── tokens.css      # Brand/design tokens
 │   ├── foundations.css # Reset, typography and global layout foundations
 │   ├── primitives.css  # Shared visual primitives and their responsive states
-│   ├── navigation.css  # Phase 5 migration placeholder
-│   ├── home.css        # Phase 5 migration placeholder
-│   ├── footer.css      # Phase 5 migration placeholder
-│   ├── responsive.css  # Remaining global responsive foundations
 │   └── global.css      # Ordered stylesheet entry point
 └── types/
-    └── home.ts        # Shared homepage content types
+    ├── home.ts        # Shared homepage content types
+    └── lead.ts        # Lead payload and funnel-event domain types
 ```
 
 ## Refactor principles
@@ -74,11 +74,11 @@ src/
 - Existing CSS class names and visual output are preserved during this structural refactor.
 - GitHub Pages `BASE_URL` support remains centralised in `src/lib/urls.ts`.
 
-The refactor is governed by the locked [refactor baseline](docs/refactor-baseline.md), [style ownership register](docs/style-ownership-register.md), [Phase 2 change record](docs/refactor-phase-02.md), [Phase 3 change record](docs/refactor-phase-03.md) and [Phase 4 change record](docs/refactor-phase-04.md). Those records define the regression gates, component boundaries, selector ownership, motion lifecycle and composition rules.
+The refactor is governed by the locked [refactor baseline](docs/refactor-baseline.md), [style ownership register](docs/style-ownership-register.md), [Phase 2 change record](docs/refactor-phase-02.md), [Phase 3 change record](docs/refactor-phase-03.md), [Phase 4 change record](docs/refactor-phase-04.md) and [Phase 5/6 change record](docs/refactor-phase-05-06.md). Those records define the regression gates, component boundaries, selector ownership, motion lifecycle and composition rules.
 
 ## Design system
 
-The existing visual rules are preserved but separated by responsibility. `src/styles/global.css` remains the ordered entry point for tokens, global foundations, genuinely shared primitives and the temporary Phase 5 stylesheet placeholders. Component-specific base and responsive rules now live beside their Astro owners. Repeated child components expose typed content and explicit visual variants instead of relying on positional selectors across component boundaries.
+The existing visual rules are preserved but separated by responsibility. `src/styles/global.css` imports only tokens, global foundations and genuinely shared primitives. Component-specific base and responsive rules live beside their Astro owners. Repeated child components expose typed content and explicit visual variants instead of relying on positional selectors across component boundaries.
 
 Current role-based tokens include dark navy surfaces, warm off-white, electric lime, violet and coral, with Bricolage Grotesque, Archivo and JetBrains Mono. The exact Latin font weights used by the page are bundled locally through Fontsource, avoiding render-blocking third-party font requests.
 
@@ -92,7 +92,15 @@ Readable content is never faded through low-opacity states. Motion uses transfor
 
 Pinned and parallax sequences are restricted to fine-pointer desktop layouts with enough viewport height. Mobile, tablet and short-height layouts retain the complete narrative without scroll pinning. Image focal points are defined per asset for desktop and mobile crops.
 
-The navigation closes and restores page scrolling when the layout crosses the desktop breakpoint.
+The navigation closes and restores page scrolling when the layout crosses the desktop breakpoint. A native `<noscript>` disclosure keeps primary navigation available on responsive layouts when JavaScript is unavailable.
+
+## Lead capture prototype
+
+`src/components/lead/LeadCapture.astro` provides one reusable callback tool shared by the floating launcher, hero CTA and final conversion CTA. It uses a native dialog, strict TypeScript and the existing design tokens without adding a UI framework or form dependency. The launcher is a desktop drawer and mobile bottom sheet; the existing CTA URLs remain usable enquiry-page fallbacks when JavaScript is unavailable.
+
+This GitHub Pages stage deliberately performs no network submission. `src/scripts/lead-capture/submit.ts` logs the typed payload, waits 400ms and resolves to a truthful development success state. The eventual WordPress/PHP handoff is isolated to that transport boundary. `greendawn:lead-funnel` custom events expose only controlled, non-PII context so the later analytics phase can subscribe without coupling analytics code to the component.
+
+The implementation contract, payload, event boundary and production handoff are documented in [Lead capture Stage 3](docs/lead-capture-stage-03.md).
 
 ## Deployment
 
@@ -104,11 +112,11 @@ The following are intentionally **not** part of this refactor:
 
 - visual/admin content editing;
 - Supabase database/authentication;
-- contact-form backend and email delivery;
+- lead-capture backend, validation, routing and email/Trello delivery;
 - a headless CMS;
 - moving from static GitHub Pages preview hosting to a server-capable production target.
 
-Those should be designed after the static public-site boundaries and content model are established. An admin interface will require authentication, authorisation and a persistent content/media store, while a server-handled contact form will require a runtime that GitHub Pages cannot provide directly.
+Those should be designed after the static public-site boundaries and content model are established. An admin interface will require authentication, authorisation and a persistent content/media store, while production lead delivery will require the planned WordPress/PHP runtime rather than GitHub Pages.
 
 ## Content and launch notes
 

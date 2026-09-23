@@ -13,7 +13,12 @@ import ArrowIcon from "../media/ArrowIcon.astro";
     <h2>EV charging you don’t have to manage.</h2>
     <p>Tell us what the site or estate needs to achieve. We’ll explain the sensible next step, including whether a paid technical survey is appropriate.</p>
     <div class="final-cta__actions">
-      <a class="button button--navy" href={liveSitePath("/enquire/")}>Discuss your site <ArrowIcon direction="up-right" /></a>
+      <a
+        class="button button--navy"
+        href={liveSitePath("/enquire/")}
+        data-lead-capture-open
+        data-lead-entry-point="final-cta"
+      >Discuss your site <ArrowIcon direction="up-right" /></a>
       <p>Prefer to speak first? <a href={siteConfig.phone.href}>{siteConfig.phone.display}</a></p>
     </div>
     <ol>

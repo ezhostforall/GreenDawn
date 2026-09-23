@@ -8,7 +8,7 @@ The global CSS foundation is complete. Shared visual rules now live in `src/styl
 
 ## Phase 3 status
 
-All 15 vertical migrations are complete. Component-owned base, responsive, touch and short-height rules now live beside their Astro owners. Coherent repeated children were extracted with typed props and native-attribute forwarding, and former cross-boundary positional dependencies use explicit variants. Problem intro rules are no longer global; shared Survey description and CTA DOM now own their styles without parent reach-through. Animation and navigation hooks remain unchanged. The legacy global stylesheet files remain imported as Phase 5 placeholders until final ownership searches and browser verification are complete.
+All 15 vertical migrations are complete. Component-owned base, responsive, touch and short-height rules now live beside their Astro owners. Coherent repeated children were extracted with typed props and native-attribute forwarding, and former cross-boundary positional dependencies use explicit variants. Problem intro rules are no longer global; shared Survey description and CTA DOM now own their styles without parent reach-through. Animation and navigation hooks remain unchanged. Phase 5 removed the four legacy stylesheets after final ownership searches: responsive design-token overrides now belong to `tokens.css`, while global heading, section-spacing and reduced-motion rules belong to `foundations.css`.
 
 ## Phase 4 status
 

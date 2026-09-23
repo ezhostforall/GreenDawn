@@ -52,3 +52,28 @@
   --radius-lg: 1.35rem;
   --focus-ring: var(--violet);
 }
+
+@media (max-width: 75rem) {
+  :root {
+    --shell: min(100% - 2.5rem, 76rem);
+  }
+}
+
+@media (max-width: 61rem) {
+  :root {
+    --shell: min(100% - 2rem, 58rem);
+  }
+}
+
+@media (max-width: 42rem) {
+  :root {
+    --shell: min(100% - 1.5rem, 39rem);
+    --step--1: clamp(0.91rem, 0.88rem + 0.16vw, 0.98rem);
+  }
+}
+
+@media (max-width: 30rem) {
+  :root {
+    --shell: min(100% - 1.25rem, 28rem);
+  }
+}

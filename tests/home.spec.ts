@@ -162,6 +162,112 @@ test("mobile navigation closes cleanly and returns focus", async ({ page, isMobi
   await expect(page.locator("body")).not.toHaveClass(/menu-open/);
 });
 
+test("lead capture completes the contextual callback flow without a network submission", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop", "Run the complete lead flow once");
+  const postRequests: string[] = [];
+  const consoleMessages: string[] = [];
+  page.on("request", (request) => {
+    if (request.method() === "POST") postRequests.push(request.url());
+  });
+  page.on("console", (message) => consoleMessages.push(message.text()));
+  await page.evaluate(() => {
+    const eventStore: unknown[] = [];
+    Object.assign(window, { __greendawnLeadEvents: eventStore });
+    window.addEventListener("greendawn:lead-funnel", (event) => {
+      eventStore.push((event as CustomEvent).detail);
+    });
+  });
+
+  const launcher = page.getByRole("button", { name: "Talk to Greendawn" });
+  await launcher.click();
+  const dialog = page.getByRole("dialog", { name: "Request a callback" });
+  await expect(dialog).toBeVisible();
+  await expect(page.locator("body")).toHaveClass(/lead-capture-open/);
+  await expect(dialog.locator("legend", { hasText: "What can we help with?" })).toBeFocused();
+  const openDialogA11y = await new AxeBuilder({ page }).include(".lead-capture__dialog").analyze();
+  expect(openDialogA11y.violations.filter((violation) =>
+    ["serious", "critical"].includes(violation.impact ?? ""),
+  )).toEqual([]);
+
+  await dialog.getByRole("radio", { name: /^EV charging$/ }).check();
+  await dialog.getByRole("button", { name: "Continue" }).click();
+  await expect(dialog.getByRole("group", { name: "What best describes the site?" })).toBeVisible();
+  await dialog.getByLabel("Fleet / depot").check();
+  await dialog.getByRole("button", { name: "Continue" }).click();
+  await dialog.getByLabel("Need a quote").check();
+  await dialog.getByRole("button", { name: "Continue" }).click();
+  await dialog.getByLabel("Town, city or postcode Optional").fill("Birmingham");
+  await dialog.getByRole("button", { name: "Continue" }).click();
+
+  await dialog.getByLabel("First name").fill("Test");
+  await dialog.getByLabel("Telephone number").fill("0121 555 0100");
+  await dialog.getByLabel("Company name").fill("Test Organisation");
+  await dialog.getByLabel("Today").check();
+  await dialog.getByText("Add email or project details").click();
+  await dialog.getByLabel("Email").fill("test@example.com");
+  await dialog.getByRole("button", { name: "Request callback" }).click();
+
+  await expect(dialog.getByRole("heading", { name: "Your callback details are ready." })).toBeVisible();
+  await expect(dialog.getByText("it has not sent or stored a request", { exact: false })).toBeVisible();
+  expect(postRequests).toEqual([]);
+  expect(consoleMessages.some((message) => message.includes("[Greendawn lead payload]"))).toBe(true);
+
+  const funnelEvents = await page.evaluate(() =>
+    (window as Window & { __greendawnLeadEvents?: Array<Record<string, unknown>> }).__greendawnLeadEvents ?? [],
+  );
+  expect(funnelEvents.map(({ event }) => event)).toEqual([
+    "lead_tool_opened",
+    "lead_intent_selected",
+    "lead_callback_started",
+    "lead_callback_submitted",
+  ]);
+  expect(funnelEvents.every((event) =>
+    !["name", "phone", "email", "company", "notes"].some((field) => field in event),
+  )).toBe(true);
+
+  await dialog.getByRole("button", { name: "Close", exact: true }).click();
+  await expect(dialog).not.toBeVisible();
+  await expect(launcher).toBeFocused();
+  await expect(page.locator("body")).not.toHaveClass(/lead-capture-open/);
+});
+
+test("lead capture supports the direct route, inline errors and Escape focus return", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop", "Run the direct lead flow once");
+  const launcher = page.getByRole("button", { name: "Talk to Greendawn" });
+  await launcher.click();
+  const dialog = page.getByRole("dialog", { name: "Request a callback" });
+  await dialog.getByRole("button", { name: "Just request a callback" }).click();
+  await expect(dialog.getByRole("heading", { name: "How should we reach you?" })).toBeVisible();
+  await dialog.getByRole("button", { name: "Request callback" }).click();
+  await expect(dialog.locator('[data-lead-error-for="name"]')).toHaveText("Enter your first name.");
+  await expect(dialog.locator('[data-lead-error-for="phone"]')).toHaveText("Enter a telephone number we can use for the callback.");
+  await expect(dialog.locator('[data-lead-error-for="company"]')).toHaveText("Enter your company name.");
+  await expect(dialog.locator('[data-lead-error-for="callbackPreference"]')).toHaveText("Choose when you would prefer Greendawn to call.");
+  await expect(dialog.getByLabel("First name")).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(dialog).not.toBeVisible();
+  await expect(launcher).toBeFocused();
+});
+
+test("lead capture stays within the narrow viewport as a bottom sheet", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "narrow", "Narrow bottom-sheet assertion only");
+  await page.getByRole("button", { name: "Talk to Greendawn" }).click();
+  const bounds = await page.locator("[data-lead-dialog]").evaluate((element) => {
+    const rect = element.getBoundingClientRect();
+    return {
+      left: rect.left,
+      right: rect.right,
+      bottom: rect.bottom,
+      viewportWidth: document.documentElement.clientWidth,
+      viewportHeight: window.visualViewport?.height ?? window.innerHeight,
+    };
+  });
+  expect(bounds.left).toBeGreaterThanOrEqual(-1);
+  expect(bounds.right).toBeLessThanOrEqual(bounds.viewportWidth + 1);
+  expect(Math.abs(bounds.bottom - bounds.viewportHeight)).toBeLessThanOrEqual(1);
+  await expectNoHorizontalOverflow(page, "Open lead-capture bottom sheet");
+});
+
 test("reduced motion keeps all content readable", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.reload();
@@ -325,4 +431,74 @@ test("presents mobile surveys as an expandable comparison", async ({ page }) => 
   await firstTier.locator("summary").click();
   await expect(firstTier).toHaveAttribute("open", "");
   await expect(firstTier.getByText("What you receive")).toBeVisible();
+});
+
+test("survives history restoration and a persisted pageshow lifecycle", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop", "Run the history lifecycle once");
+  const pageErrors: string[] = [];
+  page.on("pageerror", (error) => pageErrors.push(error.message));
+
+  await page.locator("#projects").scrollIntoViewIfNeeded();
+  await page.goto("about:blank");
+  await page.goBack({ waitUntil: "networkidle" });
+  await page.evaluate(() => {
+    window.dispatchEvent(new PageTransitionEvent("pageshow", { persisted: true }));
+  });
+  await page.waitForTimeout(50);
+
+  await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await expect(page.locator("html")).toHaveClass(/\bjs\b/);
+  await expect(page.locator("body")).not.toHaveClass(/menu-open/);
+  await expectNoHorizontalOverflow(page, "History restoration");
+  expect(pageErrors).toEqual([]);
+});
+
+test("remains stable through portrait, landscape and desktop resizing", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop", "Run the resize lifecycle once");
+  const viewports = [
+    { width: 390, height: 844, label: "portrait" },
+    { width: 844, height: 390, label: "landscape" },
+    { width: 320, height: 568, label: "narrow portrait" },
+    { width: 568, height: 320, label: "narrow landscape" },
+  ];
+
+  for (const viewport of viewports) {
+    await page.setViewportSize(viewport);
+    await page.waitForTimeout(30);
+    await expectNoHorizontalOverflow(page, `${viewport.label} resize`);
+  }
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.locator(".menu-toggle").click();
+  await expect(page.locator("body")).toHaveClass(/menu-open/);
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await expect(page.locator("body")).not.toHaveClass(/menu-open/);
+  await expect(page.locator(".menu-toggle")).toHaveAttribute("aria-expanded", "false");
+  await expectNoHorizontalOverflow(page, "Desktop resize after open mobile navigation");
+});
+
+test.describe("without JavaScript", () => {
+  test.use({ javaScriptEnabled: false });
+
+  test("keeps content and primary navigation available", async ({ page }) => {
+    await expect(page.locator("html")).toHaveClass(/\bno-js\b/);
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    await expect(page.locator("[data-reveal]").first()).toBeVisible();
+    await expect(page.locator(".lead-capture__launcher")).toBeHidden();
+    const enquiryLinks = page.locator('[data-lead-capture-open][href="https://greendawn.co.uk/enquire/"]');
+    await expect(enquiryLinks).toHaveCount(2);
+
+    if ((page.viewportSize()?.width ?? 0) <= 1200) {
+      const fallback = page.locator(".no-js-nav");
+      await expect(page.locator(".menu-toggle")).toBeHidden();
+      await expect(fallback).toBeVisible();
+      await fallback.locator("summary").click();
+      await fallback.getByRole("link", { name: "Aftercare" }).click();
+    } else {
+      await page.locator(".desktop-nav").getByRole("link", { name: "Aftercare" }).click();
+    }
+
+    await expect(page.locator("#aftercare")).toBeInViewport();
+    await expectNoHorizontalOverflow(page, "No-JavaScript layout");
+  });
 });

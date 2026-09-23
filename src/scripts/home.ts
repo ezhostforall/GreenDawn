@@ -8,10 +8,10 @@ import { initialiseSolutionStory } from "./animations/solutions";
 import { animateDesktopSystem, animateSystem } from "./animations/system";
 import { createMotionRuntime, gsap } from "./motion/runtime";
 import { initialiseNavigation } from "./navigation";
-
-document.documentElement.classList.add("js");
+import { initialiseLeadCapture } from "./lead-capture/controller";
 
 const cleanupNavigation = initialiseNavigation();
+const cleanupLeadCapture = initialiseLeadCapture();
 const motion = createMotionRuntime();
 
 if (motion.reduceMotion) {
@@ -41,6 +41,7 @@ motion.refreshWhenReady();
 
 const teardown = (): void => {
   window.removeEventListener("pagehide", onPageHide);
+  cleanupLeadCapture();
   cleanupNavigation();
   motion.destroy();
 };

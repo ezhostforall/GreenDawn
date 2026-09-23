@@ -58,6 +58,7 @@ jobs:
           pnpm run validate:brand
           pnpm run validate:build
           pnpm run test:e2e
+          pnpm run test:visual
 
       - name: Publish to gh-pages branch
         uses: peaceiris/actions-gh-pages@v4
