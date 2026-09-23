@@ -34,9 +34,10 @@ const conditionalQuestions = Object.values(leadConditionalQuestions);
     aria-haspopup="dialog"
     aria-controls={dialogId}
   >
-    <span>Talk to Greendawn</span>
+    <span>Request a callback</span>
     <svg viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M5.5 4.5h3l1.4 4-2 1.5a13.1 13.1 0 0 0 6.1 6.1l1.5-2 4 1.4v3A1.5 1.5 0 0 1 18 20C10.3 20 4 13.7 4 6a1.5 1.5 0 0 1 1.5-1.5Z" />
+      <path d="M5 5h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-8l-5 3v-3H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" />
+      <path d="M8 10h8M8 14h5" />
     </svg>
   </button>
 
@@ -46,6 +47,7 @@ const conditionalQuestions = Object.values(leadConditionalQuestions);
         <header class="lead-capture__header">
           <button class="lead-capture__icon-button" type="button" data-lead-back hidden aria-label="Go back">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14.5 5-7 7 7 7" /></svg>
+            <span>Back</span>
           </button>
           <div class="lead-capture__brand">
             <span>Greendawn</span>
@@ -70,7 +72,7 @@ const conditionalQuestions = Object.values(leadConditionalQuestions);
           <section class="lead-capture__step" data-lead-step="intent">
             <fieldset>
               <legend tabindex="-1">What can we help with?</legend>
-              <p class="lead-capture__intro">Choose the closest match. You can add detail before requesting your callback.</p>
+              <p class="lead-capture__intro">Choose the closest match to continue. You can add detail before requesting your callback.</p>
               <div class="lead-capture__choices lead-capture__choices--stacked">
                 {leadIntentChoices.map((choice) => (
                   <label class="lead-capture__option">
@@ -88,7 +90,6 @@ const conditionalQuestions = Object.values(leadConditionalQuestions);
               <p class="lead-capture__error" id="lead-error-intent" data-lead-error-for="intent" hidden></p>
             </fieldset>
             <div class="lead-capture__step-actions">
-              <button class="lead-capture__primary" type="button" data-lead-next>Continue</button>
               <button class="lead-capture__text-button" type="button" data-lead-direct>Just request a callback</button>
             </div>
           </section>
@@ -97,7 +98,7 @@ const conditionalQuestions = Object.values(leadConditionalQuestions);
             {conditionalQuestions.map((question) => (
               <fieldset data-lead-context={question.name} hidden>
                 <legend tabindex="-1">{question.legend}</legend>
-                <p class="lead-capture__intro">This helps us put the right person on the call.</p>
+                <p class="lead-capture__intro">Choose an answer to continue. This helps us put the right person on the call.</p>
                 <div class="lead-capture__choices lead-capture__choices--stacked">
                   {question.choices.map((choice) => (
                     <label class="lead-capture__option">
@@ -120,15 +121,12 @@ const conditionalQuestions = Object.values(leadConditionalQuestions);
                 ></p>
               </fieldset>
             ))}
-            <div class="lead-capture__step-actions">
-              <button class="lead-capture__primary" type="button" data-lead-next>Continue</button>
-            </div>
           </section>
 
           <section class="lead-capture__step" data-lead-step="stage" hidden>
             <fieldset>
               <legend tabindex="-1">Where are you in the process?</legend>
-              <p class="lead-capture__intro">A rough answer is fine.</p>
+              <p class="lead-capture__intro">Choose the closest answer to continue. A rough answer is fine.</p>
               <div class="lead-capture__choices lead-capture__choices--stacked">
                 {leadProjectStageChoices.map((choice) => (
                   <label class="lead-capture__option">
@@ -145,9 +143,6 @@ const conditionalQuestions = Object.values(leadConditionalQuestions);
               </div>
               <p class="lead-capture__error" id="lead-error-project-stage" data-lead-error-for="projectStage" hidden></p>
             </fieldset>
-            <div class="lead-capture__step-actions">
-              <button class="lead-capture__primary" type="button" data-lead-next>Continue</button>
-            </div>
           </section>
 
           <section class="lead-capture__step" data-lead-step="location" hidden>
@@ -182,10 +177,15 @@ const conditionalQuestions = Object.values(leadConditionalQuestions);
                 <input name="phone" type="tel" autocomplete="tel" inputmode="tel" maxlength="40" aria-describedby="lead-error-phone" required />
                 <span class="lead-capture__error" id="lead-error-phone" data-lead-error-for="phone" hidden></span>
               </label>
-              <label class="lead-capture__field lead-capture__field--wide">
+              <label class="lead-capture__field">
                 <span>Company name</span>
                 <input name="company" type="text" autocomplete="organization" maxlength="120" aria-describedby="lead-error-company" required />
                 <span class="lead-capture__error" id="lead-error-company" data-lead-error-for="company" hidden></span>
+              </label>
+              <label class="lead-capture__field">
+                <span>Email</span>
+                <input name="email" type="email" autocomplete="email" maxlength="160" aria-describedby="lead-error-email" required />
+                <span class="lead-capture__error" id="lead-error-email" data-lead-error-for="email" hidden></span>
               </label>
             </div>
 
@@ -219,13 +219,8 @@ const conditionalQuestions = Object.values(leadConditionalQuestions);
             </label>
 
             <details class="lead-capture__details" data-lead-details>
-              <summary>Add email or project details <span>Optional</span></summary>
+              <summary>Add project details <span>Optional</span></summary>
               <div class="lead-capture__details-body">
-                <label class="lead-capture__field">
-                  <span>Email</span>
-                  <input name="email" type="email" autocomplete="email" maxlength="160" aria-describedby="lead-error-email" />
-                  <span class="lead-capture__error" id="lead-error-email" data-lead-error-for="email" hidden></span>
-                </label>
                 <label class="lead-capture__field">
                   <span>Anything useful for us to know?</span>
                   <textarea name="notes" rows="4" maxlength="1500"></textarea>
@@ -348,7 +343,7 @@ html.no-js .lead-capture {
   display: grid;
   min-height: 5.25rem;
   flex: 0 0 auto;
-  grid-template-columns: 3rem 1fr 3rem;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
   align-items: center;
   gap: 0.75rem;
   border-bottom: 1px solid var(--slate-200);
@@ -356,9 +351,21 @@ html.no-js .lead-capture {
 }
 
 .lead-capture__header [data-lead-back] {
+  display: inline-flex;
+  width: auto;
+  min-width: 2.75rem;
   grid-column: 1;
   grid-row: 1;
+  align-items: center;
+  gap: 0.3rem;
   justify-self: start;
+  border-radius: 999px;
+  font: 700 0.75rem/1 var(--font-body);
+  padding: 0 0.65rem 0 0.35rem;
+}
+
+.lead-capture__header [data-lead-back] span {
+  white-space: nowrap;
 }
 
 .lead-capture__brand {
@@ -615,10 +622,6 @@ html.no-js .lead-capture {
   gap: 1rem;
 }
 
-.lead-capture__field--wide {
-  grid-column: 1 / -1;
-}
-
 .lead-capture__field {
   display: grid;
   gap: 0.45rem;
@@ -796,7 +799,7 @@ body.lead-capture-open {
 
   .lead-capture__header {
     min-height: 4.25rem;
-    grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
     gap: 0.5rem;
     padding: 0.65rem 0.85rem;
   }

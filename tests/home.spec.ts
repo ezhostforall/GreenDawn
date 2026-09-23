@@ -201,7 +201,7 @@ test("lead capture completes the contextual callback flow without a network subm
     });
   });
 
-  const launcher = page.getByRole("button", { name: "Talk to Greendawn" });
+  const launcher = page.getByRole("button", { name: "Request a callback" });
   await launcher.click();
   const dialog = page.getByRole("dialog", { name: "Request a callback" });
   await expect(dialog).toBeVisible();
@@ -213,21 +213,28 @@ test("lead capture completes the contextual callback flow without a network subm
   )).toEqual([]);
 
   await dialog.getByRole("radio", { name: /^EV charging$/ }).check();
-  await dialog.getByRole("button", { name: "Continue" }).click();
   await expect(dialog.getByRole("group", { name: "What best describes the site?" })).toBeVisible();
+  await expect(dialog.getByRole("button", { name: "Go back" })).toBeVisible();
+  await expect(dialog.getByRole("button", { name: "Go back" })).toContainText("Back");
   await dialog.getByLabel("Fleet / depot").check();
-  await dialog.getByRole("button", { name: "Continue" }).click();
+  await expect(dialog.getByRole("group", { name: "Where are you in the process?" })).toBeVisible();
   await dialog.getByLabel("Need a quote").check();
-  await dialog.getByRole("button", { name: "Continue" }).click();
+  await expect(dialog.getByRole("heading", { name: "Where is the site?" })).toBeVisible();
+  await dialog.getByRole("button", { name: "Go back" }).click();
+  await expect(dialog.getByRole("group", { name: "Where are you in the process?" })).toBeVisible();
+  await expect(dialog.getByLabel("Need a quote")).toBeChecked();
+  await dialog.getByLabel("Need a quote").click();
+  await expect(dialog.getByRole("heading", { name: "Where is the site?" })).toBeVisible();
   await dialog.getByLabel("Town, city or postcode Optional").fill("Birmingham");
   await dialog.getByRole("button", { name: "Continue" }).click();
 
   await dialog.getByLabel("First name").fill("Test");
   await dialog.getByLabel("Telephone number").fill("0121 555 0100");
   await dialog.getByLabel("Company name").fill("Test Organisation");
-  await dialog.getByLabel("Today").check();
-  await dialog.getByText("Add email or project details").click();
   await dialog.getByLabel("Email").fill("test@example.com");
+  await dialog.getByLabel("Today").check();
+  await dialog.getByText("Add project details").click();
+  await dialog.getByLabel("Anything useful for us to know?").fill("Testing the optional project details.");
   await dialog.getByRole("button", { name: "Request callback" }).click();
 
   await expect(dialog.getByRole("heading", { name: "Your callback details are ready." })).toBeVisible();
@@ -256,7 +263,7 @@ test("lead capture completes the contextual callback flow without a network subm
 
 test("lead capture supports the direct route, inline errors and Escape focus return", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop", "Run the direct lead flow once");
-  const launcher = page.getByRole("button", { name: "Talk to Greendawn" });
+  const launcher = page.getByRole("button", { name: "Request a callback" });
   await launcher.click();
   const dialog = page.getByRole("dialog", { name: "Request a callback" });
   await dialog.getByRole("button", { name: "Just request a callback" }).click();
@@ -265,6 +272,7 @@ test("lead capture supports the direct route, inline errors and Escape focus ret
   await expect(dialog.locator('[data-lead-error-for="name"]')).toHaveText("Enter your first name.");
   await expect(dialog.locator('[data-lead-error-for="phone"]')).toHaveText("Enter a telephone number we can use for the callback.");
   await expect(dialog.locator('[data-lead-error-for="company"]')).toHaveText("Enter your company name.");
+  await expect(dialog.locator('[data-lead-error-for="email"]')).toHaveText("Enter your email address.");
   await expect(dialog.locator('[data-lead-error-for="callbackPreference"]')).toHaveText("Choose when you would prefer Greendawn to call.");
   await expect(dialog.getByLabel("First name")).toBeFocused();
   await page.keyboard.press("Escape");
@@ -274,7 +282,7 @@ test("lead capture supports the direct route, inline errors and Escape focus ret
 
 test("lead capture stays within the narrow viewport as a bottom sheet", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "narrow", "Narrow bottom-sheet assertion only");
-  await page.getByRole("button", { name: "Talk to Greendawn" }).click();
+  await page.getByRole("button", { name: "Request a callback" }).click();
   const bounds = await page.locator("[data-lead-dialog]").evaluate((element) => {
     const rect = element.getBoundingClientRect();
     return {

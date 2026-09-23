@@ -57,12 +57,12 @@ export interface LeadSubmission {
   name: string;
   company: string;
   phone: string;
+  email: string;
   callbackPreference: LeadCallbackPreference;
   source: LeadSource;
   entryPoint: LeadEntryPoint;
   pageUrl: string;
   submittedAt: string;
-  email?: string;
   intent?: LeadIntent;
   projectStage?: LeadProjectStage;
   siteType?: LeadSiteType;

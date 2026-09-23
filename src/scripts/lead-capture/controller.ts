@@ -78,6 +78,14 @@ export function initialiseLeadCapture(root: ParentNode = document): () => void {
     return () => undefined;
   }
 
+  const autoAdvanceChoices = Array.from(form.querySelectorAll<HTMLInputElement>([
+    'input[type="radio"][name="intent"]',
+    'input[type="radio"][name="siteType"]',
+    'input[type="radio"][name="aftercareIssue"]',
+    'input[type="radio"][name="powerReason"]',
+    'input[type="radio"][name="projectStage"]',
+  ].join(",")));
+
   const sourceValue = component.dataset.source ?? "homepage";
   const source: LeadSource = isLeadSource(sourceValue) ? sourceValue : "homepage";
   const initialIntentValue = component.dataset.initialIntent ?? "";
@@ -253,15 +261,18 @@ export function initialiseLeadCapture(root: ParentNode = document): () => void {
       valid = false;
     }
 
-    clearError("callbackPreference");
-    if (!selectedValue(form, "callbackPreference")) {
-      showError("callbackPreference", "Choose when you would prefer Greendawn to call.", valid);
+    clearError("email");
+    if (!(email instanceof HTMLInputElement) || !email.value.trim()) {
+      showError("email", "Enter your email address.", valid);
+      valid = false;
+    } else if (!email.validity.valid) {
+      showError("email", "Enter a valid email address.", valid);
       valid = false;
     }
 
-    clearError("email");
-    if (email instanceof HTMLInputElement && email.value.trim() && !email.validity.valid) {
-      showError("email", "Enter a valid email address, or leave this optional field blank.", valid);
+    clearError("callbackPreference");
+    if (!selectedValue(form, "callbackPreference")) {
+      showError("callbackPreference", "Choose when you would prefer Greendawn to call.", valid);
       valid = false;
     }
 
@@ -274,6 +285,7 @@ export function initialiseLeadCapture(root: ParentNode = document): () => void {
       name: optionalValue(form, "name") ?? "",
       company: optionalValue(form, "company") ?? "",
       phone: optionalValue(form, "phone") ?? "",
+      email: optionalValue(form, "email") ?? "",
       callbackPreference: selectedValue<LeadCallbackPreference>(form, "callbackPreference")!,
       source,
       entryPoint,
@@ -282,7 +294,6 @@ export function initialiseLeadCapture(root: ParentNode = document): () => void {
     };
 
     const optional: Partial<LeadSubmission> = {
-      email: optionalValue(form, "email"),
       intent: currentIntent(),
       projectStage: currentStage(),
       siteType: selectedValue<LeadSiteType>(form, "siteType"),
@@ -402,6 +413,22 @@ export function initialiseLeadCapture(root: ParentNode = document): () => void {
     const control = event.target;
     if (control instanceof HTMLInputElement || control instanceof HTMLTextAreaElement) clearError(control.name);
   };
+  const onAutoAdvanceChoice = (event: Event): void => {
+    const input = event.currentTarget;
+    if (!(input instanceof HTMLInputElement) || !input.checked) return;
+
+    const expectedName = currentStep === "intent"
+      ? "intent"
+      : currentStep === "stage"
+        ? "projectStage"
+        : currentStep === "context" && currentIntent()
+          ? CONDITIONAL_FIELDS[currentIntent()!]
+          : undefined;
+
+    if (input.name !== expectedName) return;
+    clearError(input.name);
+    advance();
+  };
   const onPreferenceChange = (): void => {
     clearError("callbackPreference");
     setScheduledVisibility();
@@ -424,6 +451,7 @@ export function initialiseLeadCapture(root: ParentNode = document): () => void {
   dialog.addEventListener("close", onDialogClose);
   form.addEventListener("submit", onFormSubmit);
   form.addEventListener("input", onFieldInput);
+  autoAdvanceChoices.forEach((input) => input.addEventListener("click", onAutoAdvanceChoice));
   form.querySelectorAll<HTMLInputElement>('input[name="callbackPreference"]').forEach((input) => {
     input.addEventListener("change", onPreferenceChange);
   });
@@ -442,6 +470,7 @@ export function initialiseLeadCapture(root: ParentNode = document): () => void {
     dialog.removeEventListener("close", onDialogClose);
     form.removeEventListener("submit", onFormSubmit);
     form.removeEventListener("input", onFieldInput);
+    autoAdvanceChoices.forEach((input) => input.removeEventListener("click", onAutoAdvanceChoice));
     form.querySelectorAll<HTMLInputElement>('input[name="callbackPreference"]').forEach((input) => {
       input.removeEventListener("change", onPreferenceChange);
     });

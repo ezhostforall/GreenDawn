@@ -132,6 +132,10 @@ const companyInputTag = html.match(/<input\b(?=[^>]*\bname=["']company["'])[^>]*
 if (!companyInputTag || !/\srequired(?:\s|=|>)/i.test(companyInputTag)) {
   failures.push("The lead-capture company field must be present and required.");
 }
+const emailInputTag = html.match(/<input\b(?=[^>]*\bname=["']email["'])[^>]*>/i)?.[0] ?? "";
+if (!emailInputTag || !/\srequired(?:\s|=|>)/i.test(emailInputTag)) {
+  failures.push("The lead-capture email field must be present and required.");
+}
 
 const componentContracts = [
   ["trust-client", 2],
@@ -210,6 +214,12 @@ if (!/interface\s+LeadSubmission\s*\{[\s\S]*?\bcompany\s*:\s*string\s*;/m.test(l
 }
 if (/interface\s+LeadSubmission\s*\{[\s\S]*?\bcompany\s*\?\s*:/m.test(leadTypesSource)) {
   failures.push("LeadSubmission company must not be optional.");
+}
+if (!/interface\s+LeadSubmission\s*\{[\s\S]*?\bemail\s*:\s*string\s*;/m.test(leadTypesSource)) {
+  failures.push("LeadSubmission must require an email address.");
+}
+if (/interface\s+LeadSubmission\s*\{[\s\S]*?\bemail\s*\?\s*:/m.test(leadTypesSource)) {
+  failures.push("LeadSubmission email must not be optional.");
 }
 
 const motionRuntime = await readFile(join(process.cwd(), "src", "scripts", "motion", "runtime.ts"), "utf8");

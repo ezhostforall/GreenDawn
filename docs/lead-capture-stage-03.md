@@ -37,9 +37,9 @@ The qualified flow is:
 2. At most one conditional context question.
 3. Project stage.
 4. Optional location.
-5. Required name, company, telephone and callback preference, with optional details.
+5. Required name, company, telephone, email and callback preference, with optional project details.
 
-“Just request a callback” bypasses all qualification and opens the callback fields directly. Back navigation and closing preserve answers until a successful mock submission is reset or reopened.
+Choice-based qualification steps advance as soon as an answer is activated. The copy makes that behaviour explicit, and the back control appears after the first step. “Just request a callback” bypasses all qualification and opens the callback fields directly. Back navigation and closing preserve answers until a successful mock submission is reset or reopened.
 
 ## Component API
 
@@ -66,11 +66,12 @@ No lead-capture CSS is added to the global stylesheets. `global.css` continues t
 
 ## Payload contract
 
-`LeadSubmission` has four visitor-required fields. Requiring a company helps qualify the callback as a commercial enquiry:
+`LeadSubmission` has five visitor-required fields. Requiring a company helps qualify the callback as a commercial enquiry, while requiring email gives Greendawn a second response channel:
 
 - `name`;
 - `company`;
 - `phone`;
+- `email`;
 - `callbackPreference`.
 
 It also carries controlled qualification values where supplied, plus `source`, `entryPoint`, `pageUrl`, `submittedAt` and the `utm_source`, `utm_medium` and `utm_campaign` query values. Optional blank values are omitted from the final object.
@@ -114,6 +115,7 @@ Static validation checks the single dialog, five rendered triggers, missing form
 Playwright coverage in `tests/home.spec.ts` verifies:
 
 - the complete contextual path and constructed mock submission;
+- automatic choice progression, visible back navigation and retained answers;
 - no POST request;
 - expected funnel-event order and absence of PII;
 - the direct callback route;
@@ -136,10 +138,10 @@ The same local toolchain was used to compare the untouched Phase 5/6 archive wit
 
 | Asset | Phase 5/6 | Stage 3 | Change |
 | --- | ---: | ---: | ---: |
-| Compiled CSS, raw | 49,417 bytes | 58,611 bytes | +9,194 bytes |
-| Compiled CSS, gzip | 9,608 bytes | 11,294 bytes | +1,686 bytes |
-| Homepage JavaScript, raw | 121,616 bytes | 130,277 bytes | +8,661 bytes |
-| Homepage JavaScript, gzip | 46,588 bytes | 49,396 bytes | +2,808 bytes |
+| Compiled CSS, raw | 49,417 bytes | 59,036 bytes | +9,619 bytes |
+| Compiled CSS, gzip | 9,608 bytes | 11,478 bytes | +1,870 bytes |
+| Homepage JavaScript, raw | 121,616 bytes | 131,067 bytes | +9,451 bytes |
+| Homepage JavaScript, gzip | 46,588 bytes | 49,687 bytes | +3,099 bytes |
 
 No new dependency, stylesheet request, module-script request, image or font request was introduced. The increase is the self-contained form UI and controller.
 
