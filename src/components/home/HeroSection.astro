@@ -112,6 +112,11 @@ import { liveSitePath } from "../../lib/urls";
   stroke-width: 10;
 }
 
+html.js .hero__arc path {
+  stroke-dasharray: 2000;
+  stroke-dashoffset: 2000;
+}
+
 .hero__content {
   position: relative;
   z-index: 2;
@@ -414,6 +419,13 @@ import { liveSitePath } from "../../lib/urls";
   .hero__proof > div,
   .hero__proof > div:first-child {
     padding-inline: 0.35rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.js .hero__arc path {
+    stroke-dasharray: none;
+    stroke-dashoffset: 0;
   }
 }
 </style>

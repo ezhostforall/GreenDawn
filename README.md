@@ -75,7 +75,7 @@ src/
 - Existing CSS class names and visual output are preserved during this structural refactor.
 - GitHub Pages `BASE_URL` support remains centralised in `src/lib/urls.ts`.
 
-The refactor is governed by the locked [refactor baseline](docs/refactor-baseline.md), [style ownership register](docs/style-ownership-register.md), [Phase 2 change record](docs/refactor-phase-02.md), [Phase 3 change record](docs/refactor-phase-03.md), [Phase 4 change record](docs/refactor-phase-04.md) and [Phase 5/6 change record](docs/refactor-phase-05-06.md). Those records define the regression gates, component boundaries, selector ownership, motion lifecycle and composition rules. Subsequent reviewable changes are recorded separately in [navigation batch 01](docs/navigation-batch-01.md) and [content batch 02](docs/content-batch-02.md).
+The refactor is governed by the locked [refactor baseline](docs/refactor-baseline.md), [style ownership register](docs/style-ownership-register.md), [Phase 2 change record](docs/refactor-phase-02.md), [Phase 3 change record](docs/refactor-phase-03.md), [Phase 4 change record](docs/refactor-phase-04.md) and [Phase 5/6 change record](docs/refactor-phase-05-06.md). Those records define the regression gates, component boundaries, selector ownership, motion lifecycle and composition rules. Subsequent reviewable changes are recorded separately in [navigation batch 01](docs/navigation-batch-01.md), [content batch 02](docs/content-batch-02.md) and the [hero arc animation hotfix](docs/hero-arc-animation-hotfix.md).
 
 ## Design system
 

@@ -180,6 +180,22 @@ for (const animationFile of animationFiles) {
   }
 }
 
+const heroAnimationSource = await readFile(join(process.cwd(), "src", "scripts", "animations", "hero.ts"), "utf8");
+if (!/animatePathEntrance\(\s*["']\[data-arc-path\]["']/.test(heroAnimationSource)) {
+  failures.push("The hero arc must use the perceptible entrance-draw animation.");
+}
+if (/animatePath\(\s*["']\[data-arc-path\]["']/.test(heroAnimationSource)) {
+  failures.push("The hero arc must not use a scroll range that begins before the initial viewport.");
+}
+
+const heroComponentSource = await readFile(join(process.cwd(), "src", "components", "home", "HeroSection.astro"), "utf8");
+if (!/html\.js\s+\.hero__arc\s+path\s*\{[^}]*stroke-dashoffset\s*:\s*2000/s.test(heroComponentSource)) {
+  failures.push("The hero arc must be hidden before its entrance animation to prevent a completed-path flash.");
+}
+if (!/@media\s*\(prefers-reduced-motion:\s*reduce\)[\s\S]*?html\.js\s+\.hero__arc\s+path\s*\{[^}]*stroke-dashoffset\s*:\s*0/s.test(heroComponentSource)) {
+  failures.push("The reduced-motion hero arc must render in its complete static state.");
+}
+
 const sourceContracts = [
   ["src/styles/foundations.css", /\.section-intro\b/, "Problem intro selectors must remain with ProblemSection.astro."],
   ["src/components/home/SurveySection.astro", /\.survey-tier__(?:label|cta)\b/, "Survey child selectors must remain with their child components."],

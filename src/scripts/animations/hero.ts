@@ -1,8 +1,12 @@
 import { gsap } from "../motion/runtime";
-import { animatePath } from "./path";
+import { animatePathEntrance } from "./path";
 
 export function animateHero(): () => void {
   const timeline = gsap.timeline({ defaults: { ease: "power3.out" } });
+  const arcTween = animatePathEntrance("[data-arc-path]", {
+    delay: 0.12,
+    duration: 1.25,
+  });
 
   timeline
     .from("[data-hero-line]", {
@@ -49,14 +53,8 @@ export function animateHero(): () => void {
     });
   });
 
-  animatePath("[data-arc-path]", {
-    trigger: "[data-hero]",
-    start: "top 80%",
-    end: "55% 40%",
-    scrub: 1.2,
-  });
-
   return () => {
+    arcTween?.kill();
     timeline.kill();
     media.revert();
   };
