@@ -37,6 +37,7 @@ src/
 │   ├── layout/        # Header, footer and utility navigation UI
 │   └── media/         # Responsive image and icon components
 ├── config/
+│   ├── navigation.ts  # Canonical live-site primary navigation
 │   └── site.ts        # Site-wide contact/company configuration
 ├── content/
 │   ├── claims.ts      # Approved/held public claims and evidence status
@@ -92,7 +93,7 @@ Readable content is never faded through low-opacity states. Motion uses transfor
 
 Pinned and parallax sequences are restricted to fine-pointer desktop layouts with enough viewport height. Mobile, tablet and short-height layouts retain the complete narrative without scroll pinning. Image focal points are defined per asset for desktop and mobile crops.
 
-The navigation closes and restores page scrolling when the layout crosses the desktop breakpoint. A native `<noscript>` disclosure keeps primary navigation available on responsive layouts when JavaScript is unavailable.
+The primary navigation mirrors the current WordPress information architecture from one typed configuration. Native solution disclosures remain usable without JavaScript; the client runtime adds Escape and outside-click closure. The mobile navigation closes and restores page scrolling when the layout crosses the desktop breakpoint, and a native `<noscript>` disclosure keeps the complete primary navigation available on responsive layouts when JavaScript is unavailable.
 
 ## Lead capture prototype
 
@@ -120,6 +121,6 @@ Those should be designed after the static public-site boundaries and content mod
 
 ## Content and launch notes
 
-The homepage uses the approved Greendawn spelling throughout, separates the initial conversation from paid site surveys and publishes only claims marked as approved in `src/content/claims.ts`. Survey prices, VAT wording, scope and credit terms remain subject to final commercial and legal sign-off before production publication. The social-preview asset is a dedicated 1200 × 630 image rather than a reused 4:3 content image.
+The homepage uses the approved Greendawn spelling throughout, separates the initial conversation from paid site surveys and publishes only claims marked as approved in `src/content/claims.ts`. The header routes visitors into the existing WordPress pages while the Astro homepage is deployed as a drop-in replacement. Survey prices, VAT wording, scope and credit terms remain subject to final commercial and legal sign-off before production publication. The social-preview asset is a dedicated 1200 × 630 image rather than a reused 4:3 content image.
 
 `pnpm test` verifies the production HTML structure, fragment targets, intrinsic image dimensions, local assets, reduced-motion output, navigation behaviour, responsive overflow and serious automated accessibility findings. The approved Phase 2 Linux baselines for all seven Playwright projects are committed; `pnpm test:visual:update` must only be used after an intentional visual change has been reviewed. The naming gate fails if the incorrect company-name capitalisation appears in human-readable source files.

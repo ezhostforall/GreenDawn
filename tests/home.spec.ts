@@ -1,6 +1,18 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
 
+const canonicalPrimaryLinks = [
+  { name: "About Us", href: "https://greendawn.co.uk/about-us/" },
+  { name: "Our Projects", href: "https://greendawn.co.uk/gallery/" },
+  { name: "Aftercare", href: "https://greendawn.co.uk/aftercare/" },
+] as const;
+
+const canonicalSolutionLinks = [
+  { name: "Workplace Charging", href: "https://greendawn.co.uk/workplace-charging/" },
+  { name: "Fleet Charging", href: "https://greendawn.co.uk/fleet-charging-solutions/" },
+  { name: "Public Charging", href: "https://greendawn.co.uk/public-charging/" },
+] as const;
+
 async function expectNoHorizontalOverflow(page: Page, context: string): Promise<void> {
   const measurements = await page.evaluate(() => {
     const root = document.documentElement;
@@ -97,12 +109,43 @@ test.beforeEach(async ({ page }) => {
   await page.waitForLoadState("networkidle");
 });
 
-test("has one visible heading, working local navigation and no horizontal overflow", async ({ page }) => {
+test("has one visible heading and no horizontal overflow", async ({ page }) => {
   await expect(page.getByRole("heading", { level: 1 })).toHaveCount(1);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
   await expectNoHorizontalOverflow(page, "Initial page layout");
-  await page.locator('a[href="#surveys"]').first().click();
-  await expect(page.locator("#surveys")).toBeInViewport();
+});
+
+test("maps the primary navigation to the canonical live-site routes", async ({ page }) => {
+  await expect(page.locator(".site-header .brand")).toHaveAttribute("href", "https://greendawn.co.uk/");
+
+  const responsive = (page.viewportSize()?.width ?? 0) <= 1200;
+  if (responsive) await page.locator(".menu-toggle").click();
+
+  const navigation = responsive ? page.locator(".mobile-nav nav") : page.locator(".desktop-nav");
+  await expect(navigation).toBeVisible();
+
+  for (const link of canonicalPrimaryLinks) {
+    await expect(navigation.getByRole("link", { name: link.name, exact: true })).toHaveAttribute("href", link.href);
+  }
+
+  const solutions = navigation.locator("[data-nav-disclosure]");
+  const summary = solutions.locator("summary");
+  await expect(summary).toHaveText(/Our Solutions/);
+  await summary.click();
+  await expect(solutions).toHaveAttribute("open", "");
+
+  for (const link of canonicalSolutionLinks) {
+    await expect(solutions.getByRole("link", { name: link.name, exact: true })).toHaveAttribute("href", link.href);
+  }
+
+  await page.keyboard.press("Escape");
+  await expect(solutions).not.toHaveAttribute("open", "");
+  await expect(summary).toBeFocused();
+
+  if (responsive) {
+    await page.keyboard.press("Escape");
+    await expect(page.locator("body")).not.toHaveClass(/menu-open/);
+  }
 });
 
 test("renders the approved client logos accessibly and keeps them inside equal tiles", async ({ page }) => {
@@ -140,13 +183,6 @@ test("keeps animated sections within their local viewport bounds", async ({ page
     await page.waitForTimeout(80);
     await expectNoHorizontalOverflow(page, `${selector} animation state`);
   }
-});
-
-test("clears active navigation in sections without a matching navigation item", async ({ page }) => {
-  await page.locator("#surveys").scrollIntoViewIfNeeded();
-  await page.waitForTimeout(180);
-  await expect(page.locator('.desktop-nav a[aria-current="location"]')).toHaveCount(0);
-  await expect(page.locator('.mobile-nav nav a[aria-current="location"]')).toHaveCount(0);
 });
 
 test("mobile navigation closes cleanly and returns focus", async ({ page, isMobile }) => {
@@ -523,14 +559,28 @@ test.describe("without JavaScript", () => {
       const fallback = page.locator(".no-js-nav");
       await expect(page.locator(".menu-toggle")).toBeHidden();
       await expect(fallback).toBeVisible();
-      await fallback.locator("summary").click();
+      await fallback.locator(":scope > summary").click();
       await expect(fallback.getByRole("link", { name: "Discuss your site" })).toHaveAttribute("href", "https://greendawn.co.uk/enquire/");
-      await fallback.getByRole("link", { name: "Aftercare" }).click();
+      for (const link of canonicalPrimaryLinks) {
+        await expect(fallback.getByRole("link", { name: link.name, exact: true })).toHaveAttribute("href", link.href);
+      }
+      const solutions = fallback.locator(".no-js-nav__group");
+      await solutions.locator("summary").click();
+      for (const link of canonicalSolutionLinks) {
+        await expect(solutions.getByRole("link", { name: link.name, exact: true })).toHaveAttribute("href", link.href);
+      }
     } else {
-      await page.locator(".desktop-nav").getByRole("link", { name: "Aftercare" }).click();
+      const navigation = page.locator(".desktop-nav");
+      for (const link of canonicalPrimaryLinks) {
+        await expect(navigation.getByRole("link", { name: link.name, exact: true })).toHaveAttribute("href", link.href);
+      }
+      const solutions = navigation.locator(".desktop-nav__group");
+      await solutions.locator("summary").click();
+      for (const link of canonicalSolutionLinks) {
+        await expect(solutions.getByRole("link", { name: link.name, exact: true })).toHaveAttribute("href", link.href);
+      }
     }
 
-    await expect(page.locator("#aftercare")).toBeInViewport();
     await expectNoHorizontalOverflow(page, "No-JavaScript layout");
   });
 });

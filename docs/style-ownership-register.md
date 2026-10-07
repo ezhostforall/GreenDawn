@@ -83,7 +83,7 @@ The sum is 486 rule blocks. `global.css` contains imports only.
 | `.site-header`, `.site-header__inner` | `S1` | `SiteHeader.astro` | Absolute/fixed transition and 75rem/42rem states. |
 | `.site-header.is-scrolled` | `C1` state | `SiteHeader.astro` | `navigation.ts` toggles `is-scrolled` at 72px. |
 | `.site-header.menu-active` | `C1` state | `SiteHeader.astro` | `navigation.ts` toggles it with the mobile menu. |
-| `.desktop-nav*` | `C1` | `SiteHeader.astro`, or a `PrimaryNav.astro` only if reused | `[aria-current="location"]` is set by navigation logic. |
+| `.desktop-nav*` | `C1` | `SiteHeader.astro` | Native solution disclosure styling and canonical live-site links are owned by the header. |
 | `.header-cta` | `C1` or `G2` primitive instance | Prefer `ButtonLink` variant if computed styles can be preserved | Do not merge visually different CTAs only for naming symmetry. |
 | `.menu-toggle*`, `[aria-expanded="true"]` and positional spans | `C1` | `SiteHeader.astro` | Component must keep both line spans and `.sr-only` label. |
 | `.mobile-nav*`, `.mobile-nav.is-open` | `C1` state | `SiteHeader.astro` or `MobileNav.astro` | JS requires `.mobile-nav`, `is-open`, `aria-hidden` and `inert`. Short-height rules move too. |
@@ -156,7 +156,7 @@ These rules must be resolved explicitly; copying them into whichever component i
 | `data-header` | `SiteHeader.astro` | `navigation.ts` | Preserve. |
 | `.menu-toggle`, `.mobile-nav` | `SiteHeader.astro` | `navigation.ts`, CSS | Preserve selectors until navigation tests pass. |
 | `is-scrolled`, `menu-active`, `is-open`, `body.menu-open` | `navigation.ts` | header/mobile CSS | State names are public internal contracts for this refactor. |
-| `aria-current="location"` | `navigation.ts` | desktop/mobile nav CSS and tests | Preserve semantic state. |
+| `data-nav-disclosure`, native `open` | `SiteHeader.astro` | `navigation.ts`, header CSS and tests | Keep native disclosure semantics; the runtime adds exclusive opening, outside-click closure and Escape focus restoration. |
 | `data-hero*`, `data-arc-path` | Hero | `hero.ts`, path animation | Preserve. |
 | `data-reveal` | many sections | `reveals.ts` and reduced-motion test | Reusable primitives must forward it. |
 | `data-problem-model`, `data-fragment`, `data-problem-connector`, `data-answer` | Problem model | `problem.ts` and containment tests | Keep the complete hook set in one owner. |

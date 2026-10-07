@@ -1,21 +1,37 @@
 ---
 import { siteConfig } from "../../config/site";
+import { primaryNavigation } from "../../config/navigation";
 import { assetPath, liveSitePath } from "../../lib/urls";
 import ArrowIcon from "../media/ArrowIcon.astro";
+
+const indexedNavigation = primaryNavigation.map((item, index) => ({
+  item,
+  number: String(index + 1).padStart(2, "0"),
+}));
 ---
 
 <header class="site-header" data-header>
   <div class="site-header__inner page-shell">
-    <a class="brand" href="#top" aria-label={`${siteConfig.name} homepage`}>
+    <a class="brand" href={liveSitePath("/")} aria-label={`${siteConfig.name} homepage`}>
       <img src={assetPath("/brand/greendawn-wordmark-480.png")} alt={siteConfig.name} width="480" height="132" />
     </a>
 
     <nav class="desktop-nav" aria-label="Primary navigation">
-      <a href="#process">How we work</a>
-      <a href="#who-we-help">Who we help</a>
-      <a href="#aftercare">Aftercare</a>
-      <a href="#projects">Projects</a>
-      <a href="#insights">Insights</a>
+      {primaryNavigation.map((item) => item.kind === "link" ? (
+        <a href={liveSitePath(item.path)}>{item.label}</a>
+      ) : (
+        <details class="desktop-nav__group" data-nav-disclosure>
+          <summary>
+            {item.label}
+            <svg viewBox="0 0 12 8" aria-hidden="true" focusable="false"><path d="m1 1 5 5 5-5" /></svg>
+          </summary>
+          <div class="desktop-nav__menu">
+            {item.children.map((child) => (
+              <a href={liveSitePath(child.path)}>{child.label}<ArrowIcon /></a>
+            ))}
+          </div>
+        </details>
+      ))}
     </nav>
 
     <a
@@ -37,11 +53,22 @@ import ArrowIcon from "../media/ArrowIcon.astro";
 
   <div class="mobile-nav" id="mobile-navigation" aria-hidden="true" inert>
     <nav aria-label="Mobile navigation">
-      <a href="#process"><span>01</span>How we work</a>
-      <a href="#who-we-help"><span>02</span>Who we help</a>
-      <a href="#aftercare"><span>03</span>Aftercare</a>
-      <a href="#projects"><span>04</span>Projects</a>
-      <a href="#insights"><span>05</span>Insights</a>
+      {indexedNavigation.map(({ item, number }) => item.kind === "link" ? (
+        <a href={liveSitePath(item.path)}><span aria-hidden="true">{number}</span>{item.label}</a>
+      ) : (
+        <details class="mobile-nav__group" data-nav-disclosure>
+          <summary>
+            <span aria-hidden="true">{number}</span>
+            {item.label}
+            <svg viewBox="0 0 12 8" aria-hidden="true" focusable="false"><path d="m1 1 5 5 5-5" /></svg>
+          </summary>
+          <div class="mobile-nav__submenu">
+            {item.children.map((child) => (
+              <a href={liveSitePath(child.path)}>{child.label}<ArrowIcon /></a>
+            ))}
+          </div>
+        </details>
+      ))}
     </nav>
     <a
       class="button button--lime"
@@ -56,11 +83,18 @@ import ArrowIcon from "../media/ArrowIcon.astro";
     <details class="no-js-nav">
       <summary>Navigation</summary>
       <nav aria-label="Primary navigation without JavaScript">
-        <a href="#process">How we work</a>
-        <a href="#who-we-help">Who we help</a>
-        <a href="#aftercare">Aftercare</a>
-        <a href="#projects">Projects</a>
-        <a href="#insights">Insights</a>
+        {primaryNavigation.map((item) => item.kind === "link" ? (
+          <a href={liveSitePath(item.path)}>{item.label}</a>
+        ) : (
+          <details class="no-js-nav__group">
+            <summary>{item.label}</summary>
+            <div>
+              {item.children.map((child) => (
+                <a href={liveSitePath(child.path)}>{child.label}</a>
+              ))}
+            </div>
+          </details>
+        ))}
         <a href={liveSitePath("/enquire/")}>Discuss your site</a>
       </nav>
     </details>
@@ -109,15 +143,26 @@ body.menu-open {
   gap: clamp(1.35rem, 2.4vw, 2.7rem);
 }
 
-.desktop-nav a {
+.desktop-nav > a,
+.desktop-nav__group > summary {
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  cursor: pointer;
   font-family: var(--font-mono);
   font-size: 0.74rem;
   font-weight: 400;
   letter-spacing: 0.015em;
+  list-style: none;
 }
 
-.desktop-nav a::after {
+.desktop-nav__group > summary::-webkit-details-marker {
+  display: none;
+}
+
+.desktop-nav > a::after,
+.desktop-nav__group > summary::after {
   position: absolute;
   right: 0;
   bottom: -0.55rem;
@@ -130,14 +175,85 @@ body.menu-open {
   transition: transform 220ms ease;
 }
 
-.desktop-nav a:hover::after {
+.desktop-nav > a:hover::after,
+.desktop-nav__group > summary:hover::after,
+.desktop-nav__group[open] > summary::after {
   transform: scaleX(1);
   transform-origin: left;
 }
 
-.desktop-nav a[aria-current="location"]::after {
-  transform: scaleX(1);
-  transform-origin: left;
+.desktop-nav__group {
+  position: relative;
+}
+
+.desktop-nav__group > summary > svg,
+.mobile-nav__group > summary > svg {
+  width: 0.68rem;
+  height: 0.46rem;
+  overflow: visible;
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5;
+  transition: transform 180ms ease;
+}
+
+.desktop-nav__group[open] > summary > svg,
+.mobile-nav__group[open] > summary > svg {
+  transform: rotate(180deg);
+}
+
+.desktop-nav__menu {
+  position: absolute;
+  top: calc(100% + 1.35rem);
+  left: 50%;
+  display: grid;
+  width: 15.5rem;
+  transform: translateX(-50%);
+  border: 1px solid rgba(7, 23, 33, 0.12);
+  border-radius: var(--radius-sm);
+  background: var(--cream);
+  box-shadow: var(--shadow-lg);
+  color: var(--navy-900);
+  overflow: hidden;
+}
+
+.desktop-nav__menu::before {
+  position: absolute;
+  top: -0.42rem;
+  left: 50%;
+  width: 0.8rem;
+  height: 0.8rem;
+  transform: translateX(-50%) rotate(45deg);
+  border-top: 1px solid rgba(7, 23, 33, 0.12);
+  border-left: 1px solid rgba(7, 23, 33, 0.12);
+  background: var(--cream);
+  content: "";
+}
+
+.desktop-nav__menu a {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  min-height: 3.4rem;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid rgba(7, 23, 33, 0.1);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 0.8rem 1rem;
+  transition: background-color 180ms ease;
+}
+
+.desktop-nav__menu a:last-child {
+  border-bottom: 0;
+}
+
+.desktop-nav__menu a:hover,
+.desktop-nav__menu a:focus-visible {
+  background: var(--lime);
 }
 
 .header-cta {
@@ -222,7 +338,7 @@ body.menu-open {
     font-size: 0.76rem;
   }
 
-  .no-js-nav summary {
+  .no-js-nav > summary {
     min-width: 7.5rem;
     min-height: 2.8rem;
     border: 1px solid var(--border-light);
@@ -233,7 +349,7 @@ body.menu-open {
     padding: 0.72rem 0.85rem;
   }
 
-  .no-js-nav nav {
+  .no-js-nav > nav {
     position: absolute;
     top: calc(100% + 0.5rem);
     right: 0;
@@ -246,13 +362,42 @@ body.menu-open {
     overflow: hidden;
   }
 
-  .no-js-nav nav a {
+  .no-js-nav > nav > a,
+  .no-js-nav__group > summary {
+    display: flex;
     min-height: 3rem;
+    align-items: center;
     border-bottom: 1px solid var(--border-light);
+    cursor: pointer;
+    list-style: none;
     padding: 0.85rem 1rem;
   }
 
-  .no-js-nav nav a:last-child {
+  .no-js-nav__group > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .no-js-nav__group > summary::after {
+    margin-left: auto;
+    content: "+";
+  }
+
+  .no-js-nav__group[open] > summary::after {
+    content: "−";
+  }
+
+  .no-js-nav__group > div {
+    display: grid;
+    border-bottom: 1px solid var(--border-light);
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .no-js-nav__group a {
+    min-height: 2.75rem;
+    padding: 0.72rem 1rem 0.72rem 1.75rem;
+  }
+
+  .no-js-nav > nav > a:last-child {
     border-bottom: 0;
   }
 
@@ -318,7 +463,8 @@ body.menu-open {
     border-top: 1px solid var(--border-light);
   }
 
-  .mobile-nav nav a {
+  .mobile-nav nav > a,
+  .mobile-nav__group > summary {
     display: flex;
     min-height: 4.75rem;
     align-items: center;
@@ -329,27 +475,53 @@ body.menu-open {
     font-weight: 600;
     letter-spacing: -0.04em;
     line-height: 1;
+    cursor: pointer;
+    list-style: none;
     padding-block: 0.8rem;
   }
 
-  .mobile-nav nav span {
+  .mobile-nav__group > summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .mobile-nav nav > a > span,
+  .mobile-nav__group > summary > span {
     color: var(--lime);
     font-family: var(--font-mono);
     font-size: 0.7rem;
     letter-spacing: 0;
   }
 
-  .mobile-nav nav a[aria-current="location"] {
-    padding-left: 0.85rem;
+  .mobile-nav__group > summary > svg {
+    width: 0.9rem;
+    height: 0.6rem;
+    margin-left: auto;
   }
 
-  .mobile-nav nav a[aria-current="location"]::after {
-    width: 0.65rem;
-    height: 0.65rem;
-    margin-left: auto;
-    border-radius: 50%;
-    background: var(--lime);
-    content: "";
+  .mobile-nav__submenu {
+    display: grid;
+    border-bottom: 1px solid var(--border-light);
+    background: rgba(255, 255, 255, 0.035);
+  }
+
+  .mobile-nav__submenu a {
+    display: flex;
+    min-height: 3.6rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border-bottom: 1px solid rgba(250, 249, 246, 0.09);
+    color: var(--slate-200);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    line-height: 1.3;
+    padding: 0.75rem 0.9rem 0.75rem 2.2rem;
+  }
+
+  .mobile-nav__submenu a:last-child {
+    border-bottom: 0;
   }
 
   .mobile-nav .button {
@@ -379,7 +551,8 @@ body.menu-open {
     padding-inline: max(1.25rem, env(safe-area-inset-left)) max(1.25rem, env(safe-area-inset-right));
   }
 
-  .mobile-nav nav a {
+  .mobile-nav nav > a,
+  .mobile-nav__group > summary {
     min-height: 4.3rem;
     font-size: clamp(1.75rem, 8vw, 2.75rem);
   }
@@ -390,7 +563,8 @@ body.menu-open {
     padding-top: max(5.5rem, calc(env(safe-area-inset-top) + 5rem));
   }
 
-  .mobile-nav nav a {
+  .mobile-nav nav > a,
+  .mobile-nav__group > summary {
     min-height: 3.5rem;
     font-size: clamp(1.45rem, 5.2vh, 2.2rem);
   }
