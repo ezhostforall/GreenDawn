@@ -104,7 +104,11 @@ if (!/prefers-reduced-motion\s*:\s*reduce/i.test(`${html}\n${compiledCss}`)) {
   failures.push("Reduced-motion rules are missing from the production output.");
 }
 if (/data-counter/i.test(html)) failures.push("Survey prices must not use count-up animation hooks.");
-if (!html.includes("£200") || !html.includes("£1,500")) failures.push("Expected static survey prices are missing.");
+if (!html.includes("£200") || !html.includes("+ VAT")) failures.push("The approved survey starting price and VAT wording are missing.");
+if (["£500", "£1,000", "£1,500"].some((price) => html.includes(price))) {
+  failures.push("The retired survey tier prices must not be rendered on the homepage.");
+}
+if (!html.includes("Consult · Design · Install · Manage")) failures.push("The approved public process language is missing.");
 if (/\.js\s+\[data-reveal\][^{]*\{[^}]*visibility\s*:\s*hidden/i.test(compiledCss)) {
   failures.push("Reveal content is hidden by CSS before JavaScript runs.");
 }
@@ -150,14 +154,10 @@ const componentContracts = [
   ["process-step--first", 1],
   ["process-step--fourth", 1],
   ["process-step--odd", 2],
-  ["survey-tier", 4],
-  ["survey-tier--even", 2],
-  ["survey-tier--second", 1],
-  ["survey-tier--last", 1],
-  ["survey-tier--first-row", 2],
-  ["survey-tier--last-row", 2],
-  ["survey-tier-mobile--last", 1],
-  ["survey-tier__cta--mobile", 4],
+  ["surveys__price", 1],
+  ["surveys__outcomes", 1],
+  ["survey-tier", 0],
+  ["survey-tier-mobile", 0],
   ["solution-image", 5],
   ["solution-row", 5],
   ["proof-card", 3],

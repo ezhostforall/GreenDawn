@@ -41,7 +41,7 @@ src/
 │   └── site.ts        # Site-wide contact/company configuration
 ├── content/
 │   ├── claims.ts      # Approved/held public claims and evidence status
-│   ├── home.ts        # Structured homepage and survey content
+│   ├── home.ts        # Structured homepage and retained survey-tier content
 │   └── lead-capture.ts # Typed lead questions and controlled choices
 ├── layouts/
 │   └── BaseLayout.astro
@@ -75,7 +75,7 @@ src/
 - Existing CSS class names and visual output are preserved during this structural refactor.
 - GitHub Pages `BASE_URL` support remains centralised in `src/lib/urls.ts`.
 
-The refactor is governed by the locked [refactor baseline](docs/refactor-baseline.md), [style ownership register](docs/style-ownership-register.md), [Phase 2 change record](docs/refactor-phase-02.md), [Phase 3 change record](docs/refactor-phase-03.md), [Phase 4 change record](docs/refactor-phase-04.md) and [Phase 5/6 change record](docs/refactor-phase-05-06.md). Those records define the regression gates, component boundaries, selector ownership, motion lifecycle and composition rules.
+The refactor is governed by the locked [refactor baseline](docs/refactor-baseline.md), [style ownership register](docs/style-ownership-register.md), [Phase 2 change record](docs/refactor-phase-02.md), [Phase 3 change record](docs/refactor-phase-03.md), [Phase 4 change record](docs/refactor-phase-04.md) and [Phase 5/6 change record](docs/refactor-phase-05-06.md). Those records define the regression gates, component boundaries, selector ownership, motion lifecycle and composition rules. Subsequent reviewable changes are recorded separately in [navigation batch 01](docs/navigation-batch-01.md) and [content batch 02](docs/content-batch-02.md).
 
 ## Design system
 
@@ -121,6 +121,6 @@ Those should be designed after the static public-site boundaries and content mod
 
 ## Content and launch notes
 
-The homepage uses the approved Greendawn spelling throughout, separates the initial conversation from paid site surveys and publishes only claims marked as approved in `src/content/claims.ts`. The header routes visitors into the existing WordPress pages while the Astro homepage is deployed as a drop-in replacement. Survey prices, VAT wording, scope and credit terms remain subject to final commercial and legal sign-off before production publication. The social-preview asset is a dedicated 1200 × 630 image rather than a reused 4:3 content image.
+The homepage uses the approved Greendawn spelling throughout, presents the public process as **Consult · Design · Install · Manage**, separates the initial conversation from paid site surveys and publishes only claims marked as approved in `src/content/claims.ts`. The header routes visitors into the existing WordPress pages while the Astro homepage is deployed as a drop-in replacement. The homepage now gives survey guidance and the approved starting point of **£200 + VAT** without publishing the former tier matrix; its typed data and components remain available for possible future use. The social-preview asset is a dedicated 1200 × 630 image rather than a reused 4:3 content image.
 
 `pnpm test` verifies the production HTML structure, fragment targets, intrinsic image dimensions, local assets, reduced-motion output, navigation behaviour, responsive overflow and serious automated accessibility findings. The approved Phase 2 Linux baselines for all seven Playwright projects are committed; `pnpm test:visual:update` must only be used after an intentional visual change has been reviewed. The naming gate fails if the incorrect company-name capitalisation appears in human-readable source files.

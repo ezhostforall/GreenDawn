@@ -489,15 +489,20 @@ test("uses consistent proof-card spacing and supporting type", async ({ page }) 
   expect(rhythm.every(({ fontDifference }) => fontDifference <= 1)).toBe(true);
 });
 
-test("presents mobile surveys as an expandable comparison", async ({ page }) => {
-  test.skip((page.viewportSize()?.width ?? 0) > 672, "Narrow-layout assertion only");
-  const comparison = page.locator(".surveys__mobile");
-  await expect(comparison).toBeVisible();
-  const firstTier = comparison.locator("details").first();
-  await expect(firstTier).not.toHaveAttribute("open", "");
-  await firstTier.locator("summary").click();
-  await expect(firstTier).toHaveAttribute("open", "");
-  await expect(firstTier.getByText("What you receive")).toBeVisible();
+test("presents survey guidance without a public tier comparison", async ({ page }) => {
+  const surveys = page.locator("#surveys");
+  await expect(surveys.getByRole("heading", { name: "Replace assumptions with a buildable plan." })).toBeVisible();
+  await expect(surveys.getByText("£200", { exact: true })).toBeVisible();
+  await expect(surveys.getByText("+ VAT", { exact: true })).toBeVisible();
+  await expect(surveys.locator(".surveys__outcomes li")).toHaveCount(4);
+  await expect(surveys.locator(".survey-tier, .survey-tier-mobile")).toHaveCount(0);
+  await expect(surveys.getByText(/£(?:500|1,000|1,500)/)).toHaveCount(0);
+});
+
+test("uses the approved four-stage public process language", async ({ page }) => {
+  await expect(page.locator("#process .eyebrow")).toHaveText("Consult · Design · Install · Manage");
+  await expect(page.locator("#process .process-step h3")).toHaveText(["Consult", "Design", "Install", "Manage"]);
+  await expect(page.locator(".hero__proof strong")).toHaveText(["Consult", "Design", "Install", "Manage"]);
 });
 
 test("survives history restoration and a persisted pageshow lifecycle", async ({ page }, testInfo) => {

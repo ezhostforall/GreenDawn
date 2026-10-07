@@ -33,13 +33,13 @@ export const systemLayers = [
 export const processSteps = [
   {
     number: "01",
-    title: "Understand",
-    copy: "We establish the sites, vehicles, users and objectives before recommending the next technical step.",
+    title: "Consult",
+    copy: "We establish the sites, vehicles, users and objectives before recommending the right technical route.",
   },
   {
     number: "02",
-    title: "Plan",
-    copy: "Where an on-site survey is appropriate, engineers assess locations, electrical routes and constraints before design.",
+    title: "Design",
+    copy: "Where an on-site survey is appropriate, engineers assess capacity, locations, routes and constraints before agreeing the design and scope.",
   },
   {
     number: "03",
@@ -48,7 +48,7 @@ export const processSteps = [
   },
   {
     number: "04",
-    title: "Support",
+    title: "Manage",
     copy: "Agreed monitoring, testing, maintenance, user support and warranty services continue after commissioning.",
   },
 ] satisfies readonly NumberedContent[];

@@ -106,8 +106,8 @@ Every unlisted descendant that begins with a row's prefix belongs to the same ow
 | `.process`, `.process__*` | `S1` | `ProcessSection.astro` | `ProcessStep.astro`, evidence media | `data-process*`; grid-border position logic; mobile number/title alignment |
 | `.process-step*`, `first-of-type`, `nth-of-type(...)` | `C1` positional | `ProcessStep.astro` plus parent grid | Parent owns grid-edge borders; child owns number/copy |
 | `.case-study`, `.case-study__*` | `S1`/`C1` | `FeaturedProjectSection.astro` | `StatList.astro`, sticky media | `data-case-image`; `min-width: 0`; 4:3 narrow/short media; three facts |
-| `.surveys`, `.surveys__*` | `S1` | `SurveySection.astro` | `SurveyTier.astro` and `SurveyTierMobile.astro` | Desktop and mobile representations must stay semantically synchronised |
-| `.survey-tier*`, positional border rules | `C1` positional | corresponding survey-tier component and grid parent | Explicit edge props are preferable once parity is locked | 75rem/61rem border patterns; mobile details/open state |
+| `.surveys`, `.surveys__*` | `S1` | `SurveySection.astro` | None in the rendered homepage | Editorial overview, starting price and outcomes stay owned by the section |
+| `.survey-tier*`, positional border rules | `C1` positional | retained survey-tier components | Components are dormant but reusable; do not fold their rules into the active section | 75rem/61rem border patterns; mobile details/open state if reused |
 | `.solutions`, `.solutions__*` | `S1` | `SolutionsSection.astro` | `SolutionRow.astro`, `SolutionImage.astro` | `data-solution-row/image`; `is-active`; sticky media; `min-width: 0` |
 | `.solution-row*`, `.solution-image*` | `C1` state | child components within solutions | — | GSAP toggles `is-active`; touch hover must remain neutralised |
 | `.aftercare`, `.aftercare__*` | `S1`/`C1` | `AftercareSection.astro` | service item if reused | `data-aftercare`; quote responsive rules |
@@ -142,7 +142,7 @@ These rules must be resolved explicitly; copying them into whichever component i
 | --- | --- | --- |
 | `max-width: 75rem` | Navigation switch; tablet grids; section column changes | Move navigation rules with header and each section rule with its section. Keep the breakpoint exact. |
 | `max-width: 61rem` | Single-column/sticky release; card/grid reductions | Co-locate section rules; retain `min-width: 0` and media sizing. |
-| `max-width: 42rem` | Mobile typography, spacing, alternate survey UI and compact cards | Move complete mobile blocks, not isolated declarations. Keep desktop survey grid hidden and mobile details visible as a coordinated pair. |
+| `max-width: 42rem` | Mobile typography, spacing, survey overview and compact cards | Move complete mobile blocks, not isolated declarations. Keep the survey price and outcomes readable without introducing a parallel mobile DOM. |
 | `prefers-reduced-motion: reduce` | Global scroll/motion reset | Keep global reset; move future component-specific animation resets locally. |
 | `max-width: 61rem` after reduced-motion block | Clears active solution-row desktop treatment | Move to `SolutionRow`. Preserve its later cascade position or specificity. |
 | `hover: none` and `max-width: 61rem` | Cancels hover-only transforms on touch layouts | Move rules with ButtonLink, ProofCard and InsightCard. |
