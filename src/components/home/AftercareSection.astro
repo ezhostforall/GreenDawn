@@ -20,7 +20,6 @@ import ArrowIcon from "../media/ArrowIcon.astro";
         <article>
           <span>{service.number}</span>
           <h3>{service.title}</h3>
-          <p>{service.copy}</p>
         </article>
       ))}
     </div>
@@ -42,7 +41,7 @@ import ArrowIcon from "../media/ArrowIcon.astro";
   z-index: 2;
   display: grid;
   grid-template-columns: minmax(0, 0.86fr) minmax(30rem, 1.14fr);
-  gap: clamp(4rem, 10vw, 11rem);
+  gap: clamp(3rem, 8vw, 8rem);
 }
 
 .aftercare__copy h2 {
@@ -67,7 +66,7 @@ import ArrowIcon from "../media/ArrowIcon.astro";
 }
 
 .aftercare__services article {
-  min-height: 12.5rem;
+  min-height: 8.5rem;
   border-right: 1px solid var(--border-light);
   border-bottom: 1px solid var(--border-light);
   padding: clamp(1.6rem, 3vw, 2.6rem);
@@ -80,23 +79,16 @@ import ArrowIcon from "../media/ArrowIcon.astro";
 }
 
 .aftercare__services h3 {
-  margin: 1.75rem 0 0.8rem;
+  margin: 1.5rem 0 0;
   font-size: var(--step-1);
   letter-spacing: -0.025em;
-}
-
-.aftercare__services p {
-  margin-bottom: 0;
-  color: var(--slate-300);
-  font-size: var(--step--1);
-  line-height: 1.65;
 }
 
 .aftercare__quote {
   position: relative;
   z-index: 2;
   max-width: 19ch;
-  margin-top: clamp(3.5rem, 5vw, 4.75rem);
+  margin-top: clamp(2.75rem, 4vw, 3.75rem);
   margin-bottom: 0;
   margin-left: auto;
   color: var(--lime);
@@ -128,7 +120,7 @@ import ArrowIcon from "../media/ArrowIcon.astro";
   }
 
   .aftercare__services article {
-    min-height: 10.5rem;
+    min-height: 7.5rem;
   }
 
   .aftercare__quote {

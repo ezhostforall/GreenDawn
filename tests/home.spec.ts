@@ -489,6 +489,40 @@ test("uses consistent proof-card spacing and supporting type", async ({ page }) 
   expect(rhythm.every(({ fontDifference }) => fontDifference <= 1)).toBe(true);
 });
 
+test("keeps the compressed homepage focused on non-duplicated summaries", async ({ page }) => {
+  await expect(page.locator(".process__evidence")).toHaveCount(0);
+  await expect(page.locator(".proof-card")).toHaveCount(1);
+  await expect(page.locator(".proof-card--compact")).toBeVisible();
+  await expect(page.locator(".aftercare__services article")).toHaveCount(4);
+  await expect(page.locator(".aftercare__services article p")).toHaveCount(0);
+  await expect(page.locator(".final-cta ol")).toHaveCount(0);
+});
+
+test("uses canonical live-site routes in the footer without a duplicate homepage directory", async ({ page }) => {
+  const footer = page.locator(".footer");
+
+  for (const link of canonicalPrimaryLinks) {
+    await expect(footer.getByRole("link", { name: link.name, exact: true })).toHaveAttribute("href", link.href);
+  }
+  for (const link of canonicalSolutionLinks) {
+    await expect(footer.getByRole("link", { name: link.name, exact: true })).toHaveAttribute("href", link.href);
+  }
+
+  await expect(footer.getByRole("link", { name: "Customer support", exact: true })).toHaveAttribute(
+    "href",
+    "https://greendawn.co.uk/customer-care/",
+  );
+  await expect(footer.getByRole("link", { name: "Insights", exact: true })).toHaveAttribute(
+    "href",
+    "https://greendawn.co.uk/blog/",
+  );
+  await expect(footer.getByRole("link", { name: "Discuss your site", exact: true })).toHaveAttribute(
+    "href",
+    "https://greendawn.co.uk/enquire/",
+  );
+  await expect(footer.locator('a[href^="#"]')).toHaveCount(0);
+});
+
 test("presents survey guidance without a public tier comparison", async ({ page }) => {
   const surveys = page.locator("#surveys");
   await expect(surveys.getByRole("heading", { name: "Replace assumptions with a buildable plan." })).toBeVisible();

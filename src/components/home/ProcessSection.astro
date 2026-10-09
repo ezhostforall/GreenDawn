@@ -1,7 +1,5 @@
 ---
 import { processSteps } from "../../content/home";
-import { homeMedia } from "../../content/media";
-import ResponsiveImage from "../media/ResponsiveImage.astro";
 import ProcessStep from "./ProcessStep.astro";
 ---
 
@@ -19,56 +17,10 @@ import ProcessStep from "./ProcessStep.astro";
       <div class="process__line" aria-hidden="true"><span data-process-line></span></div>
       {processSteps.map((step, index) => <ProcessStep step={step} index={index} />)}
     </div>
-    <figure class="process__evidence" data-reveal>
-      <ResponsiveImage
-        image={homeMedia.processInstallation}
-        alt="Engineers carrying out EV charging installation work in a car park"
-        sizes="(max-width: 61rem) calc(100vw - 2rem), 72vw"
-        loading="lazy"
-      />
-      <figcaption>Installation delivery on an operational commercial site</figcaption>
-    </figure>
   </div>
 </section>
 
 <style is:global>
-.process__evidence {
-  position: relative;
-  overflow: hidden;
-  margin: 0;
-  border-radius: var(--radius-md);
-  background: var(--navy-800);
-  box-shadow: var(--shadow-lg);
-}
-
-.process__evidence img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: var(--image-position);
-}
-
-.process__evidence::after {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(0deg, rgba(7, 23, 33, 0.76), transparent 58%);
-  content: "";
-}
-
-.process__evidence figcaption {
-  position: absolute;
-  z-index: 1;
-  right: 1.25rem;
-  bottom: 1.25rem;
-  left: 1.25rem;
-  color: var(--cream);
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.05em;
-  line-height: 1.4;
-  text-transform: uppercase;
-}
-
 .process__steps {
   position: relative;
   display: grid;
@@ -93,12 +45,6 @@ import ProcessStep from "./ProcessStep.astro";
   background: var(--violet);
 }
 
-.process__evidence {
-  width: 100%;
-  aspect-ratio: 16 / 5;
-  margin: 2.5rem 0 0;
-}
-
 @media (max-width: 75rem) {
   .process__steps {
     grid-template-columns: 1fr 1fr;
@@ -115,14 +61,5 @@ import ProcessStep from "./ProcessStep.astro";
     display: none;
   }
 
-  .process__evidence {
-    width: 100%;
-    aspect-ratio: 4 / 3;
-    margin-top: 2.5rem;
-  }
-
-  .process__evidence img {
-    object-position: var(--image-position-mobile);
-  }
 }
 </style>

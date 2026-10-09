@@ -22,7 +22,6 @@ import SystemCard from "./SystemCard.astro";
       ))}
     </div>
     <div class="system__closing">
-      <p class="system__statement" data-reveal>We start with your operation, then specify the hardware.</p>
       <div class="system__decisions">
         <article data-reveal>
           <span>Technology</span>
@@ -61,7 +60,7 @@ import SystemCard from "./SystemCard.astro";
   grid-template-columns: 0.75fr 1.5fr 0.8fr;
   align-items: end;
   gap: clamp(2rem, 5vw, 6rem);
-  padding-bottom: clamp(4rem, 6vw, 6rem);
+  padding-bottom: clamp(3rem, 5vw, 4.5rem);
 }
 
 .system__header .eyebrow {
@@ -82,7 +81,7 @@ import SystemCard from "./SystemCard.astro";
 
 .system__stage {
   position: relative;
-  min-height: 36rem;
+  min-height: 30rem;
 }
 
 .system__arc {
@@ -106,32 +105,18 @@ import SystemCard from "./SystemCard.astro";
   gap: clamp(1rem, 2vw, 1.6rem);
 }
 
-.system__statement {
-  max-width: 32ch;
-  margin: 0 0 0 auto;
-  color: var(--lime);
-  font-family: var(--font-display);
-  font-size: var(--step-2);
-  font-style: italic;
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
-}
-
 .system__closing {
-  display: grid;
-  grid-template-columns: minmax(18rem, 0.72fr) minmax(0, 1.28fr);
-  align-items: start;
-  gap: clamp(2.5rem, 6vw, 6rem);
-  margin-top: 3rem;
+  margin-top: 2rem;
   border-top: 1px solid var(--border-light);
-  padding-top: 3rem;
+  padding-top: 2rem;
 }
 
 .system__decisions {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: clamp(1.5rem, 3vw, 3rem);
+  margin-left: auto;
+  width: min(100%, 62rem);
 }
 
 .system__decisions article {
@@ -194,12 +179,9 @@ import SystemCard from "./SystemCard.astro";
     grid-template-columns: 1fr;
   }
 
-  .system__closing {
-    grid-template-columns: 1fr;
-  }
-
   .system__decisions {
     max-width: 48rem;
+    margin-left: 0;
   }
 
   .system__arc {
@@ -234,16 +216,8 @@ import SystemCard from "./SystemCard.astro";
     stroke-width: 5;
   }
 
-  .system__closing {
-    grid-template-columns: 1fr;
-  }
-
   .system__decisions {
     grid-template-columns: 1fr;
-  }
-
-  .system__statement {
-    margin-left: 0;
   }
 
 }

@@ -103,19 +103,19 @@ Every unlisted descendant that begins with a row's prefix belongs to the same ow
 | `.problem__fragments span:nth-child(...)` | `C1` positional | `FragmentedModel.astro` | Replace with explicit tone variants only in a parity-preserving change | Current content order drives colours and animation offsets |
 | `.system`, `.system__*` | `S1` | `SystemSection.astro` | `SystemCard.astro`, decision card, evidence media | `data-system`, path/card hooks; stage clipping; short-height behaviour |
 | `.system-card*` and `nth-child(...)` | `C1` positional | `SystemCard.astro` | Expose `tone`/`size` props before removing position selectors | Card 2/3 colours and heights depend on order |
-| `.process`, `.process__*` | `S1` | `ProcessSection.astro` | `ProcessStep.astro`, evidence media | `data-process*`; grid-border position logic; mobile number/title alignment |
+| `.process`, `.process__*` | `S1` | `ProcessSection.astro` | `ProcessStep.astro` | `data-process*`; grid-border position logic; mobile number/title alignment; evidence media deliberately omitted from the homepage summary |
 | `.process-step*`, `first-of-type`, `nth-of-type(...)` | `C1` positional | `ProcessStep.astro` plus parent grid | Parent owns grid-edge borders; child owns number/copy |
 | `.case-study`, `.case-study__*` | `S1`/`C1` | `FeaturedProjectSection.astro` | `StatList.astro`, sticky media | `data-case-image`; `min-width: 0`; 4:3 narrow/short media; three facts |
 | `.surveys`, `.surveys__*` | `S1` | `SurveySection.astro` | None in the rendered homepage | Editorial overview, starting price and outcomes stay owned by the section |
 | `.survey-tier*`, positional border rules | `C1` positional | retained survey-tier components | Components are dormant but reusable; do not fold their rules into the active section | 75rem/61rem border patterns; mobile details/open state if reused |
 | `.solutions`, `.solutions__*` | `S1` | `SolutionsSection.astro` | `SolutionRow.astro`, `SolutionImage.astro` | `data-solution-row/image`; `is-active`; sticky media; `min-width: 0` |
 | `.solution-row*`, `.solution-image*` | `C1` state | child components within solutions | — | GSAP toggles `is-active`; touch hover must remain neutralised |
-| `.aftercare`, `.aftercare__*` | `S1`/`C1` | `AftercareSection.astro` | service item if reused | `data-aftercare`; quote responsive rules |
-| `.proof-grid`, `.proof-grid__*` | `S1` | `SupportingProofSection.astro` | `ProofCard.astro` | `data-proof`; card variants and top/bottom spacing tests |
-| `.proof-card*` | `C1` | `ProofCard.astro` | — | project/coverage/capability variants; hover image; mobile span rules |
+| `.aftercare`, `.aftercare__*` | `S1`/`C1` | `AftercareSection.astro` | service item if reused | `data-aftercare`; compact service-name summary; quote responsive rules; detailed copy remains in structured data for destination-page reuse |
+| `.proof-grid`, `.proof-grid__*` | `S1` | `SupportingProofSection.astro` | `ProofCard.astro` | `data-proof`; one compact photographed project; card spacing tests |
+| `.proof-card*` | `C1` | `ProofCard.astro` | — | compact project variant is rendered; coverage/capability variants and data remain reusable but dormant; hover image rules |
 | `.insights`, `.insights__*` | `S1` | `InsightsSection.astro` | `InsightCard.astro` | Last-card grid spanning at responsive sizes |
 | `.insight-card*` | `C1` | `InsightCard.astro` | — | Hover image/title; touch hover neutralisation |
-| `.final-cta`, `.final-cta__*` | `S1`/`C1` | `FinalCtaSection.astro` | Arc decorative primitive only if also used elsewhere with one API | `data-final-cta/arc`; root clipping and mobile list layout |
+| `.final-cta`, `.final-cta__*` | `S1`/`C1` | `FinalCtaSection.astro` | Arc decorative primitive only if also used elsewhere with one API | `data-final-cta/arc`; root clipping; action layout; the detailed process is not repeated here |
 
 ## Cross-section and composition selectors
 

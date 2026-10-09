@@ -160,9 +160,10 @@ const componentContracts = [
   ["survey-tier-mobile", 0],
   ["solution-image", 5],
   ["solution-row", 5],
-  ["proof-card", 3],
-  ["proof-card--tablet-wide", 2],
-  ["proof-card--mobile-default", 1],
+  ["proof-card", 1],
+  ["proof-card--compact", 1],
+  ["proof-card--tablet-wide", 0],
+  ["proof-card--mobile-default", 0],
   ["insight-card", 3],
   ["insight-card--tablet-wide", 1],
   ["insight-card--mobile-default", 1],
@@ -203,10 +204,39 @@ const sourceContracts = [
   ["src/components/home/SurveyTierMobile.astro", /\.survey-tier-mobile__details\b|\.survey-tier__cta\b/, "Survey children must own their mobile detail and CTA selectors."],
   ["src/components/home/SystemSection.astro", /\.system__evidence\b/, "Dormant System evidence selectors must not return without matching markup."],
   ["src/components/home/SolutionRow.astro", /\.solution-row__media\b/, "Dormant solution-row media selectors must not return without matching markup."],
+  ["src/components/home/ProcessSection.astro", /\.process__evidence\b/, "The compressed process summary must not restore duplicated evidence media."],
+  ["src/components/home/FinalCtaSection.astro", /<ol\b|\.final-cta\s+ol\b/, "The final CTA must not repeat the four-stage process."],
 ];
 for (const [sourcePath, forbiddenPattern, message] of sourceContracts) {
   const source = await readFile(join(process.cwd(), sourcePath), "utf8");
   if (forbiddenPattern.test(source)) failures.push(message);
+}
+
+const footerSource = await readFile(join(process.cwd(), "src", "components", "layout", "SiteFooter.astro"), "utf8");
+if (!/import\s+\{\s*primaryNavigation\s*\}/.test(footerSource)) {
+  failures.push("The footer must derive its canonical company and solution routes from primaryNavigation.");
+}
+if (/href=\{?["']#/.test(footerSource)) failures.push("The footer must not contain homepage-fragment directory links.");
+
+const processEvidenceCount = classCount("process__evidence");
+if (processEvidenceCount !== 0) failures.push(`Expected no duplicated process evidence block, found ${processEvidenceCount}.`);
+const aftercareServiceCopyCount = matches(/<article\b[^>]*>\s*<span>\d+<\/span>\s*<h3>[^<]+<\/h3>\s*<p>/gi).length;
+if (aftercareServiceCopyCount !== 0) failures.push("The homepage aftercare summary must not repeat destination-page service descriptions.");
+const finalCtaListCount = matches(/<section\b[^>]*class=["'][^"']*\bfinal-cta\b[^"']*["'][\s\S]*?<ol\b/gi).length;
+if (finalCtaListCount !== 0) failures.push("The final CTA must not repeat a process list.");
+
+for (const route of [
+  "https://greendawn.co.uk/about-us/",
+  "https://greendawn.co.uk/gallery/",
+  "https://greendawn.co.uk/workplace-charging/",
+  "https://greendawn.co.uk/fleet-charging-solutions/",
+  "https://greendawn.co.uk/public-charging/",
+  "https://greendawn.co.uk/aftercare/",
+  "https://greendawn.co.uk/customer-care/",
+  "https://greendawn.co.uk/blog/",
+  "https://greendawn.co.uk/enquire/",
+]) {
+  if (!html.includes(`href="${route}"`)) failures.push(`Canonical footer route is missing: ${route}.`);
 }
 
 const leadSubmitSource = await readFile(join(process.cwd(), "src", "scripts", "lead-capture", "submit.ts"), "utf8");

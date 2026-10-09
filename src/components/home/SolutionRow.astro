@@ -37,12 +37,12 @@ const { solution, index, active = false, class: className, ...attributes } = Ast
 
 .solution-row {
   display: grid;
-  min-height: 9.75rem;
+  min-height: 7.75rem;
   grid-template-columns: 3.2rem minmax(0, 1fr) auto;
   align-items: center;
   gap: 1rem;
   border-bottom: 1px solid var(--border-dark);
-  padding: 1.4rem 0;
+  padding: 1.1rem 0;
   position: relative;
   transition: color 220ms ease, padding 220ms ease;
 }
@@ -89,7 +89,7 @@ const { solution, index, active = false, class: className, ...attributes } = Ast
   margin-bottom: 0;
   color: var(--slate-500);
   font-size: var(--step--1);
-  line-height: 1.7;
+  line-height: 1.6;
 }
 
 .solution-row__arrow {
@@ -102,7 +102,7 @@ const { solution, index, active = false, class: className, ...attributes } = Ast
   .solution-row {
     min-height: auto;
     align-items: start;
-    padding-block: 2rem;
+    padding-block: 1.5rem;
   }
 }
 

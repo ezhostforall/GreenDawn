@@ -21,11 +21,6 @@ import ArrowIcon from "../media/ArrowIcon.astro";
       >Discuss your site <ArrowIcon direction="up-right" /></a>
       <p>Prefer to speak first? <a href={siteConfig.phone.href}>{siteConfig.phone.display}</a></p>
     </div>
-    <ol>
-      <li><span>01</span>Initial conversation</li>
-      <li><span>02</span>Site and requirements review</li>
-      <li><span>03</span>Clear recommended next step</li>
-    </ol>
   </div>
 </section>
 
@@ -91,31 +86,6 @@ import ArrowIcon from "../media/ArrowIcon.astro";
   font-weight: 700;
 }
 
-.final-cta ol {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1px;
-  margin: 5rem 0 0;
-  padding: 0;
-  background: rgba(11, 29, 42, 0.28);
-  list-style: none;
-}
-
-.final-cta li {
-  display: flex;
-  min-height: 6rem;
-  align-items: center;
-  gap: 1.4rem;
-  background: var(--lime);
-  font-size: var(--step--1);
-  padding: 1.3rem;
-}
-
-.final-cta li span {
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-}
-
 @media (max-width: 42rem) {
   .final-cta__inner h2 {
     font-size: clamp(4rem, 18vw, 6.5rem);
@@ -126,12 +96,5 @@ import ArrowIcon from "../media/ArrowIcon.astro";
     flex-direction: column;
   }
 
-  .final-cta ol {
-    grid-template-columns: 1fr;
-  }
-
-  .final-cta li {
-    min-height: 4.5rem;
-  }
 }
 </style>

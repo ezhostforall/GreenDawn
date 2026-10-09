@@ -3,6 +3,8 @@ import { supportingProof } from "../../content/home";
 import { liveSitePath } from "../../lib/urls";
 import ArrowIcon from "../media/ArrowIcon.astro";
 import ProofCard from "./ProofCard.astro";
+
+const projectProof = supportingProof.find((item) => item.kind === "project");
 ---
 
 <section class="proof-grid section section--cream" aria-labelledby="proof-grid-title" data-proof>
@@ -10,45 +12,19 @@ import ProofCard from "./ProofCard.astro";
     <div class="section-title-row section-title-row--compact" data-reveal>
       <div>
         <p class="eyebrow">Delivery evidence</p>
-        <h2 id="proof-grid-title">Project scale, coverage and capability.</h2>
+        <h2 id="proof-grid-title">Another estate delivered site by site.</h2>
       </div>
       <a class="text-link" href={liveSitePath("/gallery/")}>View project experience <ArrowIcon /></a>
     </div>
 
     <div class="proof-grid__items">
-      {supportingProof.map((item, index) => (
-        <ProofCard
-          item={item}
-          tabletWide={item.kind === "project" || index === supportingProof.length - 1}
-          mobileDefault={index === supportingProof.length - 1}
-        />
-      ))}
+      {projectProof && <ProofCard item={projectProof} compact />}
     </div>
   </div>
 </section>
 
 <style is:global>
 .proof-grid__items {
-  display: grid;
-  grid-template-columns: minmax(0, 1.35fr) repeat(2, minmax(0, 0.82fr));
-  gap: clamp(1.4rem, 2.5vw, 2.4rem);
-}
-
-@media (max-width: 75rem) {
-  .proof-grid__items {
-    gap: 1.3rem;
-  }
-}
-
-@media (max-width: 61rem) {
-  .proof-grid__items {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-@media (max-width: 42rem) {
-  .proof-grid__items {
-    grid-template-columns: 1fr;
-  }
+  display: block;
 }
 </style>

@@ -16,7 +16,9 @@
 - Restricts pinned and parallax storytelling to suitable wide, tall, fine-pointer viewports; mobile, tablet and short-height layouts use stable document flow.
 - Reduces entrance distances and durations, removes ornamental card motion and keeps the survey starting price continuously legible.
 - Integrates the technology and power decisions into the complete-system section, removing two repeated full-height sections while retaining the AC/DC and site-power guide routes.
-- Compresses supporting proof into one photographed project and two clearly differentiated evidence cards so a single-site image is not presented as proof of national coverage.
+- Compresses supporting proof to one clearly labelled photographed project so a single-site image is not presented as proof of national coverage and nearby trust/system claims are not repeated.
+- Shortens the homepage process, system, solutions, aftercare and final-conversion summaries while retaining their destination links and reusable source data.
+- Derives the footer’s company, solution and aftercare routes from the same canonical navigation configuration as the header, while preserving direct support, contact, legal and company details.
 - Adds asset-specific desktop and mobile focal points, removes duplicated responsive imagery and prevents horizontal overflow with local clipping at animated boundaries.
 - Strengthens small-text legibility, surface-aware focus states, disclosure semantics and mobile-menu focus restoration.
 - Centralises desktop, mobile and no-JavaScript route labels in `src/config/navigation.ts` and removes obsolete scroll-position navigation state.
