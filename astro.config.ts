@@ -7,6 +7,7 @@ export default defineConfig({
   output: "static",
   site,
   base,
+  devToolbar: { enabled: false },
   build: {
     inlineStylesheets: "auto",
   },

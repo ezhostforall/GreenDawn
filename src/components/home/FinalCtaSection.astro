@@ -10,8 +10,9 @@ import ArrowIcon from "../media/ArrowIcon.astro";
   </svg>
   <div class="page-shell final-cta__inner" data-reveal>
     <p class="eyebrow">Start with the requirement</p>
-    <h2>EV charging you don’t have to manage.</h2>
-    <p>Tell us what the site or estate needs to achieve. We’ll explain the sensible next step, including whether a paid technical survey is appropriate.</p>
+    <h2>Tell us what your site needs.</h2>
+    <p>A rough outline is enough to start. Tell us who needs charging, what you want it to achieve and what you know about the site.</p>
+    <p>We’ll help identify the next step, including whether a technical survey is appropriate.</p>
     <div class="final-cta__actions">
       <a
         class="button button--navy"
@@ -58,19 +59,24 @@ import ArrowIcon from "../media/ArrowIcon.astro";
 
 .final-cta__inner h2 {
   max-width: 11ch;
-  font-size: clamp(4rem, 8.5vw, 9rem);
+  font-size: var(--type-closing);
   letter-spacing: -0.07em;
   line-height: 0.84;
 }
 
 .final-cta__inner > p:not(.eyebrow) {
   max-width: 42rem;
-  margin-block: 2.5rem;
-  font-size: var(--step-1);
+  margin: 1rem 0;
+  font-size: var(--type-lead);
   line-height: 1.55;
 }
 
+.final-cta__inner h2 + p {
+  margin-top: 2rem;
+}
+
 .final-cta__actions {
+  margin-top: 2rem;
   display: flex;
   align-items: center;
   gap: 2.2rem;
@@ -78,7 +84,7 @@ import ArrowIcon from "../media/ArrowIcon.astro";
 
 .final-cta__actions > p {
   margin: 0;
-  font-size: var(--step--1);
+  font-size: var(--type-secondary);
 }
 
 .final-cta__actions > p a {
@@ -87,14 +93,9 @@ import ArrowIcon from "../media/ArrowIcon.astro";
 }
 
 @media (max-width: 42rem) {
-  .final-cta__inner h2 {
-    font-size: clamp(4rem, 18vw, 6.5rem);
-  }
-
   .final-cta__actions {
     align-items: flex-start;
     flex-direction: column;
   }
-
 }
 </style>

@@ -5,7 +5,7 @@
   margin-bottom: var(--space-5);
   color: var(--slate-500);
   font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: var(--type-caption);
   font-weight: 400;
   letter-spacing: 0.1em;
   line-height: 1.2;
@@ -42,10 +42,10 @@
 
 .section-title-row {
   display: grid;
-  grid-template-columns: minmax(0, 2fr) minmax(16rem, 0.85fr);
-  align-items: end;
-  gap: clamp(2rem, 8vw, 8rem);
-  margin-bottom: clamp(3rem, 5vw, 4.75rem);
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  align-items: center;
+  gap: clamp(2rem, 4vw, 4rem);
+  margin-bottom: clamp(2.5rem, 4vw, 3.75rem);
 }
 
 .section-title-row > p {
@@ -54,6 +54,7 @@
 
 .section-title-row--compact {
   grid-template-columns: minmax(0, 2fr) auto;
+  align-items: end;
   margin-bottom: clamp(2.5rem, 4vw, 4rem);
 }
 
@@ -75,7 +76,7 @@
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
   font-family: var(--font-mono);
-  font-size: 0.78rem;
+  font-size: var(--type-action);
   font-weight: 600;
   letter-spacing: 0.02em;
   line-height: 1.2;
@@ -112,7 +113,7 @@
   gap: 1rem;
   border-bottom: 1px solid currentColor;
   font-family: var(--font-mono);
-  font-size: 0.77rem;
+  font-size: var(--type-action);
   font-weight: 600;
   letter-spacing: 0.02em;
   line-height: 1.3;

@@ -18,14 +18,14 @@ const programmeReviewed = new Intl.DateTimeFormat("en-GB", { month: "long", year
         sizes="(max-width: 61rem) calc(100vw - 2rem), 52vw"
         loading="lazy"
       />
-      <figcaption>Johnsons Cars · Six-year dealership programme</figcaption>
+      <figcaption>Johnsons Cars · Dealership charging programme</figcaption>
     </figure>
 
     <div class="case-study__story">
-      <p class="eyebrow">Featured commercial EV charging programme</p>
+      <p class="eyebrow">Commercial project experience</p>
       <h2>A dealership programme coordinated site by site.</h2>
       <p class="case-study__lead">
-        Johnsons Cars needs EV infrastructure across a large estate, with different electrical constraints, layouts and manufacturer requirements at each site.
+        Johnsons Cars needed charging across an estate with different electrical constraints, layouts and manufacturer requirements.
       </p>
       <div class="case-study__facts" aria-label={programmeClaim}>
         <div><strong>136</strong><span>sites in the programme</span></div>
@@ -34,7 +34,7 @@ const programmeReviewed = new Intl.DateTimeFormat("en-GB", { month: "long", year
       </div>
       <p class="case-study__note">Programme figures reviewed {programmeReviewed}.</p>
       <p>
-        Greendawn coordinates survey, design, infrastructure, hardware, installation and ongoing operation as one programme—not isolated equipment sales.
+        Greendawn coordinated the programme around those site-specific needs, bringing together infrastructure, charging equipment and installation.
       </p>
       <a class="text-link" href={liveSitePath("/gallery/")}>Explore our project experience <ArrowIcon /></a>
     </div>
@@ -44,9 +44,9 @@ const programmeReviewed = new Intl.DateTimeFormat("en-GB", { month: "long", year
 <style is:global>
 .case-study__layout {
   display: grid;
-  grid-template-columns: minmax(0, 1.12fr) minmax(27rem, 0.88fr);
-  align-items: start;
-  gap: clamp(4rem, 8vw, 8rem);
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  align-items: center;
+  gap: clamp(2.5rem, 4vw, 4rem);
 }
 
 .case-study__layout > * {
@@ -58,7 +58,7 @@ const programmeReviewed = new Intl.DateTimeFormat("en-GB", { month: "long", year
   top: 6.25rem;
   width: 100%;
   min-width: 0;
-  height: min(56svh, 38rem);
+  height: min(78svh, 42rem);
   max-height: calc(100svh - 8rem);
   align-self: start;
   overflow: hidden;
@@ -78,8 +78,9 @@ const programmeReviewed = new Intl.DateTimeFormat("en-GB", { month: "long", year
 .case-study__media img {
   position: absolute;
   inset: 0;
+  top: -10%;
   width: 100%;
-  height: 112%;
+  height: 120%;
   object-fit: cover;
   object-position: var(--image-position);
 }
@@ -92,7 +93,7 @@ const programmeReviewed = new Intl.DateTimeFormat("en-GB", { month: "long", year
   left: 2rem;
   color: var(--cream);
   font-family: var(--font-mono);
-  font-size: 0.74rem;
+  font-size: var(--type-caption);
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
@@ -102,12 +103,12 @@ const programmeReviewed = new Intl.DateTimeFormat("en-GB", { month: "long", year
 }
 
 .case-study__story h2 {
-  max-width: 11ch;
+  max-width: 16ch;
 }
 
 .case-study__lead {
   color: var(--navy-800);
-  font-size: var(--step-1);
+  font-size: var(--type-lead);
   line-height: 1.55;
 }
 
@@ -123,7 +124,7 @@ const programmeReviewed = new Intl.DateTimeFormat("en-GB", { month: "long", year
   min-height: 7rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  gap: 0.65rem;
   background: var(--paper);
   padding: 1.2rem;
 }
@@ -131,13 +132,13 @@ const programmeReviewed = new Intl.DateTimeFormat("en-GB", { month: "long", year
 .case-study__facts strong {
   color: var(--violet);
   font-family: var(--font-mono);
-  font-size: var(--step-2);
+  font-size: var(--type-card);
   letter-spacing: -0.05em;
 }
 
 .case-study__facts span {
   color: var(--slate-500);
-  font-size: 0.72rem;
+  font-size: var(--type-secondary);
   line-height: 1.4;
 }
 
@@ -149,14 +150,14 @@ const programmeReviewed = new Intl.DateTimeFormat("en-GB", { month: "long", year
 .case-study__note {
   margin: -1rem 0 1.25rem;
   font-family: var(--font-mono);
-  font-size: 0.7rem;
+  font-size: var(--type-secondary);
   letter-spacing: 0.04em;
   text-transform: uppercase;
 }
 
 @media (max-width: 75rem) {
   .case-study__layout {
-    gap: 4rem;
+    gap: 2.5rem;
   }
 }
 
@@ -185,7 +186,6 @@ const programmeReviewed = new Intl.DateTimeFormat("en-GB", { month: "long", year
   }
 
   .case-study__lead {
-    font-size: 1rem;
     line-height: 1.65;
   }
 
@@ -196,10 +196,6 @@ const programmeReviewed = new Intl.DateTimeFormat("en-GB", { month: "long", year
   .case-study__facts div {
     min-height: 6rem;
     padding: 0.9rem;
-  }
-
-  .case-study__facts strong {
-    font-size: clamp(1.65rem, 8vw, 2.35rem);
   }
 }
 

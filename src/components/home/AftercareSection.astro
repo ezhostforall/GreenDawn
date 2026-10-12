@@ -10,9 +10,11 @@ import ArrowIcon from "../media/ArrowIcon.astro";
       <p class="eyebrow eyebrow--light">Aftercare</p>
       <h2>EV infrastructure needs to keep working.</h2>
       <p>
-        Charging is an electrical and connected asset. With an agreed aftercare package, Greendawn manages it after commissioning through one clear support route.
+        Installation is the start of the charging operation, not the end of the relationship.
       </p>
+      <p>With an agreed aftercare package, Greendawn coordinates monitoring, maintenance and fault support. Your proposal makes clear what is included and how to get help.</p>
       <a class="button button--lime" href={liveSitePath("/aftercare/")}>Explore aftercare <ArrowIcon direction="up-right" /></a>
+      <p class="aftercare__support">Need help with an existing charger? <a class="aftercare__support-link" href={liveSitePath("/customer-care/")}>Contact customer support</a>.</p>
     </div>
 
     <div class="aftercare__services">
@@ -25,7 +27,7 @@ import ArrowIcon from "../media/ArrowIcon.astro";
     </div>
   </div>
   <p class="aftercare__quote page-shell" data-reveal>
-    If it’s not working, that’s our problem to fix.
+    Support that continues beyond installation.
   </p>
 </section>
 
@@ -40,12 +42,13 @@ import ArrowIcon from "../media/ArrowIcon.astro";
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: minmax(0, 0.86fr) minmax(30rem, 1.14fr);
-  gap: clamp(3rem, 8vw, 8rem);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  gap: clamp(2.5rem, 5vw, 5rem);
 }
 
 .aftercare__copy h2 {
-  max-width: 12ch;
+  max-width: 14ch;
 }
 
 .aftercare__copy > p:not(.eyebrow) {
@@ -58,29 +61,46 @@ import ArrowIcon from "../media/ArrowIcon.astro";
   margin-top: 1.6rem;
 }
 
+.aftercare__support {
+  margin-top: 1.5rem;
+  font-size: var(--type-secondary);
+}
+
+.aftercare__support-link {
+  color: var(--cream);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
 .aftercare__services {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
+  align-self: center;
   border-top: 1px solid var(--border-light);
   border-left: 1px solid var(--border-light);
 }
 
 .aftercare__services article {
-  min-height: 8.5rem;
+  display: grid;
+  grid-template-columns: 2rem minmax(0, 1fr);
+  align-items: baseline;
+  gap: 1rem;
   border-right: 1px solid var(--border-light);
   border-bottom: 1px solid var(--border-light);
-  padding: clamp(1.6rem, 3vw, 2.6rem);
+  padding: clamp(1.25rem, 2vw, 1.75rem);
 }
 
 .aftercare__services span {
   color: var(--lime);
   font-family: var(--font-mono);
-  font-size: 0.74rem;
+  font-size: var(--type-caption);
 }
 
 .aftercare__services h3 {
-  margin: 1.5rem 0 0;
-  font-size: var(--step-1);
+  margin: 0;
+  line-height: 1.25;
+  font-size: var(--type-compact);
   letter-spacing: -0.025em;
 }
 
@@ -106,7 +126,7 @@ import ArrowIcon from "../media/ArrowIcon.astro";
   }
 
   .aftercare__services {
-    margin-top: 2rem;
+    margin-top: 0;
   }
 
   .aftercare__quote {
@@ -120,11 +140,7 @@ import ArrowIcon from "../media/ArrowIcon.astro";
   }
 
   .aftercare__services article {
-    min-height: 7.5rem;
-  }
-
-  .aftercare__quote {
-    font-size: clamp(2.9rem, 13vw, 4.3rem);
+    min-height: 0;
   }
 }
 </style>

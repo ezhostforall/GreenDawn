@@ -79,6 +79,8 @@ The refactor is governed by the locked [refactor baseline](docs/refactor-baselin
 
 ## Design system
 
+The research-informed homepage copy is recorded in [content batch 04](docs/content-batch-04.md), including preserved contracts, publication dependencies and the IDE visual-review checklist. The shared type hierarchy, rendered breakpoint measurements and verification limits are recorded in [typography batch 05](docs/typography-batch-05.md).
+
 The existing visual rules are preserved but separated by responsibility. `src/styles/global.css` imports only tokens, global foundations and genuinely shared primitives. Component-specific base and responsive rules live beside their Astro owners. Repeated child components expose typed content and explicit visual variants instead of relying on positional selectors across component boundaries.
 
 Current role-based tokens include dark navy surfaces, warm off-white, electric lime, violet and coral, with Bricolage Grotesque, Archivo and JetBrains Mono. The exact Latin font weights used by the page are bundled locally through Fontsource, avoiding render-blocking third-party font requests.
@@ -97,7 +99,7 @@ The primary navigation mirrors the current WordPress information architecture fr
 
 ## Lead capture prototype
 
-`src/components/lead/LeadCapture.astro` provides one reusable callback tool shared by the floating launcher, hero CTA and final conversion CTA. It uses a native dialog, strict TypeScript and the existing design tokens without adding a UI framework or form dependency. The launcher is a desktop drawer and mobile bottom sheet; the existing CTA URLs remain usable enquiry-page fallbacks when JavaScript is unavailable.
+`src/components/lead/LeadCapture.astro` provides one reusable callback tool shared by the floating launcher, header, hero, survey and final conversion CTAs. It uses a native dialog, strict TypeScript and the existing design tokens without adding a UI framework or form dependency. The launcher is a desktop drawer and mobile bottom sheet; the existing CTA URLs remain usable enquiry-page fallbacks when JavaScript is unavailable.
 
 This GitHub Pages stage deliberately performs no network submission. `src/scripts/lead-capture/submit.ts` logs the typed payload, waits 400ms and resolves to a truthful development success state. The eventual WordPress/PHP handoff is isolated to that transport boundary. `greendawn:lead-funnel` custom events expose only controlled, non-PII context so the later analytics phase can subscribe without coupling analytics code to the component.
 
@@ -124,3 +126,9 @@ Those should be designed after the static public-site boundaries and content mod
 The homepage uses the approved Greendawn spelling throughout, presents the public process as **Consult · Design · Install · Manage**, separates the initial conversation from paid site surveys and publishes only claims marked as approved in `src/content/claims.ts`. The header routes visitors into the existing WordPress pages while the Astro homepage is deployed as a drop-in replacement. The homepage now gives survey guidance and the approved starting point of **£200 + VAT** without publishing the former tier matrix; its typed data and components remain available for possible future use. The social-preview asset is a dedicated 1200 × 630 image rather than a reused 4:3 content image.
 
 `pnpm test` verifies the production HTML structure, fragment targets, intrinsic image dimensions, local assets, reduced-motion output, navigation behaviour, responsive overflow and serious automated accessibility findings. The approved Phase 2 Linux baselines for all seven Playwright projects are committed; `pnpm test:visual:update` must only be used after an intentional visual change has been reviewed. The naming gate fails if the incorrect company-name capitalisation appears in human-readable source files.
+
+## Latest visual revision
+
+[Batch 6 visual balance](docs/visual-balance-batch-06.md) documents the selective type-size reductions, wider heading measures, compact aftercare rows and callback refinements. Company and email remain required; the suggested callback date and time is optional. Selected desktop and mobile review captures are included.
+
+Latest layout correction: [Balance and clipping — Batch 7](docs/balance-clipping-batch-07.md).

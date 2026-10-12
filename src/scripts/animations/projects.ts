@@ -1,8 +1,8 @@
 import { gsap } from "../motion/runtime";
 
 export function animateProjects(): void {
-  gsap.to("[data-case-image] img", {
-    yPercent: 10,
+  gsap.fromTo("[data-case-image] img", { yPercent: -5 }, {
+    yPercent: 5,
     ease: "none",
     scrollTrigger: {
       trigger: "[data-case-study]",

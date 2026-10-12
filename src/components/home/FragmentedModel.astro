@@ -9,20 +9,20 @@ const { class: className, ...attributes } = Astro.props;
 ---
 
 <div {...attributes} class:list={["problem__model", className]} data-problem-model>
-  <p class="problem__label">The fragmented model</p>
+  <p class="problem__label">What needs to come together</p>
   <div class="problem__fragments">
-    <span data-fragment>Operations</span>
+    <span data-fragment>Operational requirements</span>
     <span data-fragment>Available power</span>
     <span data-fragment>Groundworks</span>
-    <span data-fragment>Charging hardware</span>
+    <span data-fragment>Charging equipment</span>
     <span data-fragment>Software & payments</span>
     <span data-fragment>Ongoing support</span>
   </div>
   <div class="problem__connector" aria-hidden="true"><span data-problem-connector></span></div>
   <div class="problem__answer" data-answer>
-    <span>The Greendawn model</span>
-    <strong>One managed delivery relationship.</strong>
-    <p>Greendawn coordinates the work, dependencies and specialists.</p>
+    <span>The Greendawn approach</span>
+    <strong>One coordinated delivery relationship.</strong>
+    <p>Clear responsibilities from the first site discussion through installation, commissioning and agreed support.</p>
   </div>
 </div>
 
@@ -30,7 +30,7 @@ const { class: className, ...attributes } = Astro.props;
 .problem__model {
   display: grid;
   min-height: 0;
-  grid-template-columns: minmax(14rem, 0.95fr) 3rem minmax(18rem, 1.05fr);
+  grid-template-columns: minmax(0, 1fr) 2rem minmax(0, 1fr);
   grid-template-areas: "label label label"
       "fragments connector answer";
   align-items: stretch;
@@ -43,7 +43,7 @@ const { class: className, ...attributes } = Astro.props;
   margin-bottom: 1.5rem;
   color: var(--slate-500);
   font-family: var(--font-mono);
-  font-size: 0.74rem;
+  font-size: var(--type-caption);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -64,7 +64,7 @@ const { class: className, ...attributes } = Astro.props;
   background: var(--paper);
   color: var(--slate-600);
   font-family: var(--font-mono);
-  font-size: 0.76rem;
+  font-size: var(--type-secondary);
   padding: 1.1rem;
   box-shadow: none;
 }
@@ -83,7 +83,7 @@ const { class: className, ...attributes } = Astro.props;
 .problem__connector {
   grid-area: connector;
   display: grid;
-  min-width: 3rem;
+  min-width: 2rem;
   place-items: center;
 }
 
@@ -112,7 +112,7 @@ const { class: className, ...attributes } = Astro.props;
   overflow: hidden;
   border-radius: var(--radius-lg);
   background: var(--lime);
-  padding: clamp(2rem, 2.2vw, 2.75rem);
+  padding: clamp(1.5rem, 2vw, 2rem);
   box-shadow: none;
 }
 
@@ -120,7 +120,7 @@ const { class: className, ...attributes } = Astro.props;
   display: block;
   margin-bottom: 1.2rem;
   font-family: var(--font-mono);
-  font-size: 0.74rem;
+  font-size: var(--type-caption);
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }
@@ -129,7 +129,7 @@ const { class: className, ...attributes } = Astro.props;
   display: block;
   max-width: none;
   font-family: var(--font-display);
-  font-size: clamp(2.2rem, 1.65rem + 0.7vw, 2.85rem);
+  font-size: clamp(1.85rem, 1.45rem + 0.7vw, 2.4rem);
   letter-spacing: -0.05em;
   line-height: 0.95;
 }
@@ -137,8 +137,8 @@ const { class: className, ...attributes } = Astro.props;
 .problem__answer p {
   position: relative;
   z-index: 1;
-  margin: 2rem 0 0;
-  font-size: var(--step--1);
+  margin: 1.25rem 0 0;
+  font-size: var(--type-body-compact);
 }
 
 @media (max-width: 61rem) {

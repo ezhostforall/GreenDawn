@@ -11,10 +11,10 @@ const projectProof = supportingProof.find((item) => item.kind === "project");
   <div class="page-shell">
     <div class="section-title-row section-title-row--compact" data-reveal>
       <div>
-        <p class="eyebrow">Delivery evidence</p>
-        <h2 id="proof-grid-title">Another estate delivered site by site.</h2>
+        <p class="eyebrow">Fleet programme experience</p>
+        <h2 id="proof-grid-title">Different locations. A coordinated programme.</h2>
       </div>
-      <a class="text-link" href={liveSitePath("/gallery/")}>View project experience <ArrowIcon /></a>
+      <a class="text-link" href={liveSitePath("/gallery/")}>Explore our project experience <ArrowIcon /></a>
     </div>
 
     <div class="proof-grid__items">
@@ -24,6 +24,10 @@ const projectProof = supportingProof.find((item) => item.kind === "project");
 </section>
 
 <style is:global>
+.proof-grid .section-title-row h2 {
+  max-width: 17ch;
+}
+
 .proof-grid__items {
   display: block;
 }

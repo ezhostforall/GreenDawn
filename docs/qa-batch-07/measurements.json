@@ -1,0 +1,135 @@
+[
+  {
+    "name": "ultrawide",
+    "width": 2560,
+    "height": 1440,
+    "hero": {
+      "contentTop": 160,
+      "headerBottom": 126.59375,
+      "contentBottom": 849.796875,
+      "proofTop": 897.796875,
+      "width": 2560,
+      "scrollWidth": 2545
+    },
+    "submit": {
+      "x": 2036.1875,
+      "y": 1324.8125,
+      "width": 473.625,
+      "height": 48
+    }
+  },
+  {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900,
+    "hero": {
+      "contentTop": 160,
+      "headerBottom": 126.59375,
+      "contentBottom": 824,
+      "proofTop": 872,
+      "width": 1440,
+      "scrollWidth": 1425
+    },
+    "submit": {
+      "x": 916.1875,
+      "y": 784.8125,
+      "width": 473.625,
+      "height": 48
+    }
+  },
+  {
+    "name": "short",
+    "width": 1280,
+    "height": 640,
+    "hero": {
+      "contentTop": 160,
+      "headerBottom": 126.59375,
+      "contentBottom": 802.421875,
+      "proofTop": 850.421875,
+      "width": 1280,
+      "scrollWidth": 1265
+    },
+    "submit": {
+      "x": 756.1875,
+      "y": 524.8125,
+      "width": 473.625,
+      "height": 48
+    }
+  },
+  {
+    "name": "landscape",
+    "width": 1024,
+    "height": 600,
+    "hero": {
+      "contentTop": 144,
+      "headerBottom": 126.59375,
+      "contentBottom": 751.765625,
+      "proofTop": 799.765625,
+      "width": 1024,
+      "scrollWidth": 1009
+    },
+    "submit": {
+      "x": 500.1875,
+      "y": 484.8125,
+      "width": 473.625,
+      "height": 48
+    }
+  },
+  {
+    "name": "tablet",
+    "width": 834,
+    "height": 1194,
+    "hero": {
+      "contentTop": 160,
+      "headerBottom": 126.59375,
+      "contentBottom": 742.046875,
+      "proofTop": 790.046875,
+      "width": 834,
+      "scrollWidth": 819
+    },
+    "submit": {
+      "x": 310.1875,
+      "y": 1078.8125,
+      "width": 473.625,
+      "height": 48
+    }
+  },
+  {
+    "name": "mobile",
+    "width": 390,
+    "height": 844,
+    "hero": {
+      "contentTop": 154.390625,
+      "headerBottom": 118.578125,
+      "contentBottom": 637.546875,
+      "proofTop": 737.609375,
+      "width": 390,
+      "scrollWidth": 375
+    },
+    "submit": {
+      "x": 20,
+      "y": 728.8125,
+      "width": 335,
+      "height": 48
+    }
+  },
+  {
+    "name": "narrow",
+    "width": 320,
+    "height": 568,
+    "hero": {
+      "contentTop": 154.390625,
+      "headerBottom": 118.578125,
+      "contentBottom": 627.328125,
+      "proofTop": 675.328125,
+      "width": 320,
+      "scrollWidth": 305
+    },
+    "submit": {
+      "x": 20,
+      "y": 452.8125,
+      "width": 265,
+      "height": 48
+    }
+  }
+]

@@ -21,7 +21,7 @@ body {
   background: var(--cream);
   color: var(--navy-900);
   font-family: var(--font-body);
-  font-size: var(--step-0);
+  font-size: var(--type-body);
   font-weight: 400;
   line-height: 1.6;
   text-rendering: optimizeLegibility;
@@ -91,6 +91,7 @@ h3 {
 h2 {
   font-size: var(--type-section);
   line-height: 1;
+  text-wrap: balance;
 }
 
 h3 {
@@ -137,7 +138,7 @@ h3 {
   background: var(--lime);
   color: var(--navy-900);
   font-family: var(--font-mono);
-  font-size: 0.8rem;
+  font-size: var(--type-action);
   font-weight: 600;
   padding: 0.8rem 1rem;
   transition: transform 180ms ease;
@@ -176,10 +177,6 @@ h3 {
 }
 
 @media (max-width: 42rem) {
-  h2 {
-    font-size: clamp(2.35rem, 9vw, 3.25rem);
-  }
-
   .section {
     padding-block: 4rem;
   }

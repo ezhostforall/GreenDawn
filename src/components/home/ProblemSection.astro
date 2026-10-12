@@ -6,10 +6,11 @@ import FragmentedModel from "./FragmentedModel.astro";
   <div class="page-shell problem__layout">
     <div class="section-intro section-intro--sticky" data-reveal>
       <p class="eyebrow">Why Greendawn</p>
-      <h2>Commercial EV charging is more than choosing a charger.</h2>
+      <h2>One charging project. Coordinated from the start.</h2>
       <p>
-        Power, groundworks, hardware, software, payments and support affect one another. Separate them and the customer manages the gaps.
+        A charging project brings together electrical work, groundworks, equipment, software and support. Decisions in one area affect the others.
       </p>
+      <p>Greendawn coordinates the specialists and dependencies, so you have a clear route through the project—not separate conversations to piece together yourself.</p>
     </div>
 
     <FragmentedModel />
@@ -23,8 +24,9 @@ import FragmentedModel from "./FragmentedModel.astro";
 
 .problem__layout {
   display: grid;
-  grid-template-columns: minmax(18rem, 0.8fr) minmax(30rem, 1.2fr);
-  gap: clamp(4rem, 10vw, 11rem);
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  align-items: start;
+  gap: clamp(2.5rem, 4vw, 4rem);
 }
 
 .section-intro--sticky {
@@ -34,11 +36,11 @@ import FragmentedModel from "./FragmentedModel.astro";
 }
 
 .section-intro > h2 {
-  max-width: 14ch;
+  max-width: 17ch;
   margin-bottom: var(--space-5);
 }
 
-.section-intro > p:last-child {
+.section-intro > p:not(.eyebrow) {
   max-width: 40rem;
   color: var(--slate-500);
   line-height: 1.75;

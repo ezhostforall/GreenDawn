@@ -109,6 +109,29 @@ if (["£500", "£1,000", "£1,500"].some((price) => html.includes(price))) {
   failures.push("The retired survey tier prices must not be rendered on the homepage.");
 }
 if (!html.includes("Consult · Design · Install · Manage")) failures.push("The approved public process language is missing.");
+const mainMarkup = html.match(/<main\b[^>]*>[\s\S]*?<\/main>/i)?.[0] ?? "";
+for (const phrase of ["our problem to fix", "fully managed charging estate", "charging you don"]) {
+  if (mainMarkup.toLowerCase().includes(phrase)) failures.push(`Unqualified homepage promise must not return: ${phrase}.`);
+}
+const aftercareMarkup = mainMarkup.match(/<section\b[^>]*\bid="aftercare"[\s\S]*?<\/section>/i)?.[0] ?? "";
+if (!aftercareMarkup.includes("With an agreed aftercare package")) {
+  failures.push("Aftercare must retain its visible package-scope qualification.");
+}
+if (!/href="https:\/\/greendawn\.co\.uk\/customer-care\/"[^>]*>Contact customer support<\/a>/.test(aftercareMarkup)) {
+  failures.push("Existing customers must have a direct support link in the aftercare section.");
+}
+const surveyMarkup = mainMarkup.match(/<section\b[^>]*\bid="surveys"[\s\S]*?<\/section>/i)?.[0] ?? "";
+if (!surveyMarkup.includes("paid technical survey") || !surveyMarkup.includes("confirmed before booking")) {
+  failures.push("Survey copy must distinguish paid assessment and confirmation of scope and price before booking.");
+}
+for (const [path, label] of [
+  ["/business-ev-charging-installations/", "Explore commercial project delivery"],
+  ["/guides/ev-charging-for-car-dealership/", "Read the dealership planning guide"],
+]) {
+  const matchingRow = matches(/<a\b[^>]*class="[^"]*\bsolution-row\b[^"]*"[\s\S]*?<\/a>/gi)
+    .find((match) => match[0].includes(`href="https://greendawn.co.uk${path}"`));
+  if (!matchingRow?.[0].includes(label)) failures.push(`Buyer route needs an honest destination cue: ${path}.`);
+}
 if (/\.js\s+\[data-reveal\][^{]*\{[^}]*visibility\s*:\s*hidden/i.test(compiledCss)) {
   failures.push("Reveal content is hidden by CSS before JavaScript runs.");
 }
@@ -126,7 +149,7 @@ if (!/html\.no-js\s+\.lead-capture\s*\{[^}]*display\s*:\s*none/i.test(compiledCs
 const leadDialogCount = matches(/<dialog\b[^>]*\bdata-lead-dialog(?:\s|=|>)/gi).length;
 if (leadDialogCount !== 1) failures.push(`Expected one shared lead-capture dialog, found ${leadDialogCount}.`);
 const leadTriggerCount = matches(/\bdata-lead-capture-open(?:\s|=|>)/gi).length;
-if (leadTriggerCount !== 5) failures.push(`Expected five rendered lead-capture triggers, found ${leadTriggerCount}.`);
+if (leadTriggerCount !== 6) failures.push(`Expected six rendered lead-capture triggers, found ${leadTriggerCount}.`);
 const headerLeadTriggerCount = matches(/\bdata-lead-entry-point=["']header["']/gi).length;
 if (headerLeadTriggerCount !== 2) failures.push(`Expected desktop and mobile header lead triggers, found ${headerLeadTriggerCount}.`);
 const leadFormTag = html.match(/<form\b[^>]*\bdata-lead-form(?:\s|=|>)[^>]*>/i)?.[0] ?? "";
@@ -160,6 +183,7 @@ const componentContracts = [
   ["survey-tier-mobile", 0],
   ["solution-image", 5],
   ["solution-row", 5],
+  ["solution-row__destination", 5],
   ["proof-card", 1],
   ["proof-card--compact", 1],
   ["proof-card--tablet-wide", 0],

@@ -24,18 +24,29 @@
   --font-display: "Bricolage Grotesque", "Arial Narrow", sans-serif;
   --font-body: "Archivo", Arial, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
-  --step--1: clamp(0.78rem, 0.75rem + 0.12vw, 0.86rem);
-  --step-0: clamp(0.98rem, 0.92rem + 0.2vw, 1.12rem);
-  --step-1: clamp(1.18rem, 1.05rem + 0.45vw, 1.48rem);
+  /* Role-based scales remain continuous across layout breakpoints. */
+  --type-caption: clamp(0.75rem, 0.73rem + 0.12vw, 0.875rem);
+  --type-secondary: clamp(0.875rem, 0.85rem + 0.12vw, 1rem);
+  --type-action: var(--type-secondary);
+  --type-body-compact: 1rem;
+  --type-body: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --type-lead: clamp(1.125rem, 1.025rem + 0.5vw, 1.5rem);
+  /* Retain numbered aliases for existing consumers. */
+  --step--1: var(--type-secondary);
+  --step-0: var(--type-body);
+  --step-1: var(--type-lead);
   --step-2: clamp(1.6rem, 1.28rem + 1vw, 2.35rem);
   --step-3: clamp(2.2rem, 1.65rem + 2.2vw, 4rem);
   --step-4: clamp(3rem, 2rem + 4vw, 6.4rem);
   --step-5: clamp(4.5rem, 2.8rem + 7vw, 10rem);
   --type-display: var(--step-5);
-  --type-statement: clamp(3.25rem, 2.2rem + 4.2vw, 7.25rem);
-  --type-section: clamp(2.6rem, 2.05rem + 2vw, 4.25rem);
+  --type-statement: clamp(2.9rem, 2.2rem + 4.2vw, 7.25rem);
+  --type-closing: clamp(4rem, 3rem + 5.5vw, 9rem);
+  --type-price: clamp(3.8rem, 2.8rem + 8vw, 7.5rem);
+  --type-section: clamp(2.35rem, 2rem + 2vw, 4.25rem);
   --type-feature: clamp(1.9rem, 1.6rem + 1vw, 2.8rem);
-  --type-card: clamp(1.35rem, 1.15rem + 0.7vw, 2rem);
+  --type-card: clamp(1.5rem, 1.4rem + 0.4vw, 1.75rem);
+  --type-compact: clamp(1.25rem, 1.15rem + 0.4vw, 1.5rem);
   --space-1: 0.5rem;
   --space-2: 0.75rem;
   --space-3: 1rem;
@@ -68,7 +79,6 @@
 @media (max-width: 42rem) {
   :root {
     --shell: min(100% - 1.5rem, 39rem);
-    --step--1: clamp(0.91rem, 0.88rem + 0.16vw, 0.98rem);
   }
 }
 

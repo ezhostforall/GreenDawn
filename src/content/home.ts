@@ -13,20 +13,20 @@ export const systemLayers = [
   {
     number: "01",
     title: "Power & infrastructure",
-    copy: "Capacity, cable routes, civils and load management are resolved before hardware is fixed.",
-    detail: "Fix the foundations",
+    copy: "Assess charging demand, available power, cable routes and groundworks. Identify any connection work needed to support the design.",
+    detail: "Capacity before equipment",
   },
   {
     number: "02",
-    title: "Charging hardware",
-    copy: "AC and DC equipment is selected around dwell time, vehicles, users and available power.",
-    detail: "Requirements-led",
+    title: "Charging equipment",
+    copy: "Select AC or DC equipment around the vehicles, parking time and energy required—not the headline power rating alone.",
+    detail: "Chosen for the operation",
   },
   {
     number: "03",
-    title: "Software & operations",
-    copy: "Access, payments, reporting and monitoring are configured around how the charging estate operates.",
-    detail: "Visible and controlled",
+    title: "Software & operation",
+    copy: "Plan how people use the chargers, how tariffs are managed and what your team needs to monitor. Set out the software and support arrangements.",
+    detail: "Access, payments and visibility",
   },
 ] satisfies readonly SystemLayer[];
 
@@ -34,22 +34,22 @@ export const processSteps = [
   {
     number: "01",
     title: "Consult",
-    copy: "We establish the sites, vehicles, users and objectives before recommending the right technical route.",
+    copy: "Tell us about your vehicles, users, sites and objectives. We establish the requirement and recommend the next step.",
   },
   {
     number: "02",
     title: "Design",
-    copy: "Where an on-site survey is appropriate, engineers assess capacity, locations, routes and constraints before agreeing the design and scope.",
+    copy: "Assess power, layout and delivery constraints. Where a technical survey is needed, agree its scope before developing the design and proposal.",
   },
   {
     number: "03",
     title: "Install",
-    copy: "Greendawn coordinates electrical, civil, hardware, software and commissioning work as one programme.",
+    copy: "Coordinate the agreed electrical and civil works, equipment, testing and commissioning. Plan access and handover with your team.",
   },
   {
     number: "04",
     title: "Manage",
-    copy: "Agreed monitoring, testing, maintenance, user support and warranty services continue after commissioning.",
+    copy: "Put the agreed software, monitoring, maintenance and fault-support arrangements in place, with clear ongoing responsibilities.",
   },
 ] satisfies readonly NumberedContent[];
 
@@ -57,7 +57,8 @@ export const audiences = [
   {
     number: "01",
     title: "Fleet & depot charging",
-    copy: "Infrastructure built around routes, battery demand, dwell windows and the cost of downtime.",
+    copy: "Plan around daily energy demand, charging windows and when vehicles need to leave.",
+    linkLabel: "Explore fleet charging",
     href: "/fleet-charging-solutions/",
     image: homeMedia.fleetChargingBays,
     alt: "Completed EV charging bays at a commercial site",
@@ -65,15 +66,17 @@ export const audiences = [
   {
     number: "02",
     title: "Workplace charging",
-    copy: "Reliable employee, company-vehicle and visitor charging designed around capacity, access and growth.",
+    copy: "Match provision to staff, company vehicles and visitors, with capacity and access considered from the start.",
+    linkLabel: "Explore workplace charging",
     href: "/workplace-charging/",
     image: homeMedia.workplaceCharging,
     alt: "Wall-mounted EV charger beside a parked vehicle",
   },
   {
     number: "03",
-    title: "Destination & hospitality",
-    copy: "Hotel, leisure and retail charging with access, payment and user support considered from the start.",
+    title: "Public & destination charging",
+    copy: "Plan charging around the visitor experience, parking time, payment and ongoing support.",
+    linkLabel: "Explore public and destination charging",
     href: "/public-charging/",
     image: homeMedia.destinationHospitality,
     alt: "EV chargers installed outside a hotel",
@@ -81,7 +84,8 @@ export const audiences = [
   {
     number: "04",
     title: "Multi-site programmes",
-    copy: "Common standards, site-specific engineering and coordinated delivery across an estate.",
+    copy: "Coordinate shared requirements while accounting for the different constraints at each location.",
+    linkLabel: "Explore commercial project delivery",
     href: "/business-ev-charging-installations/",
     image: homeMedia.multiSiteCharging,
     alt: "Completed EV charging installation with multiple marked bays",
@@ -89,7 +93,8 @@ export const audiences = [
   {
     number: "05",
     title: "Dealerships & motor retail",
-    copy: "Multi-brand infrastructure for workshops, demonstrators, customers and differing manufacturer requirements.",
+    copy: "Plan for vehicle preparation, workshops, demonstrators, handovers and customer charging.",
+    linkLabel: "Read the dealership planning guide",
     href: "/guides/ev-charging-for-car-dealership/",
     image: homeMedia.dealershipCharging,
     alt: "EV charging equipment installed at a Ford dealership",
@@ -109,7 +114,7 @@ export const aftercareServices = [
   },
   {
     number: "03",
-    title: "Maintenance, repairs & warranty",
+    title: "Maintenance & fault support",
     copy: "Fault investigation, maintenance, repair and warranty coordination through Greendawn.",
   },
   {
@@ -164,10 +169,10 @@ export const surveyTiers = [
 
 export const supportingProof = [
   {
-    eyebrow: "Multi-site delivery",
+    eyebrow: "Fleet programme experience",
     title: "The Salvation Army",
     result: "50 sites · 71 chargepoints",
-    copy: "A distributed programme delivered across a complex estate with varied site requirements.",
+    copy: "Fleet charging across a varied estate, with different site requirements brought together within one coordinated programme.",
     image: homeMedia.salvationArmy,
     alt: "Commercial EV chargers installed for The Salvation Army",
     kind: "project",
@@ -191,21 +196,21 @@ export const supportingProof = [
 export const insights = [
   {
     label: "Power & capacity",
-    title: "Load balancing explained: how to use site power more effectively",
+    title: "Understanding load management",
     href: "/guides/load-balancing-explained/",
     image: homeMedia.electricalConnection,
     alt: "New electrical connection for a commercial EV charging project",
   },
   {
     label: "Project planning",
-    title: "What a commercial EV charging survey should establish before installation",
+    title: "What a technical survey should establish",
     href: "/guides/greendawn-ev-charging-survey-pre-installation-guide/",
     image: homeMedia.siteSurvey,
     alt: "Completed paving and ducting area for an EV charging installation",
   },
   {
-    label: "Fleet strategy",
-    title: "Transitioning to electric fleets",
+    label: "Fleet planning",
+    title: "Planning the transition to an electric fleet",
     href: "/guides/transitioning-to-electric-fleets/",
     image: homeMedia.fleetChargingBays,
     alt: "Completed EV charging bays at a commercial fleet site",

@@ -38,7 +38,7 @@ export const leadCallbackChoices: ReadonlyArray<LeadChoice<LeadCallbackPreferenc
   { value: "asap", label: "As soon as possible" },
   { value: "today", label: "Today" },
   { value: "tomorrow", label: "Tomorrow" },
-  { value: "scheduled", label: "Choose a time" },
+  { value: "scheduled", label: "Suggest a time" },
 ];
 
 export const leadConditionalQuestions: {

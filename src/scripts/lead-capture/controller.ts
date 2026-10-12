@@ -64,6 +64,8 @@ export function initialiseLeadCapture(root: ParentNode = document): () => void {
   const liveRegion = component.querySelector<HTMLElement>("[data-lead-live]");
   const globalError = component.querySelector<HTMLElement>("[data-lead-submit-error]");
   const submitButton = component.querySelector<HTMLButtonElement>("[data-lead-submit]");
+  const contactActions = component.querySelector<HTMLElement>("[data-lead-contact-actions]");
+  const scrollBody = component.querySelector<HTMLElement>(".lead-capture__body");
   const scheduleField = component.querySelector<HTMLElement>("[data-lead-schedule]");
   const scheduleInput = component.querySelector<HTMLInputElement>('input[name="preferredCallbackTime"]');
   const triggers = Array.from(root.querySelectorAll<HTMLElement>("[data-lead-capture-open]"));
@@ -150,9 +152,15 @@ export function initialiseLeadCapture(root: ParentNode = document): () => void {
     }
     const steps = flow();
     const position = Math.max(0, steps.indexOf(currentStep));
-    progressLabel.textContent = directFlow
-      ? "Callback details"
-      : `Step ${position + 1} of ${steps.length}`;
+    const stageNames: Record<LeadStep, string> = {
+      intent: "Your requirement",
+      context: "Site details",
+      stage: "Project stage",
+      location: "Site location",
+      contact: "Callback details",
+      success: "Complete",
+    };
+    progressLabel.textContent = stageNames[currentStep];
     panel.style.setProperty("--lead-progress", String(((position + 1) / steps.length) * 100));
   };
 
@@ -169,6 +177,8 @@ export function initialiseLeadCapture(root: ParentNode = document): () => void {
     stepElements.forEach((element) => {
       element.hidden = element.dataset.leadStep !== step;
     });
+    if (contactActions) contactActions.hidden = step !== "contact";
+    if (scrollBody) scrollBody.scrollTop = 0;
     backButton.hidden = step === "success" || history.length === 0;
     updateProgress();
     const active = stepElements.find((element) => element.dataset.leadStep === step);

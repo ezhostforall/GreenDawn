@@ -12,6 +12,7 @@ export interface SystemLayer extends NumberedContent {
 
 export interface Solution extends NumberedContent {
   href: string;
+  linkLabel?: string;
   image: ResponsiveImageAsset;
   alt: string;
 }

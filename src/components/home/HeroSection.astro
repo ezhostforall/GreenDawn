@@ -31,7 +31,7 @@ import { liveSitePath } from "../../lib/urls";
         <span class="hero-line hero-line--accent"><span data-hero-line>Handled.</span></span>
       </h1>
       <p class="hero__lead" data-hero-item>
-        One Greendawn team brings site planning, power, charging equipment and ongoing support into one accountable delivery relationship.
+        Greendawn plans, installs and supports commercial EV charging around your vehicles, users and available power—from a single site to a coordinated estate programme.
       </p>
       <div class="hero__actions" data-hero-item>
         <a
@@ -47,24 +47,26 @@ import { liveSitePath } from "../../lib/urls";
         </a>
       </div>
       <ul class="hero__assurances" data-hero-item>
-        <li>Power and feasibility first</li>
-        <li>Requirements-led hardware</li>
-        <li>Support after commissioning</li>
+        <li>Site requirements first</li>
+        <li>Equipment chosen for the operation</li>
+        <li>Agreed support after installation</li>
       </ul>
     </div>
   </div>
 
   <div class="hero__proof">
-    <div><span>01</span><strong>Consult</strong><small>Understand the site and requirement</small></div>
+    <div><span>01</span><strong>Consult</strong><small>Understand your requirement</small></div>
     <div><span>02</span><strong>Design</strong><small>Resolve power, layout and scope</small></div>
-    <div><span>03</span><strong>Install</strong><small>Coordinate infrastructure and delivery</small></div>
-    <div><span>04</span><strong>Manage</strong><small>Keep the charging estate operational</small></div>
+    <div><span>03</span><strong>Install</strong><small>Coordinate works and commissioning</small></div>
+    <div><span>04</span><strong>Manage</strong><small>Support the charging operation</small></div>
   </div>
 </section>
 
 <style is:global>
 .hero {
   position: relative;
+  display: flex;
+  flex-direction: column;
   min-height: min(61rem, 112svh);
   overflow: hidden;
   background: var(--navy-950);
@@ -100,7 +102,7 @@ import { liveSitePath } from "../../lib/urls";
   z-index: 1;
   top: 8rem;
   right: -7rem;
-  width: min(62vw, 68rem);
+  width: min(54vw, 62rem);
   opacity: 0.82;
   pointer-events: none;
 }
@@ -121,22 +123,25 @@ html.js .hero__arc path {
   position: relative;
   z-index: 2;
   display: grid;
-  min-height: 52rem;
+  flex: 1 0 auto;
+  min-height: 0;
   grid-template-columns: minmax(0, 1.15fr) minmax(16rem, 0.85fr);
   align-items: center;
   gap: 4rem;
   padding-top: 10rem;
-  padding-bottom: 8rem;
+  padding-bottom: 3rem;
 }
 
 .hero__copy {
   max-width: 56rem;
+  container-type: inline-size;
 }
 
 .hero .eyebrow {
-  display: flex;
-  justify-content: space-between;
-  max-width: 34rem;
+  display: grid;
+  gap: 0.55rem;
+  max-width: 40rem;
+  font-size: var(--type-caption);
   margin-bottom: 2rem;
 }
 
@@ -147,7 +152,7 @@ html.js .hero__arc path {
 .hero h1 {
   max-width: 13.5ch;
   margin-bottom: 2.3rem;
-  font-size: var(--type-display);
+  font-size: min(var(--type-display), 27cqi);
   font-weight: 600;
   letter-spacing: -0.07em;
   line-height: 0.79;
@@ -178,25 +183,25 @@ html.js .hero__arc path {
   max-width: 42rem;
   margin-bottom: 2.2rem;
   color: #d6dde1;
-  font-size: var(--step-1);
+  font-size: var(--type-lead);
   line-height: 1.55;
 }
 
 .hero__actions {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 2rem;
 }
 
 .hero__assurances {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem 1.7rem;
+  display: grid;
+  gap: 0.65rem;
   margin: 2.4rem 0 0;
   padding: 0;
   color: var(--slate-200);
   font-family: var(--font-mono);
-  font-size: 0.74rem;
+  font-size: 0.875rem;
   list-style: none;
 }
 
@@ -215,11 +220,9 @@ html.js .hero__arc path {
 }
 
 .hero__proof {
-  position: absolute;
+  position: relative;
   z-index: 4;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  flex: 0 0 auto;
   display: grid;
   min-height: 9rem;
   grid-template-columns: repeat(4, 1fr);
@@ -260,7 +263,7 @@ html.js .hero__arc path {
 .hero__proof small {
   grid-column: 2;
   color: var(--slate-300);
-  font-size: 0.75rem;
+  font-size: 0.875rem;
 }
 
 @media (max-width: 75rem) {
@@ -288,7 +291,6 @@ html.js .hero__arc path {
   }
 
   .hero__content {
-    min-height: 50rem;
     grid-template-columns: minmax(0, 1fr);
   }
 
@@ -322,21 +324,20 @@ html.js .hero__arc path {
   }
 
   .hero__arc {
-    top: 23rem;
+    top: 31rem;
     right: -14rem;
     width: 48rem;
   }
 
   .hero__content {
-    min-height: 46rem;
+    min-height: 0;
     align-items: start;
     padding-top: 9.65rem;
-    padding-bottom: 8rem;
+    padding-bottom: 3rem;
   }
 
   .hero .eyebrow {
-    justify-content: flex-start;
-    gap: 1rem;
+    gap: 0.55rem;
   }
 
   .hero .eyebrow span:last-child {
@@ -346,12 +347,11 @@ html.js .hero__arc path {
   .hero h1 {
     max-width: 13.5ch;
     margin-bottom: 1.5rem;
-    font-size: clamp(3.9rem, 19vw, 5.8rem);
+    font-size: min(clamp(3.9rem, 19vw, 5.8rem), 27cqi);
   }
 
   .hero__lead {
     max-width: 31rem;
-    font-size: 1rem;
   }
 
   .hero__actions {
@@ -375,6 +375,7 @@ html.js .hero__arc path {
     grid-template-columns: repeat(4, minmax(0, 1fr));
     min-height: 5.9rem;
     padding-inline: calc((100% - var(--shell)) / 2);
+    padding-right: 4.5rem;
   }
 
   .hero__proof > div,
@@ -382,7 +383,7 @@ html.js .hero__arc path {
     grid-template-columns: 1fr;
     border-left: 0;
     gap: 0.2rem;
-    padding: 0.9rem 0.55rem;
+    padding: 0.9rem 0.2rem;
   }
 
   .hero__proof span {
@@ -391,7 +392,7 @@ html.js .hero__arc path {
   }
 
   .hero__proof strong {
-    font-size: 1rem;
+    font-size: 0.875rem;
   }
 
   .hero__proof small {
@@ -399,26 +400,26 @@ html.js .hero__arc path {
   }
 }
 
-@media (max-height: 44rem) and (max-width: 75rem) {
+@media (max-height: 44rem) and (min-width: 42.01rem) and (max-width: 75rem) {
   .hero {
     min-height: 42rem;
   }
 
   .hero__content {
-    min-height: 35rem;
-    padding-top: 7rem;
-    padding-bottom: 5.5rem;
+    min-height: 0;
+    padding-top: 9rem;
+    padding-bottom: 3rem;
   }
 }
 
 @media (max-width: 30rem) {
   .hero h1 {
-    font-size: clamp(3.8rem, 20vw, 5.2rem);
+    font-size: min(clamp(3.8rem, 20vw, 5.2rem), 27cqi);
   }
 
   .hero__proof > div,
   .hero__proof > div:first-child {
-    padding-inline: 0.35rem;
+    padding-inline: 0.2rem;
   }
 }
 

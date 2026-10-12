@@ -243,6 +243,7 @@ test("lead capture completes the contextual callback flow without a network subm
   await expect(dialog).toBeVisible();
   await expect(page.locator("body")).toHaveClass(/lead-capture-open/);
   await expect(dialog.locator("legend", { hasText: "What can we help with?" })).toBeFocused();
+  await expect(dialog.locator("[data-lead-progress-label]")).toHaveText("Your requirement");
   const openDialogA11y = await new AxeBuilder({ page }).include(".lead-capture__dialog").analyze();
   expect(openDialogA11y.violations.filter((violation) =>
     ["serious", "critical"].includes(violation.impact ?? ""),
@@ -250,10 +251,12 @@ test("lead capture completes the contextual callback flow without a network subm
 
   await dialog.getByRole("radio", { name: /^EV charging$/ }).check();
   await expect(dialog.getByRole("group", { name: "What best describes the site?" })).toBeVisible();
+  await expect(dialog.locator("[data-lead-progress-label]")).toHaveText("Site details");
   await expect(dialog.getByRole("button", { name: "Go back" })).toBeVisible();
   await expect(dialog.getByRole("button", { name: "Go back" })).toContainText("Back");
   await dialog.getByLabel("Fleet / depot").check();
   await expect(dialog.getByRole("group", { name: "Where are you in the process?" })).toBeVisible();
+  await expect(dialog.locator("[data-lead-progress-label]")).toHaveText("Project stage");
   await dialog.getByLabel("Need a quote").check();
   await expect(dialog.getByRole("heading", { name: "Where is the site?" })).toBeVisible();
   await dialog.getByRole("button", { name: "Go back" }).click();
@@ -263,12 +266,16 @@ test("lead capture completes the contextual callback flow without a network subm
   await expect(dialog.getByRole("heading", { name: "Where is the site?" })).toBeVisible();
   await dialog.getByLabel("Town, city or postcode Optional").fill("Birmingham");
   await dialog.getByRole("button", { name: "Continue" }).click();
+  await expect(dialog.locator("[data-lead-progress-label]")).toHaveText("Callback details");
 
   await dialog.getByLabel("First name").fill("Test");
   await dialog.getByLabel("Telephone number").fill("0121 555 0100");
   await dialog.getByLabel("Company name").fill("Test Organisation");
   await dialog.getByLabel("Email").fill("test@example.com");
-  await dialog.getByLabel("Today").check();
+  await dialog.getByLabel("Suggest a time").check();
+  await expect(dialog.getByLabel("Suggested date and time Optional")).toBeEnabled();
+  await expect(dialog.getByLabel("Suggested date and time Optional")).not.toHaveAttribute("required");
+  await expect(dialog.locator("#lead-schedule-help")).toContainText("confirm availability");
   await dialog.getByText("Add project details").click();
   await dialog.getByLabel("Anything useful for us to know?").fill("Testing the optional project details.");
   await dialog.getByRole("button", { name: "Request callback" }).click();
@@ -333,6 +340,14 @@ test("lead capture stays within the narrow viewport as a bottom sheet", async ({
   expect(bounds.right).toBeLessThanOrEqual(bounds.viewportWidth + 1);
   expect(Math.abs(bounds.bottom - bounds.viewportHeight)).toBeLessThanOrEqual(1);
   await expectNoHorizontalOverflow(page, "Open lead-capture bottom sheet");
+  const dialog = page.getByRole("dialog", { name: "Request a callback" });
+  await dialog.getByRole("button", { name: "Just request a callback" }).click();
+  const submit = dialog.getByRole("button", { name: "Request callback" });
+  await expect(submit).toBeInViewport();
+  await dialog.locator(".lead-capture__body").evaluate((element) => {
+    element.scrollTop = element.scrollHeight;
+  });
+  await expect(submit).toBeInViewport();
 });
 
 test("reduced motion keeps all content readable", async ({ page }) => {
@@ -391,6 +406,50 @@ test("keeps key breakpoint boundaries free from horizontal overflow", async ({ p
   }
 });
 
+test("keeps hero content clear of the proof strip when text grows", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.reload();
+  await page.waitForLoadState("networkidle");
+  for (const rootSize of [16, 20]) {
+    await page.locator("html").evaluate((element, size) => { element.style.fontSize = `${size}px`; }, rootSize);
+    const bounds = await page.locator(".hero").evaluate((hero) => {
+      const proof = hero.querySelector(".hero__proof")!.getBoundingClientRect();
+      const content = [...hero.querySelectorAll(".hero__copy > *")]
+        .filter((element) => element.getClientRects().length > 0)
+        .map((element) => element.getBoundingClientRect().bottom);
+      const first = hero.querySelector(".hero__copy > *")!.getBoundingClientRect();
+      return { contentTop: first.top, headerBottom: document.querySelector(".site-header")!.getBoundingClientRect().bottom, contentBottom: Math.max(...content), proofTop: proof.top, heroBottom: hero.getBoundingClientRect().bottom, proofBottom: proof.bottom };
+    });
+    expect(bounds.contentBottom).toBeLessThanOrEqual(bounds.proofTop - 16);
+    expect(bounds.contentTop).toBeGreaterThanOrEqual(bounds.headerBottom + 12);
+    expect(bounds.proofBottom).toBeLessThanOrEqual(bounds.heroBottom + 1);
+  }
+});
+
+test("keeps the dealership photograph covering its frame throughout scrolling", async ({ page }, testInfo) => {
+  test.skip(testInfo.project.name !== "desktop", "Check the animated desktop photograph once");
+  await page.emulateMedia({ reducedMotion: "no-preference" });
+  await page.reload();
+  await page.waitForLoadState("networkidle");
+  await page.evaluate(() => { document.documentElement.style.scrollBehavior = "auto"; });
+  const positions = await page.locator("#projects").evaluate((section) => {
+    const rect = section.getBoundingClientRect();
+    const top = rect.top + window.scrollY;
+    return [Math.max(0, top - window.innerHeight + 20), top, top + rect.height - window.innerHeight / 2];
+  });
+  for (const position of positions) {
+    await page.evaluate((top) => window.scrollTo(0, top), position);
+    await page.waitForTimeout(300);
+    const coverage = await page.locator(".case-study__media").evaluate((frame) => {
+      const bounds = frame.getBoundingClientRect();
+      const image = frame.querySelector("img")!.getBoundingClientRect();
+      return { top: image.top - bounds.top, bottom: image.bottom - bounds.bottom };
+    });
+    expect(coverage.top).toBeLessThanOrEqual(1);
+    expect(coverage.bottom).toBeGreaterThanOrEqual(-1);
+  }
+});
+
 test("keeps narrow layouts compact and visually connected", async ({ page }) => {
   test.skip((page.viewportSize()?.width ?? 0) > 672, "Narrow-layout assertion only");
   await page.emulateMedia({ reducedMotion: "reduce" });
@@ -437,7 +496,7 @@ test("keeps narrow layouts compact and visually connected", async ({ page }) => 
   expect(mediaBounds.every(({ right, viewportWidth }) => right <= viewportWidth + 1)).toBe(true);
 });
 
-test("keeps the managed-relationship statement inside its answer card", async ({ page }) => {
+test("keeps the coordinated-relationship statement inside its answer card", async ({ page }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await page.reload();
   await page.waitForLoadState("networkidle");
@@ -539,6 +598,35 @@ test("uses the approved four-stage public process language", async ({ page }) =>
   await expect(page.locator(".hero__proof strong")).toHaveText(["Consult", "Design", "Install", "Manage"]);
 });
 
+test("sets commercial metadata and scopes the homepage aftercare promise", async ({ page }) => {
+  await expect(page).toHaveTitle("Commercial EV Charging Installation & Support | Greendawn");
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute("content", /vehicles, users and site power/);
+  await expect(page.locator(".hero h1")).toHaveText(/EV charging\.\s*Handled\./);
+  await expect(page.locator(".hero__assurances")).toContainText("Agreed support after installation");
+  const aftercare = page.locator("#aftercare");
+  await expect(aftercare).toContainText("With an agreed aftercare package");
+  await expect(aftercare.getByRole("link", { name: "Contact customer support", exact: true })).toHaveAttribute(
+    "href", "https://greendawn.co.uk/customer-care/",
+  );
+  await expect(aftercare).not.toContainText("our problem to fix");
+  await expect(page.locator("#process")).not.toContainText("fully managed charging estate");
+  await expect(page.locator(".final-cta")).not.toContainText("you don’t have to manage");
+});
+
+test("labels interim buyer destinations honestly and distinguishes paid surveys", async ({ page }) => {
+  const solutions = page.locator("#who-we-help");
+  await expect(solutions.locator(".solution-row__destination")).toHaveCount(5);
+  await expect(solutions.getByRole("link").filter({ hasText: "Explore commercial project delivery" })).toHaveAttribute(
+    "href", "https://greendawn.co.uk/business-ev-charging-installations/",
+  );
+  await expect(solutions.getByRole("link").filter({ hasText: "Read the dealership planning guide" })).toHaveAttribute(
+    "href", "https://greendawn.co.uk/guides/ev-charging-for-car-dealership/",
+  );
+  await expect(page.locator("#surveys")).toContainText("paid technical survey");
+  await expect(page.locator("#surveys")).toContainText("confirmed before booking");
+  await expect(page.locator("#surveys")).toContainText("third-party costs");
+});
+
 test("survives history restoration and a persisted pageshow lifecycle", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "desktop", "Run the history lifecycle once");
   const pageErrors: string[] = [];
@@ -592,7 +680,7 @@ test.describe("without JavaScript", () => {
     await expect(page.locator("[data-reveal]").first()).toBeVisible();
     await expect(page.locator(".lead-capture__launcher")).toBeHidden();
     const enquiryLinks = page.locator('[data-lead-capture-open][href="https://greendawn.co.uk/enquire/"]');
-    await expect(enquiryLinks).toHaveCount(4);
+    await expect(enquiryLinks).toHaveCount(5);
 
     if ((page.viewportSize()?.width ?? 0) <= 1200) {
       const fallback = page.locator(".no-js-nav");

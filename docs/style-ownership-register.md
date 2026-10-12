@@ -109,8 +109,9 @@ Every unlisted descendant that begins with a row's prefix belongs to the same ow
 | `.surveys`, `.surveys__*` | `S1` | `SurveySection.astro` | None in the rendered homepage | Editorial overview, starting price and outcomes stay owned by the section |
 | `.survey-tier*`, positional border rules | `C1` positional | retained survey-tier components | Components are dormant but reusable; do not fold their rules into the active section | 75rem/61rem border patterns; mobile details/open state if reused |
 | `.solutions`, `.solutions__*` | `S1` | `SolutionsSection.astro` | `SolutionRow.astro`, `SolutionImage.astro` | `data-solution-row/image`; `is-active`; sticky media; `min-width: 0` |
+| `.solution-row__destination` | `C1` | `SolutionRow.astro` | none | Optional typed destination cue inside the existing whole-row link; ordinary readable body-sized text; no nested interactive control |
 | `.solution-row*`, `.solution-image*` | `C1` state | child components within solutions | — | GSAP toggles `is-active`; touch hover must remain neutralised |
-| `.aftercare`, `.aftercare__*` | `S1`/`C1` | `AftercareSection.astro` | service item if reused | `data-aftercare`; compact service-name summary; quote responsive rules; detailed copy remains in structured data for destination-page reuse |
+| `.aftercare`, `.aftercare__*` | `S1`/`C1` | `AftercareSection.astro` | service item if reused | `data-aftercare`; compact service-name summary; statement responsive rules; body-sized `.aftercare__support-link`; detailed copy remains in structured data for destination-page reuse |
 | `.proof-grid`, `.proof-grid__*` | `S1` | `SupportingProofSection.astro` | `ProofCard.astro` | `data-proof`; one compact photographed project; card spacing tests |
 | `.proof-card*` | `C1` | `ProofCard.astro` | — | compact project variant is rendered; coverage/capability variants and data remain reusable but dormant; hover image rules |
 | `.insights`, `.insights__*` | `S1` | `InsightsSection.astro` | `InsightCard.astro` | Last-card grid spanning at responsive sizes |
